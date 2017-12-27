@@ -1,0 +1,891 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Handler 在 Android 中的应用很广泛，基本上每个 Android 开发人员都会使用到它。本篇文章将会介绍 Handler 和异步消息机制相关的使用方法，下一篇会从源码的角度分析 Android 中异步消息处理的流程。
+Android 中的异步消息处理框架由 Handler 、MessageQueue、Looper 等组成。Handler 是我们使用最多的一个类，主要负责发送和处理消息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Handler与异步消息处理">
+<meta property="og:url" content="http://yoursite.com/2016/10/31/Handler与异步消息处理/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="Handler 在 Android 中的应用很广泛，基本上每个 Android 开发人员都会使用到它。本篇文章将会介绍 Handler 和异步消息机制相关的使用方法，下一篇会从源码的角度分析 Android 中异步消息处理的流程。
+Android 中的异步消息处理框架由 Handler 、MessageQueue、Looper 等组成。Handler 是我们使用最多的一个类，主要负责发送和处理消息">
+<meta property="og:updated_time" content="2016-11-20T02:07:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Handler与异步消息处理">
+<meta name="twitter:description" content="Handler 在 Android 中的应用很广泛，基本上每个 Android 开发人员都会使用到它。本篇文章将会介绍 Handler 和异步消息机制相关的使用方法，下一篇会从源码的角度分析 Android 中异步消息处理的流程。
+Android 中的异步消息处理框架由 Handler 、MessageQueue、Looper 等组成。Handler 是我们使用最多的一个类，主要负责发送和处理消息">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/31/Handler与异步消息处理/"/>
+
+
+  <title> Handler与异步消息处理 | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Handler与异步消息处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-31T23:00:13+08:00" content="2016-10-31">
+              2016-10-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/31/Handler与异步消息处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/31/Handler与异步消息处理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/31/Handler与异步消息处理/" class="leancloud_visitors" data-flag-title="Handler与异步消息处理">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Handler 在 Android 中的应用很广泛，基本上每个 Android 开发人员都会使用到它。本篇文章将会介绍 Handler 和异步消息机制相关的使用方法，下一篇会从源码的角度分析 Android 中异步消息处理的流程。</p>
+<p>Android 中的异步消息处理框架由 Handler 、MessageQueue、Looper 等组成。Handler 是我们使用最多的一个类，主要负责发送和处理消息，MessageQueue 是一个队列，用来存储 Handler 发送来的消息，而 Looper 则是一个死循环。</p>
+<a id="more"></a>
+<h2 id="Handler-的使用场景"><a href="#Handler-的使用场景" class="headerlink" title="Handler 的使用场景"></a>Handler 的使用场景</h2><p>由于 Android 系统不允许在主线程进行耗时任务，因此网络请求等一般都会开新的线程执行，然而，Android 中的控件不是线程安全的，因此 Android 系统要求只能在主线程中访问 UI 控件（当然如果你非要在子线程中访问，也是能运行的）。那么从子线程中得到的数据怎么返回到主线程给 UI 使用呢？答案很简单，大家都知道，可以使用 Handler 将数据返回到主线程。</p>
+<p>但有时候你会发现，有些项目里面没有开启子线程，却在使用 Handler，这就是 Handler 的另一个使用场景：消息处理。如果你有一个个的任务需要排队处理，那么使用 Handler 是很合适的。</p>
+<h2 id="Handler-的创建"><a href="#Handler-的创建" class="headerlink" title="Handler 的创建"></a>Handler 的创建</h2><p>Handler 必须与一个 Looper 关联才能使用。怎么样关联呢？你可以手动传入一个 Looper 对象，让 Handler 关联你传入的 Handler。也可以什么都不传，这时候 Handler 会自己去找当前线程的 Looper，如果找到就万事大吉，如果当前线程没有 Looper，那么就会报错。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 不传入 Looper，系统会自己去获取当前线程中的 Looper。</span></div><div class="line">Handler handler = <span class="keyword">new</span> Handler();</div><div class="line"></div><div class="line"><span class="comment">// 传入自定的 Looper。</span></div><div class="line">Handler  handler = <span class="keyword">new</span> Handler(Looper);</div></pre></td></tr></table></figure>
+<p>由于主线程（UI 线程）是唯一一个默认自带了 Looper 的线程，所以在主线程中你可以直接用上面第一种方式创建一个 Handler 对象而不用担心 Looper 的存在性问题。</p>
+<p>另外有一点，在创建 Looper 的时候，系统会检查该线程是否已经有 Looper 对象了，如果已经有 Looper 对象了，你再塞一个进去，它就会报错，因此一个线程中最多只能有一个 Looper。所以在主线程中不能自己创建一个 Looper，但是你可以传入当前线程的 Looper 进去：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在主线程中，你还可以这么创建 Handler。虽然有点多余。</span></div><div class="line"><span class="comment">// 获取主线程的 Looper</span></div><div class="line">Handler handler = <span class="keyword">new</span> Handler(getMainLooper());</div><div class="line"></div><div class="line"><span class="comment">// 获取当前线程的 Looper</span></div><div class="line">Handler handler = <span class="keyword">new</span> Handler(Looper.myLooper());</div></pre></td></tr></table></figure>
+<p>再次强调：<strong>Handler 必须和 Looper 相关联才能使用</strong>。一个 Handler 只能关联一个 Looper，而且一旦关联上了，就不能更改。当然，一个 Looper 可以关联多个 Handler。</p>
+<h3 id="在子线程中创建-Handler"><a href="#在子线程中创建-Handler" class="headerlink" title="在子线程中创建 Handler"></a>在子线程中创建 Handler</h3><p>一般情况下，我们都是在主线程中创建 Handler，但是有时候也需要在子线程中处理消息队列。由于主线程是唯一一个自带了 Looper 的线程。因此在主线程中创建和使用 Handler 相对是比较简单的，也是最常见的。但是还有些情况是需要在子线程中创建一个消息队列的，在子线程中使用 Handler 需要提供一个 Looper，于是代码就应该像下面那样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 为异步消息处理框架准备一个线程</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LooperThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">	<span class="keyword">public</span> Handler mHandler;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// 准备一个 Looper</span></div><div class="line">		Looper.prepare();</div><div class="line">		<span class="comment">// Handler 对象会和该线程的 Looper 关联起来。</span></div><div class="line">		mHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handlerMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">				<span class="comment">// 在这里处理传入的消息</span></div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		<span class="comment">// 使用该 Looper，启动一个循环的消息队列。</span></div><div class="line">		Looper.loop();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这大概应该是一个固定的模板了。</p>
+<h3 id="使用-HandlerThread"><a href="#使用-HandlerThread" class="headerlink" title="使用 HandlerThread"></a>使用 HandlerThread</h3><p>可以使用 HandlerThread 来简化在子线程中创建 Handler 的流程。HalderThread 是一个自带了 Looper 的线程类，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandlerThread</span> <span class="keyword">extends</span> <span class="title">HandlerThread</span> </span>&#123;</div><div class="line">	<span class="comment">// 你只需要添加一个 Handler</span></div><div class="line">	<span class="keyword">private</span> Handler handler;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyHandlerThread</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(name)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>HandlerThread 也并不神秘，它只是帮你调用了 <code>Looper.prepare()</code> 方法和 <code>Looper.loop()</code> 方法而已。也就是说如果你一个类继承了 ThreadHandler，你可以像在主线程那样使用 Handler。</p>
+<h2 id="发送和处理消息"><a href="#发送和处理消息" class="headerlink" title="发送和处理消息"></a>发送和处理消息</h2><p>准备好 Handler 的环境后，就可以使用 Handler 来发送和处理消息了。处理消息是在 Handler 的 <code>handleMessage()</code> 方法中进行 的，而发送消息有两种方法：发送一个 Message 对象，和投递一个 Runnable 对象。下面分别介绍这两类方法。</p>
+<h3 id="发送-Message-对象"><a href="#发送-Message-对象" class="headerlink" title="发送 Message 对象"></a>发送 Message 对象</h3><p>Message 对象可以包含一些简单的数据，并且可以通过 Handler 进行发送和处理。Message 对象可以通过 <code>Message.what(int)</code> 方法中的 int 参数来标志该对象。Message 对象使用两个 int 类型的字段来存储需要发送的信息，也可以使用一个 Object 类型的对象来存储一个简单对象的信息。</p>
+<ul>
+<li><strong>Message.what</strong>：标识一个 Message 对象。</li>
+<li><strong>Message.arg1</strong>：需要传递的 int 类型的数据。</li>
+<li><strong>Message.arg2</strong>：需要传递的 int 类型的数据。</li>
+<li><strong>Message.obj</strong>：存储任意数据类型（Object）的对象。</li>
+</ul>
+<p>怎么创建一个 Message 对象呢？你当然可以使用 <code>Message msg = new Message()</code> 方法来创建一个 Message 对象，但是不建议这么做。因为我们有更高效的方法来获得 Message 对象：使用 <code>Message msg = MMessage.obtain()</code> 或 <code>Handler.obtainMessage()</code> 来获取一个 Message。这个 Message 对象被 Handler 发送到 MessageQueue 之后，并不会被销毁，可以重复利用，因此比使用 new 方法来创建一个 Message 对象效率更高。</p>
+<p>当你需要将消息传递到一个后台线程时，建议使用 <code>Handler.obtainMessage</code> 来创建一个 Message 对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> what = <span class="number">0</span>;</div><div class="line">String hello = <span class="string">"Hello!"</span>;</div><div class="line"><span class="comment">// 获取一个和后台线程关联的 Message 对象</span></div><div class="line">Message msg = mHandler.obtainMessage(what, hello);</div><div class="line"><span class="comment">// 发送一个消息到后台线程。</span></div><div class="line">mHandler.sendMessage(msg);</div></pre></td></tr></table></figure>
+<p>根据使用场景不同，Android 系统提供了几种常用的封装：</p>
+<ul>
+<li><strong>Handler.sendMessage( Message msg )</strong>：在 MessageQueue 中添加一个 Message 对象。</li>
+<li><strong>Handler.sendMessageAtFrontOfQueue( Message msg )</strong>：添加一个 Message 对象到 MessageQueue 的前面。</li>
+<li><strong>Handler.sendMessageAtTime ( Message msg, long timeInMills )</strong>：在指定的时间发送一个 Message 对象。</li>
+<li><strong>Handler.sendMessageDelayed( Message msg, long timeInMillis )</strong>：在指定的时间之后，发送 Message 对象。</li>
+</ul>
+<p>发送完一个消息后，怎么处理发送的消息任务呢？在我们创建 Handler 对象的时候，可以实现它的 handleMessage() 方法，在这个方法里面处理 handler 发送的 Message 对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.handleMessage(msg);</div><div class="line">        <span class="comment">// 根据 msg.what 字段的标志处理不同的消息 </span></div><div class="line">        <span class="comment">// 如果 Message 比较简单，你也可以不使用 msg.what 来作为区分。</span></div><div class="line">        <span class="keyword">switch</span> (msg.what) &#123;</div><div class="line">	        ......</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>当然，还有很多处理 Message 消息的方法，比如你想取消一个 Message 的发送，可以调用 <code>handler.removeMessages(int what);</code> 方法。其他的方法可以自行查阅 API 文档。</p>
+<h3 id="投递一个-Runnable-对象"><a href="#投递一个-Runnable-对象" class="headerlink" title="投递一个 Runnable 对象"></a>投递一个 Runnable 对象</h3><p>使用 Handler 发送任务的另一个方法就是投递一个 Runnable 对象（“投递”一词，主要是翻译 post() 方法）。创建一个 Runnable 对象必须要实现 run() 方法，因此，我们需要投递执行的任务就要写在 run() 方法中，而不用像处理 Message 对象一样，在 handleMessage() 方法里面实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 声明一个 Runnable</span></div><div class="line">Runnable r = <span class="keyword">new</span> Runnable() &#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// 任务的具体内容</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 Handler 中，有多种方式投递一个 Runnable 对象：</p>
+<ul>
+<li><strong>Handler.post(Runnable r)</strong>：在 MessageQueue 中添加一个 Runnable 对象。</li>
+<li><strong>Handler.postAtFrontOfQueue</strong>：在 MessageQueue 的头部添加一个 Runnable 对象。</li>
+<li><strong>Handler.postAtTime(Runnable r, long timeMillis)</strong>：在指定的时间将 Runnable 对象添加到 MessageQueue 中。</li>
+<li><strong>Handler.postDelay(Runnable r, long delay)</strong>：经过了指定的时间后，将 Runnable 对象添加到 MessageQueue 中。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 投递一个 Runnable 对象</span></div><div class="line">Handler handler = <span class="keyword">new</span> Handler();</div><div class="line">handler.post(</div><div class="line">	<span class="keyword">new</span> Runnable() &#123;</div><div class="line">		<span class="meta">@Override</span></div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">			<span class="comment">// 任务的具体内容</span></div><div class="line">		&#125;</div><div class="line">	&#125;);</div></pre></td></tr></table></figure>
+<p>当然，你也可以使用 <code>Activity.runOnUiThread()</code> 来投递一个 Runnable 对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Activity.runOnUiThread (</div><div class="line">	<span class="keyword">new</span> Runnable() &#123;</div><div class="line">		<span class="meta">@Override</span></div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">			<span class="comment">// 任务的具体内容</span></div><div class="line">		&#125;</div><div class="line">	&#125;);</div></pre></td></tr></table></figure>
+<p>该方法如果是在主线程上调用的，那么会立即执行。如果是在其他线程上使用的，那么就会将该 Runnable 对象投递到主线程的消息队列中去。</p>
+<p>甚至，你会发现在 View 对象中，也可以调用 post() 方法和 postDelay() 方法！比如你可以在 Activity 的 onCreate() 方法里面调用 view.post() 来获取控件的大小：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mTextView.post(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        mTextView.getHeight();    </div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>比如你也可以使用 view.postDelay() 方法来防止控件的连续点击：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">mButton.setEnabled(<span class="keyword">false</span>);</div><div class="line">mButton.postDelayed(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">              view.setEnabled(<span class="keyword">true</span>); </div><div class="line">           &#125;</div><div class="line">       &#125;,<span class="number">300</span>);</div></pre></td></tr></table></figure>
+<p>至于为什么在 onCreate() 方法里面调用 view.post() 方法可以获取控件大小，虽然和 Handler 及消息队列相关，但比较复杂，给个链接地址，自己去看：<a href="http://androidperformance.com/2015/12/29/Android应用启动优化-一种DelayLoad的实现和原理-下篇.html" target="_blank" rel="external">Android应用启动优化:一种DelayLoad的实现和原理(下篇)</a></p>
+<p>有一点需要记住，<code>Runnable</code> 对象和 <code>Message</code> 对象不同，<code>Runnable</code> 对象不能重复使用。</p>
+<h3 id="两种方法的区别"><a href="#两种方法的区别" class="headerlink" title="两种方法的区别"></a>两种方法的区别</h3><p>那么，为什么 Android 系统会提供两种方法来发送消息任务呢？这当然和使用场景相关了，根据不同的使用场景，这两种方法还是有区别的。当然，在平常的使用过程中或许你不会考虑这么多，因为在具体的使用场景中，你很可能“不经意”地就将两种方法的使用场景给区别开了：</p>
+<ul>
+<li>当发送者知道如何处理消息的话，使用 <code>Handler.post()</code> 方法。发送者直接在 run() 方法中处理任务。</li>
+<li>当接收者知道如何处理消息的话，使用 <code>Handler.sendMessage()</code> 方法。发送者将 Message 对象发射出去后，handler (接收者）调用 handleMessage() 方法处理任务。</li>
+</ul>
+<h2 id="实例：倒计时"><a href="#实例：倒计时" class="headerlink" title="实例：倒计时"></a>实例：倒计时</h2><p>下面，我们用 Handler 来实现倒计时功能。先来分析一下<code>倒计时</code>的相关功能需求：</p>
+<ul>
+<li>需要知道总时间和每一步的间隔时间。</li>
+<li>每次到了间隔时间就回调通知，总时间结束后也要回调通知。</li>
+</ul>
+<p>根据这个需求，我们可以大致猜想一下如何实现：</p>
+<ul>
+<li>需要提供两个构造参数的构造方法，一个是总时间，一个是间隔时间。</li>
+<li>需要提供两个抽象方法供子类实现，一个是每次到了间隔时间的回调通知，另一个是总时间结束后的回调通知。</li>
+</ul>
+<p>有了这个思路，实现就很简单了，下面直接给出代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Timer</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mMillisInFuture;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mCountdownInterval;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStopTimeInFuture;</div><div class="line">    <span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">            <span class="comment">// 计算剩余时间</span></div><div class="line">            <span class="keyword">long</span> millisLeft = mStopTimeInFuture - SystemClock.elapsedRealtime();</div><div class="line">            <span class="keyword">if</span> (millisLeft &lt;= <span class="number">0</span>) &#123;</div><div class="line">                <span class="comment">// 如果剩余时间小于或等于 0， 则回调 onFinish() 方法。</span></div><div class="line">                onFinish();</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (millisLeft &lt; mCountdownInterval) &#123;</div><div class="line">                <span class="comment">// 当剩余时间小于一次间隔时间时，不回调 onTick() 方法，直接等到最后再发送</span></div><div class="line">                sendMessageDelayed(obtainMessage(), millisLeft);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// 回调 onTick() 方法，并在一次间隔时间后再次发送消息。</span></div><div class="line">                onTick(millisLeft);</div><div class="line">                sendMessageDelayed(obtainMessage(), mCountdownInterval);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Timer</span><span class="params">(<span class="keyword">long</span> millisInFuture, <span class="keyword">long</span> countdownInterval)</span> </span>&#123;</div><div class="line">        mMillisInFuture = millisInFuture;</div><div class="line">        mCountdownInterval = countdownInterval;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 调用 start() 方法以启动倒计时</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Timer <span class="title">start</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (mMillisInFuture &lt; <span class="number">0</span>) &#123;</div><div class="line">            onFinish();</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 获取倒计时完成的系统时间</span></div><div class="line">        mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisInFuture;</div><div class="line">        <span class="comment">// 发送第一个消息</span></div><div class="line">        mHandler.sendMessage(mHandler.obtainMessage());</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 每经过一次间隔时间就回调一次 onTick 方法</div><div class="line">     * <span class="doctag">@param</span> millionLeft   剩余时间</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onTick</span><span class="params">(<span class="keyword">long</span> millionLeft)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 倒计时完成后，回调 onFinish() 方法</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onFinish</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实上面的代码是 Android 系统中 <code>CountDownTimer</code> 类的简化版，<code>CountDownTimer</code> 增加了线程安全机制并处理了一些特殊情况，有兴趣的朋友可以自行查阅。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/20/BottomNavigationView-的使用/" rel="next" title="BottomNavigationView 的使用">
+                <i class="fa fa-chevron-left"></i> BottomNavigationView 的使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/20/Handler与异步消息的源码解析/" rel="prev" title="Handler与异步消息的源码解析">
+                Handler与异步消息的源码解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Handler-的使用场景"><span class="nav-number">1.</span> <span class="nav-text">Handler 的使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handler-的创建"><span class="nav-number">2.</span> <span class="nav-text">Handler 的创建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在子线程中创建-Handler"><span class="nav-number">2.1.</span> <span class="nav-text">在子线程中创建 Handler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-HandlerThread"><span class="nav-number">2.2.</span> <span class="nav-text">使用 HandlerThread</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送和处理消息"><span class="nav-number">3.</span> <span class="nav-text">发送和处理消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发送-Message-对象"><span class="nav-number">3.1.</span> <span class="nav-text">发送 Message 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投递一个-Runnable-对象"><span class="nav-number">3.2.</span> <span class="nav-text">投递一个 Runnable 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种方法的区别"><span class="nav-number">3.3.</span> <span class="nav-text">两种方法的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例：倒计时"><span class="nav-number">4.</span> <span class="nav-text">实例：倒计时</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2016/10/31/Handler与异步消息处理/';
+      var disqus_title = "Handler与异步消息处理";
+      var disqus_url = 'http://yoursite.com/2016/10/31/Handler与异步消息处理/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

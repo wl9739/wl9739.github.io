@@ -1,0 +1,897 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Android 中的动画有很多，除了在一个界面上使用帧动画、属性动画将一个或多个 View 进行动画处理以外，还可以用于两个界面之间过渡、跳转。在 Android 5.0 之前，我们已经有了 overridePendingTransition() 方法来实现一些转场效果。然而，在 Android 5.0 以后，转场效果更加炫酷。 比如下面的动画：
+
+本篇文章，主要就是解说如何实现上述的效果。主要内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 中的转场动画及兼容处理">
+<meta property="og:url" content="http://yoursite.com/2016/10/16/Android-中的转场动画及兼容处理/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="Android 中的动画有很多，除了在一个界面上使用帧动画、属性动画将一个或多个 View 进行动画处理以外，还可以用于两个界面之间过渡、跳转。在 Android 5.0 之前，我们已经有了 overridePendingTransition() 方法来实现一些转场效果。然而，在 Android 5.0 以后，转场效果更加炫酷。 比如下面的动画：
+
+本篇文章，主要就是解说如何实现上述的效果。主要内">
+<meta property="og:image" content="http://7xook5.com1.z0.glb.clouddn.com/Anime.gif">
+<meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 中的转场动画及兼容处理">
+<meta name="twitter:description" content="Android 中的动画有很多，除了在一个界面上使用帧动画、属性动画将一个或多个 View 进行动画处理以外，还可以用于两个界面之间过渡、跳转。在 Android 5.0 之前，我们已经有了 overridePendingTransition() 方法来实现一些转场效果。然而，在 Android 5.0 以后，转场效果更加炫酷。 比如下面的动画：
+
+本篇文章，主要就是解说如何实现上述的效果。主要内">
+<meta name="twitter:image" content="http://7xook5.com1.z0.glb.clouddn.com/Anime.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/16/Android-中的转场动画及兼容处理/"/>
+
+
+  <title> Android 中的转场动画及兼容处理 | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 中的转场动画及兼容处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-16T16:44:50+08:00" content="2016-10-16">
+              2016-10-16
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/16/Android-中的转场动画及兼容处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/16/Android-中的转场动画及兼容处理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/16/Android-中的转场动画及兼容处理/" class="leancloud_visitors" data-flag-title="Android 中的转场动画及兼容处理">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Android 中的动画有很多，除了在一个界面上使用帧动画、属性动画将一个或多个 View 进行动画处理以外，还可以用于两个界面之间过渡、跳转。在 Android 5.0 之前，我们已经有了 overridePendingTransition() 方法来实现一些转场效果。然而，在 Android 5.0 以后，转场效果更加炫酷。 比如下面的动画：</p>
+<p><img src="http://7xook5.com1.z0.glb.clouddn.com/Anime.gif" alt="Anime_Demo"></p>
+<p>本篇文章，主要就是解说如何实现上述的效果。主要内容包括：</p>
+<ul>
+<li>Android 5.0+ 的转场动画</li>
+<li>Android 4.X 模拟实现 Android 5.0+ 转场效果。</li>
+</ul>
+<a id="more"></a>
+<h2 id="Android-5-0-中的转场动画"><a href="#Android-5-0-中的转场动画" class="headerlink" title="Android 5.0+ 中的转场动画"></a>Android 5.0+ 中的转场动画</h2><p>实现转场动画只需三步：</p>
+<ul>
+<li>在 <strong>res/</strong> 目录下创建 <strong>transition</strong> 文件夹，在该文件夹下定义界面转场动画和共享元素的动画。</li>
+<li>在 <strong>res/value/style</strong> 文件中为每个 Activity 指定转场动画的 style ，并在 <code>AndroidManifest.xml</code> 文件中为每个 Activity 设置对应的 <strong>android:theme</strong>。</li>
+<li>在 Activity 调用 <strong>startActivity()</strong> 切换动画前，使用 <strong>ActivityOptionsCompat</strong> 来创建转场动画时的共享对象。</li>
+</ul>
+<p>下面就来对这三步进行详细讲解。</p>
+<h3 id="定义转场动画"><a href="#定义转场动画" class="headerlink" title="定义转场动画"></a>定义转场动画</h3><p>在 <strong>res/</strong> 目录下创建了 <strong>transition</strong> 资源文件夹后，就可以在该文件夹下对每一种动画进行定义。</p>
+<p>一般来说，对 Activity 定义一个过渡动画可以写成下面的形式：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">explode</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">targets</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:excludeId</span>=<span class="string">"@android:id/statusBarBackground"</span>/&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:excludeId</span>=<span class="string">"@android:id/navigationBarBackground"</span>/&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">targets</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">explode</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>其中 <code>&lt;explode/&gt;</code> 是动画效果的名称，Android 5.0（API 级别 21）支持这些进入与退出转换：</p>
+<ul>
+<li><strong>分解（explode）</strong>：从场景中心移入或移出视图。</li>
+<li><strong>滑动（slide）</strong>：从场景边缘移入或移出视图。</li>
+<li><strong>淡入淡出（fade）</strong>：通过调整透明度在场景中增添或移除视图。</li>
+</ul>
+<p>而每一种动画效果，都有额外的属性。比如滑动 slide，可以使用 <code>android:slideEdge=&quot;top&quot;</code> 设置滑动的方向；淡入淡出（fade）可以使用 <code>android:fadingMode=&quot;fade_in&quot;</code> 设置具体是淡入（fade_in）还是淡出（fade_out)等。</p>
+<p><code>&lt;targets/&gt;</code> 标签里面定义需要转场（或者不需要转场）的目标 id ，这个 id 可以使系统自带的，也可以是我们自己视图中的 view 的 id，每一个 id 需要单独在 <code>&lt;target/&gt;</code> 标签中定义，<strong>android:targetId</strong> 表示目标ID需要进行过渡转换的 view，而 <strong>android:excludeId</strong> 表示我们不需要该 ID 的 view 进行过渡转场。上面的那段代码的意思是说，除了状态栏和导航栏以外所有的 view，都执行 explode 动画。</p>
+<p>如果我们想要在同一个过渡状态中实现两种或多种动画效果怎么办？也简单，将根标签替换为 <code>&lt;transitionSet/&gt;</code>，然后定义每一种动画效果，最后记得在根标签中使用 <code>android:transitionOrdering</code> 注明这几种动画的演示顺序，<code>sequential</code> 表示顺序执行，而 <code>together</code> 表示同时执行。比如像下面的代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">transitionSet</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">slide</span> <span class="attr">android:slideEdge</span>=<span class="string">"bottom"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">targets</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:targetId</span>=<span class="string">"@id/cardview"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">targets</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">slide</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">fade</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">targets</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:excludeId</span>=<span class="string">"@android:id/statusBarBackground"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:excludeId</span>=<span class="string">"@android:id/navigationBarBackground"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">target</span> <span class="attr">android:excludeId</span>=<span class="string">"@id/cardview"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">targets</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">fade</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">transitionSet</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这段代码的意思就很简单了，该 xml 定义了两个过渡动画，并且同时执行。第一个动画是针对 id 为 cardView 的 view 进行滑动，第二个动画将除了状态栏、导航栏和 cardview 以外的 view，进行淡入淡出。</p>
+<h3 id="为每个-Activity-定义转场样式"><a href="#为每个-Activity-定义转场样式" class="headerlink" title="为每个 Activity 定义转场样式"></a>为每个 Activity 定义转场样式</h3><p>这里的<strong>每一种</strong>动画，指的是在进行界面跳转过渡时，两个界面的状态。比如对于 Activity A 和 Activity B 这两个界面，可能的状态如下：</p>
+<ul>
+<li>界面 A 跳转至界面 B ：这时界面 A 是<strong>退出（exit ）</strong>过渡状态，而对应的界面B是<strong>进入（enter）</strong>过渡状态。</li>
+<li>界面 B 返回到界面 A ：这时界面 A 是<strong>重新进入（reenter）</strong>过渡，而对应的界面B则是<strong>返回（return）</strong>过渡。</li>
+</ul>
+<p>一般来说，所有的 Activity 过渡动画都可以定义成如下的形式：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"BaseAppTheme"</span> <span class="attr">parent</span>=<span class="string">"android:Theme.Material"</span>&gt;</span><span class="xml"></span></div><div class="line">  <span class="comment">&lt;!-- 开启过渡效果 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowContentTransitions"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- 指定界面进入/退出动画效果 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowEnterTransition"</span>&gt;</span>@transition/explode<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowExitTransition"</span>&gt;</span>@transition/explode<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- 指定共享元素进入/退出的动画效果 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowSharedElementEnterTransition"</span>&gt;</span></div><div class="line">    @transition/change_image_transform<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowSharedElementExitTransition"</span>&gt;</span></div><div class="line">    @transition/change_image_transform<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>当然，你可以不用写全，比如在我的 Demo 中一个界面的转场动画文件如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme.Detail"</span>&gt;</span><span class="xml"></span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"windowActionBar"</span>&gt;</span>false<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowNoTitle"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTranslucentStatus"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowAllowEnterTransitionOverlap"</span>&gt;</span>false<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowEnterTransition"</span>&gt;</span>@transition/detail_enter<span class="tag">&lt;/<span class="name">item</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="调用-ActivityOptionsCompat"><a href="#调用-ActivityOptionsCompat" class="headerlink" title="调用 ActivityOptionsCompat"></a>调用 ActivityOptionsCompat</h3><p>转场动画是在两个界面的跳转返回时发生的，所以，当使用 intent 跳转界面时，需要调用 <code>ActivityOptionsCompat</code>来指定动画的运行。</p>
+<p>一般来说，调用 <code>ActivityOptionsCompat</code> 的模板代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建一个包含过渡动画信息的 ActivityOptions 对象</span></div><div class="line">ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(<span class="keyword">this</span>, view, getString(R.string.image_transition_name));</div><div class="line"></div><div class="line"><span class="comment">// 使用 Intent 跳转界面，并传递共享对象信息</span></div><div class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, DetailActivity.class);</div><div class="line">startActivity(intent, optionsCompat.toBundle());</div></pre></td></tr></table></figure>
+<p>ActivityOptionsCompat 是在support v4 包里面的，其实它是 ActivityOptions 的一个兼容（ActivityOptions是API 16引入的）。</p>
+<p>然后，我们需要在第二个 Activity 中，将转场的图片获取并显示到界面中。</p>
+<p><strong>多个共享元素的过渡实现</strong></p>
+<p>有时候我们需要让多个元素产生动画效果，可以使用 Pair&lt;&gt; 来实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(<span class="keyword">this</span>, Pair.create(view1, <span class="string">"agreedName1"</span>), Pair.create(view2, <span class="string">"agreedName2"</span>));</div></pre></td></tr></table></figure>
+<h2 id="手动实现一个转场动画"><a href="#手动实现一个转场动画" class="headerlink" title="手动实现一个转场动画"></a>手动实现一个转场动画</h2><p>现在市面上，Android 5.0 以下的手机系统还有一定的市场份额，所以为了照顾这些用户，我们只能手动实现一下共享元素的转场动画效果。</p>
+<p>实现的思路也比较简单，大概的步骤如下：</p>
+<ul>
+<li>确定第一个界面的共享元素，将其信息传递个第二个界面</li>
+<li>第二个界面接收信息，开始的时候将界面设置为透明，并只显示共享元素。</li>
+<li>将第二个界面的共享元素进行动画处理。</li>
+</ul>
+<p>那么我们开始一步步实现上面的步骤。</p>
+<h3 id="获取共享元素位置信息"><a href="#获取共享元素位置信息" class="headerlink" title="获取共享元素位置信息"></a>获取共享元素位置信息</h3><p>在第一个界面中，我们需要获取到共享元素的位置信息，并将其传递给下一个界面。于是乎，我们可以在第一个界面元素点击事件中，这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">imageClick</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">    Intent intent = <span class="keyword">new</span> Intent(AnimeActivity.<span class="keyword">this</span>, AnimeDetailActivity.class);</div><div class="line">    <span class="comment">// 创建一个 rect 对象来存储共享元素位置信息</span></div><div class="line">    Rect rect = <span class="keyword">new</span> Rect();</div><div class="line">    <span class="comment">// 获取元素位置信息</span></div><div class="line">    view.getGlobalVisibleRect(rect);</div><div class="line">    <span class="comment">// 将位置信息附加到 intent 上</span></div><div class="line">    intent.setSourceBounds(rect);</div><div class="line">    CustomImage customImage = (CustomImage) view;</div><div class="line">    intent.putExtra(AnimeDetailActivity.EXTRA_IMAGE, customImage.getImageId());</div><div class="line">    startActivity(intent);</div><div class="line">    <span class="comment">// 屏蔽 Activity 默认转场效果</span></div><div class="line">    overridePendingTransition(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中 <strong>getGlobalVisibleRect()</strong> 方法的含义是，获取 <strong>可见的状态栏高度+可见的标题栏高度+Rect左上角到标题栏底部的距离</strong>，如果标题栏被隐藏了，那么<strong>可见标题栏高度</strong>为0。</p>
+<p>接下来，就在在第二个界面接收位置信息并将该图片展示出来了。</p>
+<h3 id="模拟转场动画"><a href="#模拟转场动画" class="headerlink" title="模拟转场动画"></a>模拟转场动画</h3><p>在第二个界面中，我们需要做如下的操作：</p>
+<ul>
+<li>获取上共享元素信息。</li>
+<li>计算共享元素缩放比例和位移距离。</li>
+<li>调用动画，完成模拟转场效果。</li>
+</ul>
+<p>我将上面三个步骤的代码如下，你也可以下载我完整的 <a href="https://github.com/wl9739/UITransitionDemo" target="_blank" rel="external">Demo</a> 来查看。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initial</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// 获取上一个界面传入的信息</span></div><div class="line">    mRect = getIntent().getSourceBounds();</div><div class="line">    mRescourceId = getIntent().getExtras().getInt(EXTRA_IMAGE);</div><div class="line"></div><div class="line">    <span class="comment">// 获取上一个界面中，图片的宽度和高度</span></div><div class="line">    mOriginWidth = mRect.right - mRect.left;</div><div class="line">    mOriginHeight = mRect.bottom - mRect.top;</div><div class="line"></div><div class="line">    <span class="comment">// 设置 ImageView 的位置，使其和上一个界面中图片的位置重合</span></div><div class="line">    FrameLayout.LayoutParams params = <span class="keyword">new</span> FrameLayout.LayoutParams(mOriginWidth, mOriginHeight);</div><div class="line">    params.setMargins(mRect.left, mRect.top - getStatusBarHeight(), mRect.right, mRect.bottom);</div><div class="line">    mImageView.setLayoutParams(params);</div><div class="line"></div><div class="line">    <span class="comment">// 设置 ImageView 的图片和缩放类型</span></div><div class="line">    mImageView.setImageResource(mRescourceId);</div><div class="line">    mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);</div><div class="line"></div><div class="line">    <span class="comment">// 根据上一个界面传入的图片资源 ID，获取图片的 Bitmap 对象。</span></div><div class="line">    BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(mRescourceId);</div><div class="line">    Bitmap bitmap = bitmapDrawable.getBitmap();</div><div class="line"></div><div class="line">    <span class="comment">// 计算图片缩放比例和位移距离</span></div><div class="line">    getBundleInfo(bitmap);</div><div class="line"></div><div class="line">    <span class="comment">// 创建一个 Pallette 对象</span></div><div class="line">    mImagePalette = Palette.from(bitmap).generate();</div><div class="line">    <span class="comment">// 使用 Palette 设置背景颜色</span></div><div class="line">    mContainer.setBackgroundColor(</div><div class="line">            mImagePalette.getVibrantColor(ContextCompat.getColor(<span class="keyword">this</span>, android.R.color.black)));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在12行，通过设置 Margin 的形式来确定图片的位置，需要注意的是，由于状态栏是在父控件 FramLayout 之外的，因此我们要将 Rect.top 的值减去状态栏的高度，这样才是相对于屏幕的绝对位置。然后，getBundleInfo() 方法的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getBundleInfo</span><span class="params">(Bitmap bitmap)</span> </span>&#123;</div><div class="line">    <span class="comment">// 计算图片缩放比例，并存储在 bundle 中</span></div><div class="line">    <span class="keyword">if</span> (bitmap.getWidth() &gt;= bitmap.getHeight()) &#123;</div><div class="line">        mScaleBundle.putFloat(SCALE_WIDTH, (<span class="keyword">float</span>) mScreenWidth / mOriginWidth);</div><div class="line">        mScaleBundle.putFloat(SCALE_HEIGHT, (<span class="keyword">float</span>) bitmap.getHeight() / mOriginHeight);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        mScaleBundle.putFloat(SCALE_WIDTH, (<span class="keyword">float</span>) bitmap.getWidth() / mOriginWidth);</div><div class="line">        mScaleBundle.putFloat(SCALE_HEIGHT, (<span class="keyword">float</span>) mScreenHeight / mOriginHeight);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 计算位移距离，并将数据存储到 bundle 中</span></div><div class="line">    mTransitionBundle.putFloat(TRANSITION_X, mScreenWidth / <span class="number">2</span> - (mRect.left + (mRect.right - mRect.left) / <span class="number">2</span>));</div><div class="line">    mTransitionBundle.putFloat(TRANSITION_Y, mScreenHeight / <span class="number">2</span> - (mRect.top + (mRect.bottom - mRect.top) / <span class="number">2</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="动画处理"><a href="#动画处理" class="headerlink" title="动画处理"></a>动画处理</h3><p>最后我们需要使用动画来模拟转场效果，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runEnterAnim</span><span class="params">()</span> </span>&#123;</div><div class="line">    mImageView.animate()</div><div class="line">              .setInterpolator(DEFAULT_INTERPOLATOR)</div><div class="line">              .setDuration(DURATION)</div><div class="line">              .scaleX(mScaleBundle.getFloat(SCALE_WIDTH))</div><div class="line">              .scaleY(mScaleBundle.getFloat(SCALE_HEIGHT))</div><div class="line">              .translationX(mTransitionBundle.getFloat(TRANSITION_X))</div><div class="line">              .translationY(mTransitionBundle.getFloat(TRANSITION_Y))</div><div class="line">              .start();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很简单，自此，入场动画效果基本模拟完毕。</p>
+<p>而退场动画就更简单了，直接上代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runExitAnim</span><span class="params">()</span> </span>&#123;</div><div class="line">    mImageView.animate()</div><div class="line">              .setInterpolator(DEFAULT_INTERPOLATOR)</div><div class="line">              .setDuration(DURATION)</div><div class="line">              .scaleX(<span class="number">1</span>)</div><div class="line">              .scaleY(<span class="number">1</span>)</div><div class="line">              .translationX(<span class="number">0</span>)</div><div class="line">              .translationY(<span class="number">0</span>)</div><div class="line">              .withEndAction(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                  <span class="meta">@Override</span></div><div class="line">                  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                      finish();</div><div class="line">                      overridePendingTransition(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">                  &#125;</div><div class="line">              &#125;)</div><div class="line">              .start();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以，是不是很简单？</p>
+<p>本篇文章的 Demo 地址：<a href="https://github.com/wl9739/UITransitionDemo" target="_blank" rel="external">UITransitionDemo</a></p>
+<p>推荐阅读：<a href="https://developer.android.com/training/material/animations.html?hl=zh-cn" target="_blank" rel="external">定义定制动画</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/" rel="next" title="在 Android Studio 2.2 中愉快地使用 C/C++">
+                <i class="fa fa-chevron-left"></i> 在 Android Studio 2.2 中愉快地使用 C/C++
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/20/BottomNavigationView-的使用/" rel="prev" title="BottomNavigationView 的使用">
+                BottomNavigationView 的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-5-0-中的转场动画"><span class="nav-number">1.</span> <span class="nav-text">Android 5.0+ 中的转场动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义转场动画"><span class="nav-number">1.1.</span> <span class="nav-text">定义转场动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为每个-Activity-定义转场样式"><span class="nav-number">1.2.</span> <span class="nav-text">为每个 Activity 定义转场样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用-ActivityOptionsCompat"><span class="nav-number">1.3.</span> <span class="nav-text">调用 ActivityOptionsCompat</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动实现一个转场动画"><span class="nav-number">2.</span> <span class="nav-text">手动实现一个转场动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取共享元素位置信息"><span class="nav-number">2.1.</span> <span class="nav-text">获取共享元素位置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模拟转场动画"><span class="nav-number">2.2.</span> <span class="nav-text">模拟转场动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动画处理"><span class="nav-number">2.3.</span> <span class="nav-text">动画处理</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2016/10/16/Android-中的转场动画及兼容处理/';
+      var disqus_title = "Android 中的转场动画及兼容处理";
+      var disqus_url = 'http://yoursite.com/2016/10/16/Android-中的转场动画及兼容处理/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,992 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="安卓调试桥 (Android Debug Bridge, adb)，是一种可以用来操作手机设备或模拟器的命令行工具。它存在于 sdk/platform-tools 目录下。虽然现在 Android Studio 已经将大部分 ADB 命令以图形化的形式实现了，但是了解一下还是有必要的。
+如果记不住命令怎么办？推荐一个可以快速查看 ADB 命令的插件 adb-idea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ADB 常用命令">
+<meta property="og:url" content="http://yoursite.com/2017/05/22/ADB-常用命令/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="安卓调试桥 (Android Debug Bridge, adb)，是一种可以用来操作手机设备或模拟器的命令行工具。它存在于 sdk/platform-tools 目录下。虽然现在 Android Studio 已经将大部分 ADB 命令以图形化的形式实现了，但是了解一下还是有必要的。
+如果记不住命令怎么办？推荐一个可以快速查看 ADB 命令的插件 adb-idea">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1ffu90zho1aj30cv06k3z9.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JakeWharton/pidcat/master/screen.png">
+<meta property="og:updated_time" content="2017-05-22T14:30:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ADB 常用命令">
+<meta name="twitter:description" content="安卓调试桥 (Android Debug Bridge, adb)，是一种可以用来操作手机设备或模拟器的命令行工具。它存在于 sdk/platform-tools 目录下。虽然现在 Android Studio 已经将大部分 ADB 命令以图形化的形式实现了，但是了解一下还是有必要的。
+如果记不住命令怎么办？推荐一个可以快速查看 ADB 命令的插件 adb-idea">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1ffu90zho1aj30cv06k3z9.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/22/ADB-常用命令/"/>
+
+
+  <title> ADB 常用命令 | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ADB 常用命令
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-22T20:25:17+08:00" content="2017-05-22">
+              2017-05-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/05/22/ADB-常用命令/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/05/22/ADB-常用命令/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/05/22/ADB-常用命令/" class="leancloud_visitors" data-flag-title="ADB 常用命令">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>安卓调试桥 (Android Debug Bridge, adb)，是一种可以用来操作手机设备或模拟器的命令行工具。它存在于 <code>sdk/platform-tools</code> 目录下。虽然现在 Android Studio 已经将大部分 ADB 命令以图形化的形式实现了，但是了解一下还是有必要的。</p>
+<p>如果记不住命令怎么办？推荐一个可以快速查看 ADB 命令的插件 <a href="https://github.com/pbreault/adb-idea" target="_blank" rel="external">adb-idea</a></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1ffu90zho1aj30cv06k3z9.jpg" alt="find_actions"></p>
+<a id="more"></a>
+<h2 id="链接-ADB"><a href="#链接-ADB" class="headerlink" title="链接 ADB"></a>链接 ADB</h2><p>有两种方式来启动 ADB，第一种就是直接进入 <code>sdk/platform-tools</code> 目录，在命令行中输入 <code>adb devices</code> 来验证设备是否连接。然而每次进入 <code>platform-tools</code> 目录很麻烦，因此有第二种方法，将 adb 地址写入环境变量，在 macOS 下面可以这样配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=$PATH:&lt;path to Android SDK&gt;/platform-tools</div></pre></td></tr></table></figure>
+<p>然后在命令行中输入 <code>source ~/.bash_profile</code> 或者 <code>source ~/.zshrc</code> 来更新配置文件。</p>
+<p>现在，可以在任意路径中输入<code>adb device</code>，如果手机连接了电脑，并且在 <code>开发者选择</code> 中开启了 <code>USB 调试模式</code>，那么就能看见你所连接的设备序列号了：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜  ~ adb devices</div><div class="line">List of devices attached</div><div class="line"><span class="number">80</span>QBCNP234K3	device</div></pre></td></tr></table></figure>
+<p>其中，<code>80QBCNP234K3</code> 是设备序列号，<code>device</code> 是设备状态，设备状态有三种：</p>
+<ul>
+<li>offline — 设备未连接到 adb 或者没有响应</li>
+<li>device — 设备已连接到 adb</li>
+<li>no device — 未连接模拟器/设备</li>
+</ul>
+<h2 id="安装和卸载"><a href="#安装和卸载" class="headerlink" title="安装和卸载"></a>安装和卸载</h2><p>我们可以使用 <code>adb install [option] &lt;path&gt;</code> 命令来将电脑上的一个 APP 安装到手机上，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb install game.apk</div></pre></td></tr></table></figure>
+<p>有时候你电脑上连接的设备不止一个，那么在做一些操作之前，需要指定我们要操作的设备的序列号，也就是需要执行 <code>adb -s [serial_number] command</code>  命令。</p>
+<p>比如现在有两部 Android 手机连接了电脑并都打开了开发者模式，那么在安装 game.apk 的时候，命令就需要变一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb -s 80QBCNP234K3 install game.apk</div></pre></td></tr></table></figure>
+<p>如果重复安装一个 APP，那么就会得到一个错误信息：Failure [INSTALL_FAILED_ALREADY_EXISTS]，这个时候可以加上 <code>-r</code> (replace) 来替换当前应用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb install -r game.apk</div></pre></td></tr></table></figure>
+<p>卸载一个 APP 的命令是 <code>adb uninstall [option] &lt;packagename&gt;</code>，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb uninstall com.test.app</div></pre></td></tr></table></figure>
+<blockquote>
+<p>  注意: 卸载 APP 时需要使用的是 APP 的包名（package name)。而从电脑安装 APP 到手机上只需要知道电脑中 APK 的文件名。</p>
+</blockquote>
+<p>APP 卸载之后，其缓存文件一般也会被清除。如果我们想保留缓存文件，可以添加 <code>-k</code>，即：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb uninstall -k com.test.app</div></pre></td></tr></table></figure>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><h3 id="Android-手机中的文件路径"><a href="#Android-手机中的文件路径" class="headerlink" title="Android 手机中的文件路径"></a>Android 手机中的文件路径</h3><p>以前，手机的容量比较小的时候，一般都会有 SD 卡扩展，然后就把资源数据存放到 SD 卡目录下，到现在手机容量越来越大，很多手机已经取消了 SD 卡，但是为了做兼容，也会 mock 一个假的 SD 卡路径。因此，现在也有很多开发者将 APP 数据保存在 <code>/sdcard</code> 目录下。现在已经不推荐将文件存储在 <code>/sdcard</code> 目录下了。</p>
+<p>当然，音频视频文件还是应该放在 SD 卡目录下。SD 卡的路径是 <code>/mnt/sdcard/</code> 或者 <code>/sdcard</code>，<code>/sdcard</code> 是 <code>/mnt/sdcard</code> 的软链接。其中，<code>/mnt/sdcard/DCIM</code> 一般用于存放照片的，DCIM 是 <code>Digital Camera IMages</code> 的缩写，但是我们的截图及 APP 保存图片的位置，一般是在 <code>/mnt/sdcard/Pictures</code>。以此类推，可以知道视频文件存放在 <code>/mnt/sdcard/Movies</code> 等等。</p>
+<p>当我们在手机上安装好了一个 APP 之后，相关的文件存放在下面两个地方：</p>
+<ul>
+<li>APP 本身被存放在 <code>/data/app</code> 目录下。</li>
+<li>文件目录存放在 <code>/data/data/&lt;package name&gt;</code> 目录下，该目录下存放有数据库、SharedPreference 和其他缓存数据。</li>
+</ul>
+<p>如果你想把手机中的文件拷贝到电脑中，使用 <code>adb pull &lt;remote&gt; [local]</code> 命令，如果 <code>local</code> 地址为空，则会拷贝到电脑当前目录下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb pull /sdcard/game.apk</div></pre></td></tr></table></figure>
+<p>如果要把电脑中的文件拷贝到手机里，使用 <code>adb push &lt;local&gt; &lt;remote&gt;</code> 命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb push game.apk /sdcard/<span class="keyword">data</span>/<span class="keyword">data</span></div></pre></td></tr></table></figure>
+<h3 id="清除-APP-数据"><a href="#清除-APP-数据" class="headerlink" title="清除 APP 数据"></a>清除 APP 数据</h3><p>在开发过程中，经常会遇到这么一种情况：清空 APP 缓存数据，然后进行一些列请求。清空 APP 缓存数据可以使用下面的命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell pm clear com.example.packagename</div></pre></td></tr></table></figure>
+<p>该命令不仅能清除 APP 的缓存，还能把 APP 的数据给清空。</p>
+<h3 id="查看所有-APP-的名称"><a href="#查看所有-APP-的名称" class="headerlink" title="查看所有 APP 的名称"></a>查看所有 APP 的名称</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell pm list packages</div></pre></td></tr></table></figure>
+<p>该命令可以查看手机上的 APP 名称。可以在后面加上 <code>-f</code>，这样还能显示该 APP 的路径</p>
+<h2 id="事件输入"><a href="#事件输入" class="headerlink" title="事件输入"></a>事件输入</h2><h3 id="input"><a href="#input" class="headerlink" title="input"></a>input</h3><p>可以在命令行中使用 <code>adb shell input</code> 向屏幕输入一些信息，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell input text &quot;insert%syour%stext%shere&quot;</div></pre></td></tr></table></figure>
+<p>其中，<code>%s</code> 表示空格</p>
+<p>也可以使用 <code>adb shell input tap</code> 命令来模拟屏幕点击事件，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell input tap 500 1450</div></pre></td></tr></table></figure>
+<p>该命令表示在屏幕 (500, 1450) 的坐标点上进行一次点击</p>
+<p>也可以使用 <code>adb shell input swipe</code> 命令来模拟手势滑动事件，比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell input swipe 100 500 100 1450 100</div></pre></td></tr></table></figure>
+<p>该命令表示从屏幕坐标 (100, 500) 开始，滑动到 (100, 1450) 结束，整个过程耗时 100ms。</p>
+<p>上面的命令还可以模拟”长按”（Long Press) 操作，也就是两个坐标点相同，耗时超过 500ms</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell input swipe 100 500 100 500 500</div></pre></td></tr></table></figure>
+<p>可以使用 <code>adb shell input keyevent</code> 命令来模拟点按实体按钮的命令，比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell input keyevent <span class="number">25</span></div></pre></td></tr></table></figure>
+<p>该命令表示调低音量。这个数字 25 是在 AOSP 源码中的 <code>KeyEvent</code> 类里面定义的一个事件常量。该类定义了将近 300 个事件常量。</p>
+<h3 id="am"><a href="#am" class="headerlink" title="am"></a>am</h3><p>am (Activity Manager) 命令用来启动一个 APP、启动 Activity、启动广播和服务等等。</p>
+<p>启动一个 Activity，最简单的命令可以使用 <code>adb shell am start com.package.name/com.package.name.ActivityName</code> 比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell am start qiushui.me.test/qiushui.me.test.MainActivity</div></pre></td></tr></table></figure>
+<p>如果启动带有参数，则需要使用 <code>-e</code> 标签，比如有一个 SecondActivity 如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SecondActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</div><div class="line"></div><div class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">val</span> ARGUS_NAME = <span class="string">"argus_name"</span></div><div class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">launch</span><span class="params">(activity: <span class="type">Activity</span>, content: <span class="type">String</span>)</span></span>: Intent &#123;</div><div class="line">            <span class="keyword">val</span> intent = Intent(activity, SecondActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></div><div class="line">            intent.putExtra(ARGUS_NAME, content)</div><div class="line">            <span class="keyword">return</span> intent</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</div><div class="line">        setContentView(R.layout.activity_second)</div><div class="line"></div><div class="line">        <span class="keyword">val</span> name = intent.getStringExtra(ARGUS_NAME)</div><div class="line">        nameTv.text = <span class="string">"Hello, <span class="subst">$name</span>"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>也就是说，启动 SecondActivity 的话需要传入一个 argus_name 参数，那么在命令行中可以执行如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell am start qiushui.me.test/qiushui.me.test.SecondActivity -e argus_name Qiushui</div></pre></td></tr></table></figure>
+<p>启动带的参数一般是 Key-Value 形式，这里的 Key 是 argus_name，Value 是 Qiushui。</p>
+<blockquote>
+<p>  除了默认启动的 Activity 以外，打开其他的 Activity 时，需要在 AndroidManifest 文件中添加 <code>android:exported=&quot;true&quot;</code> 属性。</p>
+</blockquote>
+<p>如果我们要启动一个隐式的 Intent，也就是说我们需要传入 action 等参数，在 <a href="https://developer.android.com/studio/command-line/adb.html" target="_blank" rel="external">ADB 调试桥</a> 中可以得知 Intent 的参数规范，比如 <code>-a</code> 表示 <code>action</code>，<code>-c</code> 表示 <code>category</code> ，<code>-d</code> 表示 <code>data_uri</code>，<code>-e</code> 表示添加额外 Key-Value 信息。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">am start -a &quot;android.intent.action.VIEW&quot; -d &quot;https://www.google.com&quot;</div></pre></td></tr></table></figure>
+<p>上面这个命令会启动一个浏览器打开 <code>https://www.google.com</code> 页面 (如果有多个浏览器，会让用户进行选择) 。</p>
+<p>am 也能发送广播和启动服务。比如启动一个广播，一般需要添加一个 <code>-a</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell am broadcast -a &quot;our.specified.action&quot;</div></pre></td></tr></table></figure>
+<p>当然，我们可以在上面的命令后面添加 <code>-e</code> 来添加额外信息。</p>
+<p>甚至，我们可以直接让手机重启：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell am broadcast -a android.intent.action.BOOT_COMPLETED</div></pre></td></tr></table></figure>
+<p>启动一个服务也是类似的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell am startservice &quot;qiushui.me.test/qiushui.me.test.MyService&quot;</div></pre></td></tr></table></figure>
+<h2 id="事件输出"><a href="#事件输出" class="headerlink" title="事件输出"></a>事件输出</h2><h3 id="日志信息"><a href="#日志信息" class="headerlink" title="日志信息"></a>日志信息</h3><p>使用 <code>adb logcat</code> 可以显示日志信息，使用 <code>command + C</code>(Windows 下是 Ctrl + C) 来停止日志输出。</p>
+<p>当然，比起原生的 <code>adb logcat</code> ，JakeWharton 大神的 <a href="https://github.com/JakeWharton/pidcat" target="_blank" rel="external">pidcat</a> 显示效果更好：</p>
+<p><img src="https://raw.githubusercontent.com/JakeWharton/pidcat/master/screen.png" alt=""></p>
+<p>虽然现在 Android Studio 的日志功能已经非常完善了，但是如果遇到不方便打开 Android Studio 的话，使用命令行也是一种选择。</p>
+<h3 id="dumpsys"><a href="#dumpsys" class="headerlink" title="dumpsys"></a>dumpsys</h3><p>dumpsys 是一个非常强大的命令，它可以提供非常多的系统信息。可以通过 <code>adb shell service list</code>  来查看 dumpsys 能提供查询信息的服务，常用的有如下几个：</p>
+<table>
+<thead>
+<tr>
+<th>服务名</th>
+<th>类名</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>activity</td>
+<td>ActivityManagerService</td>
+<td>AMS相关信息</td>
+</tr>
+<tr>
+<td>package</td>
+<td>PackageManagerService</td>
+<td>PMS相关信息</td>
+</tr>
+<tr>
+<td>window</td>
+<td>WindowManagerService</td>
+<td>WMS相关信息</td>
+</tr>
+<tr>
+<td>input</td>
+<td>InputManagerService</td>
+<td>IMS相关信息</td>
+</tr>
+<tr>
+<td>power</td>
+<td>PowerManagerService</td>
+<td>PMS相关信息</td>
+</tr>
+<tr>
+<td>procstats</td>
+<td>ProcessStatsService</td>
+<td>进程统计</td>
+</tr>
+<tr>
+<td>battery</td>
+<td>BatteryService</td>
+<td>电池信息</td>
+</tr>
+<tr>
+<td>alarm</td>
+<td>AlarmManagerService</td>
+<td>闹钟信息</td>
+</tr>
+<tr>
+<td>meminfo</td>
+<td>MemBinder</td>
+<td>内存</td>
+</tr>
+</tbody>
+</table>
+<p>比如想要查看电池信息，命令行中输入 <code>adb shell dumpsys battery</code>，可以得到如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Current Battery Service state:</div><div class="line">  AC powered: false</div><div class="line">  USB powered: true</div><div class="line">  Wireless powered: false</div><div class="line">  status: 2</div><div class="line">  status: 1</div><div class="line">  health: 2</div><div class="line">  present: true</div><div class="line">  present: false</div><div class="line">  level: 95</div><div class="line">  level: 50</div><div class="line">  scale: 100</div><div class="line">  voltage: 4296</div><div class="line">  temperature: 290</div><div class="line">  technology: Li-ion</div></pre></td></tr></table></figure>
+<p>如果直接使用 <code>adb shell dumpsys activity</code> 来查看信息的话，会得到非常长的代码，其结构大概如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">ACTIVITY MANAGER PENDING INTENTS (dumpsys activity intents)</div><div class="line">  * PendingIntentRecord&#123;19e4491 com.google.android.googlequicksearchbox startService&#125;</div><div class="line">  ......</div><div class="line"></div><div class="line">ACTIVITY MANAGER BROADCAST STATE (dumpsys activity broadcasts)</div><div class="line">  Historical broadcasts [foreground]:</div><div class="line">  #0: BroadcastRecord&#123;313a73e u-1 android.intent.action.TIME_TICK&#125;</div><div class="line">    act=android.intent.action.TIME_TICK flg=0x50000014 (has extras)</div><div class="line">    extras: Bundle[&#123;android.intent.extra.ALARM_COUNT=1&#125;]</div><div class="line">  ......</div><div class="line"></div><div class="line">ACTIVITY MANAGER CONTENT PROVIDERS (dumpsys activity providers)</div><div class="line">  Published single-user content providers (by class):</div><div class="line">  * ContentProviderRecord&#123;dc31380 u0 com.android.providers.settings/.SettingsProvider&#125;</div><div class="line">......</div><div class="line">  </div><div class="line">ACTIVITY MANAGER URI PERMISSIONS (dumpsys activity permissions)</div><div class="line">  (nothing)</div><div class="line"></div><div class="line">ACTIVITY MANAGER SERVICES (dumpsys activity services)</div><div class="line">  User 0 active services:</div><div class="line">  * ServiceRecord&#123;24fc267 u0 com.android.systemui/.keyguard.KeyguardService&#125;</div><div class="line">  ......</div><div class="line">ACTIVITY MANAGER RECENT TASKS (dumpsys activity recents)</div><div class="line">  Recent tasks:</div><div class="line">  * Recent #0: TaskRecord&#123;9d18590 #15 A=qiushui.me.test U=0 StackId=1 sz=2&#125;</div><div class="line">  ......</div><div class="line"></div><div class="line">ACTIVITY MANAGER ACTIVITIES (dumpsys activity activities)</div><div class="line">Display #0 (activities from top to bottom):</div><div class="line"> ......</div><div class="line">ACTIVITY MANAGER RUNNING PROCESSES (dumpsys activity processes)</div><div class="line">  Isolated process list (sorted by uid):</div><div class="line">    Isolated # 0: ProcessRecord&#123;1ed43fb 1654:WebViewLoader-x86/1037&#125;</div><div class="line"></div><div class="line">  UID states:</div><div class="line">    UID 1000: UidRecord&#123;bde9c18 1000 P  procs:1&#125;</div><div class="line">  ......</div><div class="line">  UID validation:</div><div class="line">    UID 1001: UidRecord&#123;70352bf 1001 P  procs:0&#125;</div><div class="line">    ......</div></pre></td></tr></table></figure>
+<p>从上面的目录结构中可以看出，<code>dumpsys activity</code> 得到的信息可以拆分为以下八个命令所得到的信息和：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">dumpsys activity intents</div><div class="line">dumpsys activity broadcasts</div><div class="line">dumpsys activity providers</div><div class="line">dumpsys activity permissions</div><div class="line">dumpsys activity services</div><div class="line">dumpsys activity recents</div><div class="line">dumpsys activity activities</div><div class="line">dumpsys activity processes</div></pre></td></tr></table></figure>
+<p>因此，一般根据所需，选择这八个中的一个命令进行查询。比如查看广播相关的，使用 <code>adb shell dumpsys activity broadcasts</code> 命令，查看界面相关的，使用 <code>adb shell dumpsys activity activities</code> 命令。</p>
+<p>当然，这八种信息类型，可以分别用缩略来表示，即 <code>adb shell dumpsys activity a</code> 等同于 <code>adb shell dumpsys activity activities</code>，<code>adb shell dumpsys activity s</code> 等同于 <code>adb shell dumpsys activity services</code> 等等。这里有两个需要注意的是，<strong>providers 的缩略是 prov 以及 permissions 的缩略是 perm</strong></p>
+<p>如果还是嫌输出内容太多，我只关心运行的 Activity 结构层次其他的无所谓怎么办？可以使用 <code>grep</code> 命令来过滤：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell dumpsys activity | grep -i <span class="string">'run'</span></div></pre></td></tr></table></figure>
+<p>这样，得到的信息就非常精炼了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">  * ContentProviderRecord&#123;978680e u0 qiushui.me.test/com.android.tools.fd.runtime.InstantRunContentProvider&#125;</div><div class="line">    authority=qiushui.me.test.com.android.tools.fd.runtime.InstantRunContentProvider</div><div class="line">    Running activities (most recent first):</div><div class="line">        Run #1: ActivityRecord&#123;304ded1 u0 qiushui.me.test/.SecondActivity t14&#125;</div><div class="line">        Run #0: ActivityRecord&#123;19b9e16 u0 qiushui.me.test/.MainActivity t14&#125;</div><div class="line">    Running activities (most recent first):</div><div class="line">        Run #0: ActivityRecord&#123;f9bafb7 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t13&#125;</div><div class="line">ACTIVITY MANAGER RUNNING PROCESSES (dumpsys activity processes)</div><div class="line">    User #0: state=RUNNING_UNLOCKED</div></pre></td></tr></table></figure>
+<p>从上面可以得出一些信息：屏幕正在显示的界面是 SecondActivity，然后是 MainActivity。而 NexusLauncherActivity 是处于最底层，其实就是 Launcher。</p>
+<p>以 “今日头条” APP 为例，看看如何获取该 APP 的相关信息：</p>
+<p>打开今日头条 APP，使用  <code>adb shell dumpsys activity a | grep -i &#39;run&#39;</code> 命令查看，得到信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Running activities (most recent first):</div><div class="line">    Run #0: ActivityRecord&#123;898e01f u0 com.ss.android.article.news/.activity.MainActivity t3117&#125;</div><div class="line">Running activities (most recent first):</div><div class="line">    Run #0: ActivityRecord&#123;1d58a20 u0 com.huawei.android.launcher/.Launcher t2980&#125;</div></pre></td></tr></table></figure>
+<p>可以知道今日头条的包名为<code>com.ss.android.article.news</code>。</p>
+<p>查看 APP 有哪些进程，使用 <code>adb shell dumpsys activity p com.ss.android.article.news | grep -i &#39;ProcessRecord&#39; | grep -i &#39;PID&#39;</code>，得到信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">PID #7081: ProcessRecord&#123;dd9a2d0 7081:com.ss.android.article.news/u0a157&#125;</div><div class="line">PID #7095: ProcessRecord&#123;e4bee94 7095:com.ss.android.article.news:push/u0a157&#125;</div><div class="line">PID #7261: ProcessRecord&#123;306b8b6 7261:com.ss.android.article.news:pushservice/u0a157&#125;</div><div class="line">PID #7405: ProcessRecord&#123;cd5fe38 7405:com.ss.android.article.news:ad/u0a157&#125;</div></pre></td></tr></table></figure>
+<p>可知一共有 4 个进程。还可知道分别的进程名和 PID 等等。</p>
+<p>查看 APP 使用了哪些服务，使用 <code>adb shell dumpsys activity s com.ss.android.article.news | grep -i &#39;ServiceRecord&#39;</code> 显示结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">* ServiceRecord&#123;885e1bf u0 euid: 0 com.ss.android.article.news/com.ss.android.message.NotifyService&#125;</div><div class="line">* ServiceRecord&#123;2dcef97 u0 euid: 0 com.ss.android.article.news/com.ss.android.push.daemon.PushService&#125;</div><div class="line">* ServiceRecord&#123;532ef96 u0 euid: 0 com.ss.android.article.news/com.taobao.accs.data.MsgDistributeService&#125;</div><div class="line">* ServiceRecord&#123;d65319e u0 euid: 0 com.ss.android.article.news/org.android.agoo.accs.AgooService&#125;</div><div class="line">* ServiceRecord&#123;3ba5a9b u0 euid: 0 com.ss.android.article.news/com.ss.android.ad.impl.AdService&#125;</div><div class="line">* ServiceRecord&#123;716d0a8 u0 euid: 0 com.ss.android.article.news/com.bytedance.common.wschannel.server.WsChannelService&#125;</div><div class="line">* ServiceRecord&#123;99e9a1b u0 euid: 0 com.ss.android.article.news/com.taobao.accs.ChannelService&#125;</div></pre></td></tr></table></figure>
+<p>可以看到该 APP 使用了阿里云推送 <code>com.taobao.accs.ChannelService</code>。</p>
+<p>比如我想看今日头条的内存使用情况？可以使用 <code>adb shell dumpsys meminfo com.ss.android.article.news</code> 命令，显示结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line">Applications Memory Usage (kB):</div><div class="line">Uptime: 32966919 Realtime: 276529459</div><div class="line"></div><div class="line">** MEMINFO in pid 22601 [com.ss.android.article.news] **</div><div class="line">                   Pss  Private  Private  Swapped     Heap     Heap     Heap</div><div class="line">                 Total    Dirty    Clean    Dirty     Size    Alloc     Free</div><div class="line">                ------   ------   ------   ------   ------   ------   ------</div><div class="line">  Native Heap    18352    17856        0       48    29068    28997       70</div><div class="line">  Dalvik Heap    31310    31244        0      540    26944    26374      570</div><div class="line"> Dalvik Other     3135     3132        0        0</div><div class="line">        Stack     1072     1072        0        0</div><div class="line">       Ashmem      154      120        0        0</div><div class="line">      Gfx dev     7084     6840        0        0</div><div class="line">    Other dev       10        0        8        0</div><div class="line">     .so mmap     2906      376      288     1416</div><div class="line">    .apk mmap    14072      104    12684        0</div><div class="line">    .ttf mmap     1018        0      716        0</div><div class="line">    .dex mmap    15979      968    11644        0</div><div class="line">    .oat mmap     4823        0     2116        4</div><div class="line">    .art mmap     2523     1764      276        4</div><div class="line">   Other mmap      743        8      688        0</div><div class="line">   EGL mtrack    25920    25920        0        0</div><div class="line">      Unknown     2525     2524        0       68</div><div class="line">        TOTAL   131626    91928    28420     2080    56012    55371      640</div><div class="line"></div><div class="line"> App Summary</div><div class="line">                       Pss(KB)</div><div class="line">                        ------</div><div class="line">           Java Heap:    33284</div><div class="line">         Native Heap:    17856</div><div class="line">                Code:    28896</div><div class="line">               Stack:     1072</div><div class="line">            Graphics:    32760</div><div class="line">       Private Other:     6480</div><div class="line">              System:    11278</div><div class="line"></div><div class="line">               TOTAL:   131626      TOTAL SWAP (KB):     2080</div><div class="line"></div><div class="line"> Objects</div><div class="line">               Views:      666         ViewRootImpl:        3</div><div class="line">         AppContexts:        5           Activities:        2</div><div class="line">              Assets:        5        AssetManagers:        3</div><div class="line">       Local Binders:       65        Proxy Binders:       41</div><div class="line">       Parcel memory:       26         Parcel count:      104</div><div class="line">    Death Recipients:        3      OpenSSL Sockets:       15</div><div class="line"></div><div class="line"> SQL</div><div class="line">         MEMORY_USED:     1940</div><div class="line">  PAGECACHE_OVERFLOW:     1227          MALLOC_SIZE:       62</div><div class="line"></div><div class="line"> DATABASES</div><div class="line">      pgsz     dbsz   Lookaside(b)          cache  Dbname</div><div class="line">         4       20             25        14/20/3  /data/user/0/com.ss.android.article.news/databases/ss_app_monitor.db</div><div class="line">         4       48             15         0/18/1  /data/user/0/com.ss.android.article.news/databases/MsgLogStore.db</div><div class="line">         4       20             35         4/22/5  /data/user/0/com.ss.android.article.news/databases/lib_log_queue.db</div><div class="line">         4       40            124       56/38/17  /data/user/0/com.ss.android.article.news/databases/ss_app_log.db</div><div class="line">         4       20             30         1/19/2  /data/user/0/com.ss.android.article.news/databases/accs.db</div><div class="line">         4       20             49         5/20/4  /data/user/0/com.ss.android.article.news/databases/feedback.db</div><div class="line">         4     1596            462       96/48/25  /data/user/0/com.ss.android.article.news/databases/article.db</div><div class="line">         4       36             26         4/20/3  /data/user/0/com.ss.android.article.news/databases/MessageStore.db</div><div class="line"></div><div class="line"> Asset Allocations</div><div class="line">    zip:/data/app/com.ss.android.article.news-1/base.apk:/resources.arsc: 632K</div></pre></td></tr></table></figure>
+<p>给出的内存使用信息非常详细！</p>
+<p>关于 dumpsys 的介绍就到这里，dumpsys 的强大可见一斑！</p>
+<h3 id="屏幕截图"><a href="#屏幕截图" class="headerlink" title="屏幕截图"></a>屏幕截图</h3><p>可以使用 <code>screemcap &lt;filename&gt;</code> 命令来进行手机屏幕截图，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell screencap /sdcard/screen.png</div></pre></td></tr></table></figure>
+<h3 id="录制视频"><a href="#录制视频" class="headerlink" title="录制视频"></a>录制视频</h3><p>可以使用 <code>screenrecord [options] filename</code> 命令来录制屏幕视频，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell screenrecord /sdcard/demo.mp4</div></pre></td></tr></table></figure>
+<p>这个命令适用于 Android 4.4 及以上的设备中。</p>
+<p>录制视频也有很多参数选项，比如 <code>--size</code> 用来设置视频大小，<code>--time-limit</code> 用来设置最大录制时长等等。</p>
+<h2 id="系统命令"><a href="#系统命令" class="headerlink" title="系统命令"></a>系统命令</h2><h3 id="查看进程信息"><a href="#查看进程信息" class="headerlink" title="查看进程信息"></a>查看进程信息</h3><p>使用 <code>adb shell ps</code> 命令查看进程信息。通常会在该命令后面添加包名，来查看某个应用程序的进程信息</p>
+<h3 id="查看-CPU-使用情况"><a href="#查看-CPU-使用情况" class="headerlink" title="查看 CPU 使用情况"></a>查看 CPU 使用情况</h3><p>使用 <code>adb shell top</code> 命令查看系统 CPU 使用情况。</p>
+<p>参考资料：<a href="https://developer.android.com/studio/command-line/adb.html" target="_blank" rel="external">ADB 调试桥</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/02/自动装箱和自动拆箱/" rel="next" title="自动装箱和自动拆箱">
+                <i class="fa fa-chevron-left"></i> 自动装箱和自动拆箱
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#链接-ADB"><span class="nav-number">1.</span> <span class="nav-text">链接 ADB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和卸载"><span class="nav-number">2.</span> <span class="nav-text">安装和卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件操作"><span class="nav-number">3.</span> <span class="nav-text">文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-手机中的文件路径"><span class="nav-number">3.1.</span> <span class="nav-text">Android 手机中的文件路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清除-APP-数据"><span class="nav-number">3.2.</span> <span class="nav-text">清除 APP 数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看所有-APP-的名称"><span class="nav-number">3.3.</span> <span class="nav-text">查看所有 APP 的名称</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件输入"><span class="nav-number">4.</span> <span class="nav-text">事件输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#input"><span class="nav-number">4.1.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#am"><span class="nav-number">4.2.</span> <span class="nav-text">am</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件输出"><span class="nav-number">5.</span> <span class="nav-text">事件输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志信息"><span class="nav-number">5.1.</span> <span class="nav-text">日志信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dumpsys"><span class="nav-number">5.2.</span> <span class="nav-text">dumpsys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏幕截图"><span class="nav-number">5.3.</span> <span class="nav-text">屏幕截图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#录制视频"><span class="nav-number">5.4.</span> <span class="nav-text">录制视频</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统命令"><span class="nav-number">6.</span> <span class="nav-text">系统命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看进程信息"><span class="nav-number">6.1.</span> <span class="nav-text">查看进程信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看-CPU-使用情况"><span class="nav-number">6.2.</span> <span class="nav-text">查看 CPU 使用情况</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2017/05/22/ADB-常用命令/';
+      var disqus_title = "ADB 常用命令";
+      var disqus_url = 'http://yoursite.com/2017/05/22/ADB-常用命令/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

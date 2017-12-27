@@ -1,0 +1,1076 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="自从JDK 1.0开始，Java就提供了Date来处理时间和日期，作为老古董自然有很多东西是过时的。然后出现了Calendar来解决了很多问题，但是Calendar使用比较复杂，并且有些反人类的地方。直到Java 8的出现，它吸收了Joda-Time库的经验，使得Java处理时间和日期变得比较”人性化”了。本篇就来谈谈Java中的Date、Calendar，以及SimpleDateFormat的使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中的时间和日期（上）">
+<meta property="og:url" content="http://yoursite.com/2016/07/06/Java中的时间和日期/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="自从JDK 1.0开始，Java就提供了Date来处理时间和日期，作为老古董自然有很多东西是过时的。然后出现了Calendar来解决了很多问题，但是Calendar使用比较复杂，并且有些反人类的地方。直到Java 8的出现，它吸收了Joda-Time库的经验，使得Java处理时间和日期变得比较”人性化”了。本篇就来谈谈Java中的Date、Calendar，以及SimpleDateFormat的使">
+<meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中的时间和日期（上）">
+<meta name="twitter:description" content="自从JDK 1.0开始，Java就提供了Date来处理时间和日期，作为老古董自然有很多东西是过时的。然后出现了Calendar来解决了很多问题，但是Calendar使用比较复杂，并且有些反人类的地方。直到Java 8的出现，它吸收了Joda-Time库的经验，使得Java处理时间和日期变得比较”人性化”了。本篇就来谈谈Java中的Date、Calendar，以及SimpleDateFormat的使">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/06/Java中的时间和日期/"/>
+
+
+  <title> Java中的时间和日期（上） | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java中的时间和日期（上）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-06T15:32:30+08:00" content="2016-07-06">
+              2016-07-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/06/Java中的时间和日期/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/06/Java中的时间和日期/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/06/Java中的时间和日期/" class="leancloud_visitors" data-flag-title="Java中的时间和日期（上）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>自从JDK 1.0开始，Java就提供了Date来处理时间和日期，作为老古董自然有很多东西是过时的。然后出现了<code>Calendar</code>来解决了很多问题，但是<code>Calendar</code>使用比较复杂，并且有些反人类的地方。直到Java 8的出现，它吸收了Joda-Time库的经验，使得Java处理时间和日期变得比较”人性化”了。本篇就来谈谈Java中的Date、Calendar，以及SimpleDateFormat的使用。下一篇再对比一下Java 8中的日期处理。</p>
+<a id="more"></a>
+<h2 id="古老的Date"><a href="#古老的Date" class="headerlink" title="古老的Date"></a>古老的Date</h2><p>查看一下Date类的源码，可以看到6个构造方法中，有4个已经添加了<code>@Deprecated</code>的标签了，剩下没过时的只有两个：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Date</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(System.currentTimeMillis());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">Date</span><span class="params">(<span class="keyword">long</span> var1)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.fastTime = var1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中，第一个构造方法调用的是<code>System.currentTimeMillis()</code>方法，这个方法返回的是一个long整数，表示GMT 1970年1月1日 00:00:00到现在所经历的毫秒数。这个毫秒数我们暂且称之为<code>milliseconds</code>值，这个值很重要，无论是在Date类中还是Calendar类中，<code>milliseconds</code>值都是计算时间日期的基准。</p>
+<p>怎么获得这个长整型的数呢？需要调用<code>getTime()</code>方法，注意并不是调用<code>toString()</code>方法，它们两者的差异可以重下面的代码中体现出来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Date date = <span class="keyword">new</span> Date();</div><div class="line">    System.out.println(date.getTime());     <span class="comment">// 1467628171312</span></div><div class="line">    System.out.println(date.toString());    <span class="comment">// Mon Jul 04 18:29:31 CST 2016</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而第二个构造方法的参数，表示创建的Date对象与GMT 1970年1月1日 00:00:00的时间差。比如，3600 ＊ 1000毫秒是一小时，那么我们用<code>getTime()</code>来验证一下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Date date = <span class="keyword">new</span> Date(<span class="number">3600</span> * <span class="number">1000</span>);</div><div class="line">    System.out.println(date.getTime());     <span class="comment">// 3600000</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>没问题，然后我们调用一下<code>toString()</code>方法，看看返回的是什么：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Date date = <span class="keyword">new</span> Date(<span class="number">3600</span> * <span class="number">1000</span>);</div><div class="line">    System.out.println(date.toString());     <span class="comment">// Thu Jan 01 09:00:00 CST 1970</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>嗯？竟然是9点，为什么不是1点呢？怎么差了8个小时？有此疑问的童鞋都是看书不仔细的。而看书仔细的童鞋则会问“CST和GMT是什么关系”之类的。因为CST是指的<code>北京时间</code>（China Standard Time），而GMT是指的是<code>格林尼治标准时间</code>（Greenwich Mean Time）。由于北京处于东八区，比GMT早8小时，所以打印的时间指的是北京时间1970年1月1日上午9点。</p>
+<p>谈完了构造方法，下面说说Date这个古老的类中可以使用的方法。</p>
+<ol>
+<li>getTime()<br> 这个方法之前我们已经用到了，它返回的是从GMT 1970年1月1日 00:00:00到这个类创建的毫秒数。</li>
+<li>setTime(long time)<br> 设置该Date对象的时间。参数time表示从GMT 1970年1月1日 00:00:00后的毫秒数。</li>
+<li>after(Date when)<br> 测试该日期是否是在指定的日期（when）之后。</li>
+<li>before(Date when)<br> 测试该日期是否是在指定的日期（when）之前。</li>
+</ol>
+<p>一段代码解释上面的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Date nowaday = <span class="keyword">new</span> Date();</div><div class="line">    System.out.println(nowaday.getTime());      <span class="comment">// 1467633231471</span></div><div class="line">    System.out.println(nowaday.toString());     <span class="comment">// Mon Jul 04 19:53:51 CST 2016</span></div><div class="line"></div><div class="line">    Date date = <span class="keyword">new</span> Date(<span class="number">3600</span> * <span class="number">1000</span>);</div><div class="line">    System.out.println(nowaday.before(date));   <span class="comment">// false</span></div><div class="line">    System.out.println(nowaday.after(date));    <span class="comment">// true</span></div><div class="line"></div><div class="line">    nowaday.setTime(<span class="number">3600</span> * <span class="number">1000</span>);</div><div class="line">    System.out.println(nowaday);                <span class="comment">// Thu Jan 01 09:00:00 CST 1970</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Date类中的构造方法和常用的未过时的方法基本就是这些了。看了之后是不是觉得其实Date类能用的东西很少？很多日期的操作，比如获取年月日啊，取这周周一的日期啊什么的都很难实现，这时候就要使用到Calendar类，或者使用更牛逼的Java 8中的时间日期包。</p>
+<h2 id="庞大的Calendar"><a href="#庞大的Calendar" class="headerlink" title="庞大的Calendar"></a>庞大的Calendar</h2><h3 id="Calendar类的构造方法"><a href="#Calendar类的构造方法" class="headerlink" title="Calendar类的构造方法"></a>Calendar类的构造方法</h3><p>与Date类不同，Calendar类是一个抽象类。其直接子类是<code>GregorianCalendar</code>。既然Calendar类是抽象类，那么如获取Calendar对象呢？可以使用下面的代码来创建一个Calendar对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Calendar rightNow = Calendar.getInstance();</div></pre></td></tr></table></figure>
+<p>和Date一样，创建好对象之后，便包含了当前日期和时间的信息。</p>
+<p>其实，<code>getInstance()</code>这个静态方法还有三个重载方法，在源码中我们可以看到它们4个欢聚一堂的情景：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Calendar <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> GregorianCalendar();</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Calendar <span class="title">getInstance</span><span class="params">(Locale locale)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> GregorianCalendar(locale);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Calendar <span class="title">getInstance</span><span class="params">(TimeZone timezone)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> GregorianCalendar(timezone);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Calendar <span class="title">getInstance</span><span class="params">(TimeZone timezone, Locale locale)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> GregorianCalendar(timezone, locale);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>估计大家都能看出来，这4个重载方法的区别在于时区和地区的不同。而它们都是通过创建子类（GregorianCalendar）的对象来返回一个Calendar对象，这其实是多态的一种应用，也是设计模式中工厂模式的应用。也就是说，我们也可以像下面那样来创建一个Calendar对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Calendar myCalendar = <span class="keyword">new</span> GregorianCalendar();</div></pre></td></tr></table></figure>
+<p>关于时区和地区这里不做详细的介绍，只展示一下其用法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    TimeZone timeZone = TimeZone.getTimeZone(<span class="string">"GMT"</span>);</div><div class="line">    Locale locale = Locale.CHINA;</div><div class="line">    Calendar calendar = Calendar.getInstance(timeZone, locale);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Calendar的常用方法"><a href="#Calendar的常用方法" class="headerlink" title="Calendar的常用方法"></a>Calendar的常用方法</h3><h4 id="get-和set-方法"><a href="#get-和set-方法" class="headerlink" title="get()和set()方法"></a>get()和set()方法</h4><p>在之前的介绍中，Date对象可以通过<code>getTime()</code>方法和<code>toString()</code>方法，能很容易的取到对应的时间信息。而在Calendar对象中，获取到时间和日期貌似并不这么直接。在Calendar对象中，<code>getTime()</code>方法返回的是一个Date对象，至于<code>toString()</code>方法返回的东西嘛，你们感受一下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">java.util.GregorianCalendar[  </div><div class="line">   time=<span class="number">1467638240540</span>,</div><div class="line">   areFieldsSet=<span class="keyword">true</span>,</div><div class="line">   areAllFieldsSet=<span class="keyword">true</span>,</div><div class="line">   lenient=<span class="keyword">true</span>,</div><div class="line">   zone=sun.util.calendar.ZoneInfo   [  </div><div class="line">      id=<span class="string">"Asia/Shanghai"</span>,</div><div class="line">      offset=<span class="number">28800000</span>,</div><div class="line">      dstSavings=<span class="number">0</span>,</div><div class="line">      useDaylight=<span class="keyword">false</span>,</div><div class="line">      transitions=<span class="number">19</span>,</div><div class="line">      lastRule=<span class="keyword">null</span></div><div class="line">   ],</div><div class="line">   firstDayOfWeek=<span class="number">1</span>,</div><div class="line">   minimalDaysInFirstWeek=<span class="number">1</span>,</div><div class="line">   ERA=<span class="number">1</span>,</div><div class="line">   YEAR=<span class="number">2016</span>,</div><div class="line">   MONTH=<span class="number">6</span>,</div><div class="line">   WEEK_OF_YEAR=<span class="number">28</span>,</div><div class="line">   WEEK_OF_MONTH=<span class="number">2</span>,</div><div class="line">   DAY_OF_MONTH=<span class="number">4</span>,</div><div class="line">   DAY_OF_YEAR=<span class="number">186</span>,</div><div class="line">   DAY_OF_WEEK=<span class="number">2</span>,</div><div class="line">   DAY_OF_WEEK_IN_MONTH=<span class="number">1</span>,</div><div class="line">   AM_PM=<span class="number">1</span>,</div><div class="line">   HOUR=<span class="number">9</span>,</div><div class="line">   HOUR_OF_DAY=<span class="number">21</span>,</div><div class="line">   MINUTE=<span class="number">17</span>,</div><div class="line">   SECOND=<span class="number">20</span>,</div><div class="line">   MILLISECOND=<span class="number">540</span>,</div><div class="line">   ZONE_OFFSET=<span class="number">28800000</span>,</div><div class="line">   DST_OFFSET=<span class="number">0</span></div><div class="line">]</div></pre></td></tr></table></figure>
+<p>虽然这从侧面反映了Calendar比Date强大，能提供更多的信息，不过估计你们轻易不会使用Calendar的<code>toString()</code>方法的吧？其实在Calendar类中，有一点和Date类是一样的：它们都会保存一个<code>milliseconds</code>的值。Calendar类对于时间日期的各种计算都是基于这个值来的。你看<code>toString()</code>方法返回的第一个值就是它，足以说明这个值的重要性。</p>
+<p>要获取Calendar对象所提供的信息，需要调用<code>get()</code>方法。在源码中，<code>get()</code>方法做了如下的事情：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> field)</span> </span>&#123;</div><div class="line">    complete();</div><div class="line">    <span class="keyword">return</span> fields[field];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<code>complete()</code>方法中，会调用<code>computeTime()</code>和<code>computeFields()</code>方法，这两个方法都是抽象方法，由子类<code>GregorianCalendar</code>实现。在<code>computeTime()</code>方法中，计算出年月日时分秒等等时间相关的信息，而在<code>computeFields()</code>方法中获取到对应的时区地区等信息。这两个方法会将所计算出来的信息保存在一个int类型的数组中，这个数组的名字，没错，就是fields。fields数组保存的信息如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ERA = <span class="number">0</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> YEAR = <span class="number">1</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MONTH = <span class="number">2</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> WEEK_OF_YEAR = <span class="number">3</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> WEEK_OF_MONTH = <span class="number">4</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DATE = <span class="number">5</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DAY_OF_MONTH = <span class="number">5</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DAY_OF_YEAR = <span class="number">6</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DAY_OF_WEEK = <span class="number">7</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DAY_OF_WEEK_IN_MONTH = <span class="number">8</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> AM_PM = <span class="number">9</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HOUR = <span class="number">10</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HOUR_OF_DAY = <span class="number">11</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MINUTE = <span class="number">12</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SECOND = <span class="number">13</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MILLISECOND = <span class="number">14</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ZONE_OFFSET = <span class="number">15</span>;</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DST_OFFSET = <span class="number">16</span>;</div></pre></td></tr></table></figure>
+<p>嗯，一共18个常量（注意第6个常量和第七个常量的值是一样的）。也就是说，<code>get()</code>方法中你可以传入的参数就是上述18个常量之一。你既可以传常量名（如YEAR等），也可以传数字进去（如1）。当然为了可读性，一般都传入常量名。其中有几个参数可能需要解释一下：</p>
+<ul>
+<li>ERA<br>  表示该日期是在公元纪年（公元0年）之前还是之后，如果返回0表示在公元纪年之前，返回1表示在公元纪年之后。</li>
+<li>AM_PM<br>  表示该时间是在中午12点之前还是之后，如果返回0表示在中午12点之前，返回1表示在中午12点之后。</li>
+<li>DST_OFFSET<br>  表示该时间距夏令时的毫秒数。</li>
+</ul>
+<p>下面就举个简单的例子来说明一下吧：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line">    System.out.println(calendar.get(Calendar.YEAR));            <span class="comment">// 2016</span></div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));           <span class="comment">// 6</span></div><div class="line">    System.out.println(calendar.get(Calendar.DAY_OF_MONTH));    <span class="comment">// 6</span></div><div class="line">    System.out.println(calendar.get(Calendar.ERA));             <span class="comment">// 1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有一点要注意的是，由于Calendar类中的常量比较多，你可能传入的常量名不是上述18个之一，那么就可能发生一些意想不到的结果，比如，在<code>get()</code>方法中如果我们传入一个月份，这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line">    System.out.println(calendar.get(Calendar.DECEMBER));    <span class="comment">// 22</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>返回的22是什么鬼？其实是因为<code>Calendar.DECEMBER</code>的值是11，它返回的其实是<code>HOUR_OF_DAY</code>的返回值，也就是22点钟。用代码解释就是下面那样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line">    System.out.println(calendar.getTime().toString());      <span class="comment">// Mon Jul 04 22:24:08 CST 2016</span></div><div class="line">    System.out.println(calendar.get(Calendar.HOUR_OF_DAY)); <span class="comment">// 22</span></div><div class="line">    System.out.println(calendar.get(Calendar.DECEMBER));    <span class="comment">// 22</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你不小心在Calendar.get()方法中传入了类似<code>Calendar.DECEMBER)</code>的参数，那么编译器会发出警告，这时候你就可以看看是不是弄错了。当然，如果你对警告置之不理，那只能后果自负。</p>
+<p>谈完了get()方法，该说说set()方法了。get()方法是获取时间信息，那么set()方法则是对当前的calendar对象设置时间和日期。那么我们看看set()方法有那些重载的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> field, <span class="keyword">int</span> value)</span> </span>&#123;</div><div class="line">    fields[field] = value;</div><div class="line">    isSet[field] = <span class="keyword">true</span>;</div><div class="line">    areFieldsSet = isTimeSet = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (field &gt; MONTH &amp;&amp; field &lt; AM_PM) &#123;</div><div class="line">        lastDateFieldSet = field;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (field == HOUR || field == HOUR_OF_DAY) &#123;</div><div class="line">        lastTimeFieldSet = field;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (field == AM_PM) &#123;</div><div class="line">        lastTimeFieldSet = HOUR;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> year, <span class="keyword">int</span> month, <span class="keyword">int</span> day)</span> </span>&#123;</div><div class="line">    set(YEAR, year);</div><div class="line">    set(MONTH, month);</div><div class="line">    set(DATE, day);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> year, <span class="keyword">int</span> month, <span class="keyword">int</span> day, <span class="keyword">int</span> hourOfDay, <span class="keyword">int</span> minute)</span> </span>&#123;</div><div class="line">    set(year, month, day);</div><div class="line">    set(HOUR_OF_DAY, hourOfDay);</div><div class="line">    set(MINUTE, minute);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> year, <span class="keyword">int</span> month, <span class="keyword">int</span> day, <span class="keyword">int</span> hourOfDay, <span class="keyword">int</span> minute, <span class="keyword">int</span> second)</span> </span>&#123;</div><div class="line">    set(year, month, day, hourOfDay, minute);</div><div class="line">    set(SECOND, second);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很简单，就是将我们传入的值存放到fields数组中。调用set()方法会改变当前Calendar对象的时间和日期。下面用一段简单的代码说明用法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line"></div><div class="line">    calendar.set(Calendar.MONTH, <span class="number">5</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));           <span class="comment">// 5</span></div><div class="line"></div><div class="line">    calendar.set(<span class="number">2016</span>, Calendar.JANUARY, <span class="number">2</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.YEAR));            <span class="comment">// 2016</span></div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));           <span class="comment">// 0</span></div><div class="line">    System.out.println(calendar.get(Calendar.DAY_OF_MONTH));    <span class="comment">// 2</span></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="add-和roll-方法"><a href="#add-和roll-方法" class="headerlink" title="add()和roll()方法"></a>add()和roll()方法</h4><p>使用get()和set()方法可以获取当前时间和日期，也可以设置Calendar对象的时间和日期。但是一些简单的时间日期的计算我们仍然无法快速获得。比如昨天的日期？这时，就需要使用到add()和roll()方法了。</p>
+<p><code>add(int field, int value)</code>方法接受两个参数，第一个参数表示你想改变的字段，这个字段是fields数组中的一个。第二个参数是改变的值。下面用代码看看效果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line"></div><div class="line">    System.out.println(calendar.getTime().toString());  <span class="comment">// Wed Jul 06 10:41:10 CST 2016</span></div><div class="line">    calendar.add(Calendar.MONTH, <span class="number">2</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));   <span class="comment">// 8</span></div><div class="line"></div><div class="line">    calendar.set(Calendar.MONTH, <span class="number">9</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));   <span class="comment">// 9</span></div><div class="line">    calendar.add(Calendar.MONTH, <span class="number">4</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));   <span class="comment">// 1</span></div><div class="line"></div><div class="line">    calendar.set(<span class="number">2016</span>, Calendar.FEBRUARY, <span class="number">28</span>);</div><div class="line">    calendar.add(Calendar.DAY_OF_MONTH, <span class="number">3</span>);</div><div class="line">    System.out.println(calendar.getTime().toString());  <span class="comment">//Wed Mar 02 13:18:02 CST 2016</span></div><div class="line"></div><div class="line">    calendar.set(<span class="number">2016</span>, Calendar.JANUARY, <span class="number">2</span>);</div><div class="line">    calendar.add(Calendar.DAY_OF_MONTH, -<span class="number">3</span>);</div><div class="line">    System.out.println(calendar.getTime().toString());  <span class="comment">// Wed Dec 30 13:18:02 CST 2015</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这段代码看懂了吗？第4行代码打印了当前时间，当前是7月，第5行代码将月份增加了2个月，第6行代码打印了增加之后的月份，嗯？八月？其实不是的。由于在Calendar中月份计数是从0开始的，一月是0，那么8代表的就是九月。同理，第8行将月份设置的是10月，将月份增加4个月后，就是第二年的2月，也就是返回的1。</p>
+<p>第14行代码，将二月份的日期加三天，则变成了三月二日（2016年2月有29天）。第18行代码，将1月2日减三天，变成了上一年的12月30日。</p>
+<p>由于月份是从0开始计算的，所以计算月份的时候需要特别小心。这就是Calendar反人类的地方之一。</p>
+<p>总结一下，使用add()方法有几点需要注意的：</p>
+<ul>
+<li>月份是从0开始计数的。</li>
+<li>add()方法的第二个参数如果为正，则数据增加；如果为负，则数据减少。</li>
+<li>当增加的数目超过法定额度时，会自动向更高一级的单位加1。反之亦然。</li>
+</ul>
+<p>然后我们再来看看roll()方法。将上面的代码中的add()方法全部替换为roll()方法，结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line"></div><div class="line">    System.out.println(calendar.getTime().toString());  <span class="comment">// Wed Jul 06 13:24:10 CST 2016</span></div><div class="line">    calendar.roll(Calendar.MONTH, <span class="number">2</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));   <span class="comment">// 8</span></div><div class="line"></div><div class="line">    calendar.set(Calendar.MONTH, <span class="number">9</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));   <span class="comment">// 9</span></div><div class="line">    calendar.roll(Calendar.MONTH, <span class="number">4</span>);</div><div class="line">    System.out.println(calendar.get(Calendar.MONTH));   <span class="comment">// 1</span></div><div class="line"></div><div class="line">    calendar.set(<span class="number">2016</span>, Calendar.FEBRUARY, <span class="number">28</span>);</div><div class="line">    calendar.roll(Calendar.DAY_OF_MONTH, <span class="number">3</span>);</div><div class="line">    System.out.println(calendar.getTime().toString());  <span class="comment">// Tue Feb 02 13:24:10 CST 2016</span></div><div class="line"></div><div class="line">    calendar.set(<span class="number">2016</span>, Calendar.JANUARY, <span class="number">2</span>);</div><div class="line">    calendar.roll(Calendar.DAY_OF_MONTH, -<span class="number">3</span>);</div><div class="line">    System.out.println(calendar.getTime().toString());  <span class="comment">// Sat Jan 30 13:24:10 CST 2016</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>前面的没问题，和add()效果时一样的，后面涉及到进位和退位的时候，就和add()方法表现得不一样了。在roll()方法中不会进行进位和退位运算。这一点是和add()方法最主要的区别。</p>
+<h4 id="其它几个有趣的方法"><a href="#其它几个有趣的方法" class="headerlink" title="其它几个有趣的方法"></a>其它几个有趣的方法</h4><p>上面介绍的4个方法，set()，get()，add()，roll()是日常使用频率比较高的。但是有几个方法，其实还是比较有趣的，在特定的场合能减少你的代码量。</p>
+<p>1.<code>getMaximum(int field)</code>和<code>getMinimum(int field)</code><br>    这两个方法，返回Calendar对象的fields数组中对应数据的最大值和最小值。也就是说，如果我想知道<code>Calendar.DAY_OF_MONTH</code>这个字段能取到的最大值是多少，就可以使用<code>calendar.getMaximum(Calendar.DAY_OF_MONTH)</code>来获取，返回的值是31，因为一个月最多可以有31天。</p>
+<p>2.<code>getActualMaximum(int field)</code>和<code>getActualMinimum(int field)</code><br>    这两个方法名字同上面两个方法相比，多了一个<code>Actual</code>单词，表示返回Calendar对象的fields数组中，在当前日期的环境条件下，对应数据的最大值和最小值。也就是说，如果Calendar对象表示的是2016年的2月，那么使用<code>calendar.getActualMaximum(Calendar.DAY_OF_MONTH)</code>返回的就是29，因为2016年的2月最多只有29天。</p>
+<p>上面的方法，用代码解释如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line">    System.out.println(calendar.getMaximum(Calendar.MONTH));              <span class="comment">// 11</span></div><div class="line">    System.out.println(calendar.getMinimum(Calendar.HOUR_OF_DAY));        <span class="comment">// 0</span></div><div class="line">    System.out.println(calendar.getActualMaximum(Calendar.DATE));         <span class="comment">// 31</span></div><div class="line">    System.out.println(calendar.getActualMinimum(Calendar.DATE));         <span class="comment">// 1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这几个方法有什么用呢？比如需要让用户输入本月的一个日期的话，就可以使用<code>getActualMaximum(int field)</code>方法来进行输入验证，判断用户输入的日期是否合法。</p>
+<p>那么fields数组中的各个字段的最大值和最小值分别是多少呢？下面是从源码中找出来的，自己可以对照着上面的fields数组字段名称欣赏一下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] maximums = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">1</span>, <span class="number">292278994</span>, <span class="number">11</span>, <span class="number">53</span>, <span class="number">6</span>, <span class="number">31</span>,</div><div class="line">        <span class="number">366</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">11</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>, <span class="number">999</span>, <span class="number">14</span> * <span class="number">3600</span> * <span class="number">1000</span>, <span class="number">7200000</span> &#125;;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] minimums = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>,</div><div class="line">        <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">13</span> * <span class="number">3600</span> * <span class="number">1000</span>, <span class="number">0</span> &#125;;</div></pre></td></tr></table></figure>
+<h3 id="和Date类的关系"><a href="#和Date类的关系" class="headerlink" title="和Date类的关系"></a>和Date类的关系</h3><p>做为对Date类的补充和替代，当然得和Date进行相互转化。</p>
+<p>1.使用<code>getTime()</code>方法，从Calendar对象中获取Date对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line">    Date date = calendar.getTime();</div><div class="line">    System.out.println(date.toString());            <span class="comment">// Mon Jul 04 21:08:27 CST 2016</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>2.使用<code>setTime()</code>方法，将Date对象得值赋值给Calendar对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Calendar calendar = Calendar.getInstance();</div><div class="line">    System.out.println(calendar.getTimeInMillis());     <span class="comment">// 1467637991365</span></div><div class="line">    </div><div class="line">    Date date = <span class="keyword">new</span> Date(<span class="number">3600</span> * <span class="number">1000</span>);</div><div class="line">    calendar.setTime(date);</div><div class="line">    System.out.println(calendar.getTimeInMillis());     <span class="comment">// 3600000</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还记得介绍Date类时说过，Date的构造方法中，有4个构造方法已经过时了。其实它们是被Calendar类的相关方法给替代了。比如：</p>
+<ul>
+<li>Date(int year, int month, int date)<br>  由<code>Calendar.set(year + 1900, month, date)</code>代替。</li>
+<li>Date(int year, int month, int date, int hrs, int min)<br>  由<code>Calendar.set(year + 1900, month, date, hrs, min)</code>代替</li>
+<li>Date(int year, int month, int date, int hrs, int min, int sec)<br>  由<code>Calendar.set(year + 1900, month, date, hrs, min, sec)</code>代替</li>
+<li>Date(String s)<br>  由<code>DateFormat.parse(String s)</code>代替</li>
+</ul>
+<h2 id="SimpleDateFormat"><a href="#SimpleDateFormat" class="headerlink" title="SimpleDateFormat"></a>SimpleDateFormat</h2><p>有了Date和Calendar，我们能获取和设置时间和日期，也能对时间和日期进行简单的计算。但是获取时间信息还不够直接，总不能一个一个地调用Calendar对象的<code>get()</code>方法，然后再进行转换吧？这时候需要使用到SimpleDateFormat这个类了。顾名思义，这是一个格式化日期和时间的类。</p>
+<p>比如想要获得当前时间，输出是哪年哪月几号星期几，几时几分几秒，就可以用下面的代码来实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">    Date d = new Date();</div><div class="line">    SimpleDateFormat sdf = new SimpleDateFormat(&quot;现在是yyyy年MM月dd日E, kk点mm分ss秒&quot;);</div><div class="line">    String dateStr = sdf.format(d);     // Wed Jul 06 14:18:35 CST 2016</div><div class="line">    System.out.println(d.toString());   // 现在是2016年07月06日星期三, 14点18分35秒</div><div class="line">    System.out.println(dateStr);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>先看一下构造方法，SimpleDateFormat类的构造方法有四个，分别是：</p>
+<ul>
+<li>SimpleDateFormat()</li>
+<li>SimpleDateFormat(String pattern)</li>
+<li>SimpleDateFormat(String pattern, DateFormatSymbols formatSymbols)</li>
+<li>SimpleDateFormat(String pattern, Locale locale)</li>
+</ul>
+<p>参数pattern有点类似正则表达式的意思，就是说需要将日期格式化成什么模样。这个参数非常重要。如果SimpleDateFormat使用的是第一个空参数构造方法，那么需要调用<code>applyPattern(String pattern)</code>方法来将pattern传入。也就是说，下面两段代码效果是相同的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat();</div><div class="line">String partner = <span class="string">"现在是yyyy年MM月dd日E, kk点mm分ss秒"</span>;</div><div class="line">sdf.applyPattern(partner);</div><div class="line"></div><div class="line"><span class="comment">// 与上面一段代码的效果相同</span></div><div class="line">SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"现在是yyyy年MM月dd日E, kk点mm分ss秒"</span>);</div></pre></td></tr></table></figure>
+<p>得到了pattern参数后，SimpleDateFormat对象就具有了格式化日期的能力了，这时只需要调用<code>format()</code>方法，将Date对象传入该方法中，返回的字符串就是格式化后的结果。</p>
+<p>那里面的的yyyy和MM等这些符号是什么呢，其实是一些约定好的单位符号，比如上面的yyyy就表示年，ss表示秒。具体的API可以看下表，内容来自官网API文档，我就不翻译了，因为懒。</p>
+<table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>Date or Time Component</th>
+<th>Presentation</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G</td>
+<td>Era designator</td>
+<td>Text</td>
+<td>AD</td>
+</tr>
+<tr>
+<td>y</td>
+<td>Year</td>
+<td>Year</td>
+<td>1996; 96</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Week year</td>
+<td>Year</td>
+<td>2009; 09</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Month in year (context sensitive)</td>
+<td>Month</td>
+<td>July; Jul; 07</td>
+</tr>
+<tr>
+<td>L</td>
+<td>Month in year (standalone form)</td>
+<td>Month</td>
+<td>July; Jul; 07</td>
+</tr>
+<tr>
+<td>w</td>
+<td>Week in year</td>
+<td>Number</td>
+<td>27</td>
+</tr>
+<tr>
+<td>W</td>
+<td>Week in month</td>
+<td>Number</td>
+<td>2</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Day in year</td>
+<td>Number</td>
+<td>189</td>
+</tr>
+<tr>
+<td>d</td>
+<td>Day in month</td>
+<td>Number</td>
+<td>10</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Day of week in month</td>
+<td>Number</td>
+<td>2</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Day name in week</td>
+<td>Text</td>
+<td>Tuesday; Tue</td>
+</tr>
+<tr>
+<td>u</td>
+<td>Day number of week (1 = Monday, …, 7 = Sunday)</td>
+<td>Number</td>
+<td>1</td>
+</tr>
+<tr>
+<td>a</td>
+<td>Am/pm marker</td>
+<td>Text</td>
+<td>PM</td>
+</tr>
+<tr>
+<td>H</td>
+<td>Hour in day (0-23)</td>
+<td>Number</td>
+<td>0</td>
+</tr>
+<tr>
+<td>k</td>
+<td>Hour in day (1-24)</td>
+<td>Number</td>
+<td>24</td>
+</tr>
+<tr>
+<td>K</td>
+<td>Hour in am/pm (0-11)</td>
+<td>Number</td>
+<td>0</td>
+</tr>
+<tr>
+<td>h</td>
+<td>Hour in am/pm (1-12)</td>
+<td>Number</td>
+<td>12</td>
+</tr>
+<tr>
+<td>m</td>
+<td>Minute in hour</td>
+<td>Number</td>
+<td>30</td>
+</tr>
+<tr>
+<td>s</td>
+<td>Second in minute</td>
+<td>Number</td>
+<td>55</td>
+</tr>
+<tr>
+<td>S</td>
+<td>Millisecond</td>
+<td>Number</td>
+<td>978</td>
+</tr>
+<tr>
+<td>z</td>
+<td>Time zone</td>
+<td>General time zone</td>
+<td>Pacific Standard Time; PST; GMT-08:00</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>Time zone</td>
+<td>RFC 822 time zone</td>
+<td>-0800</td>
+</tr>
+<tr>
+<td>X</td>
+<td>Time zone</td>
+<td>ISO 8601 time zone</td>
+<td>-08; -0800; -08:00</td>
+</tr>
+</tbody>
+</table>
+<p>注意区分大小写。</p>
+<p>有了上面的表格后，对照着写，基本上需要的信息都能满足了。</p>
+<p>SimpleDateFormat类除了能将Date对象进行格式化返回字符串，也能将一个日期字符串解析返回成一个Date对象，比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    String s = <span class="string">"2016#08#01"</span>;</div><div class="line">    SimpleDateFormat simpleDateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy#MM#dd"</span>);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Date date = simpleDateFormat.parse(s);</div><div class="line">        System.out.println(date.toString());        <span class="comment">// Mon Aug 01 00:00:00 CST 2016</span></div><div class="line">    &#125; <span class="keyword">catch</span> (ParseException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>嗯，估计大家看出来了，这里需要使用<code>#</code>符号来进行分割数据。</p>
+<p>最后说一点，SimpleDateFormat类不是线程安全的，如果有多个线程需要使用到SimpleDateFormat对象，建议每个线程单独创建，如果多个线程要获取同一个SimpleDateFormat对象，记得要加锁！</p>
+<p>文章的末尾，给大家出道题目，看看大家掌握得怎么样？有兴趣的可以试一下：</p>
+<ul>
+<li>给出一个8位数的日期字符串，比如“20160701”，返回前一天的8位数日期字符串“20160630”。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/17/Android-获取设备信息/" rel="next" title="Android 获取设备信息">
+                <i class="fa fa-chevron-left"></i> Android 获取设备信息
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/08/解决ButterKnife-8-1的依赖问题/" rel="prev" title="解决ButterKnife 8.1的依赖问题">
+                解决ButterKnife 8.1的依赖问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#古老的Date"><span class="nav-number">1.</span> <span class="nav-text">古老的Date</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#庞大的Calendar"><span class="nav-number">2.</span> <span class="nav-text">庞大的Calendar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Calendar类的构造方法"><span class="nav-number">2.1.</span> <span class="nav-text">Calendar类的构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Calendar的常用方法"><span class="nav-number">2.2.</span> <span class="nav-text">Calendar的常用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#get-和set-方法"><span class="nav-number">2.2.1.</span> <span class="nav-text">get()和set()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#add-和roll-方法"><span class="nav-number">2.2.2.</span> <span class="nav-text">add()和roll()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它几个有趣的方法"><span class="nav-number">2.2.3.</span> <span class="nav-text">其它几个有趣的方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#和Date类的关系"><span class="nav-number">2.3.</span> <span class="nav-text">和Date类的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SimpleDateFormat"><span class="nav-number">3.</span> <span class="nav-text">SimpleDateFormat</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2016/07/06/Java中的时间和日期/';
+      var disqus_title = "Java中的时间和日期（上）";
+      var disqus_url = 'http://yoursite.com/2016/07/06/Java中的时间和日期/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,974 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="注：官网上面的技术文章也在不断地汉化中，只是进度有点慢。在我翻译本篇文章的时候，官网没有对应的中文教程。经人提醒，该文章现在在官网已经有对应的中文版教程了，链接地址：向您的项目添加 C 和 C++ 代码。有需要的朋友可以直接阅读官方中文解说。
+
+———–分割线————-
+
+Android Studio 2.2 正式版发布后，看到更新内容中有提到对 C/C++ 支持的完善，表示非常高兴。然后将官网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 Android Studio 2.2 中愉快地使用 C/C++">
+<meta property="og:url" content="http://yoursite.com/2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="注：官网上面的技术文章也在不断地汉化中，只是进度有点慢。在我翻译本篇文章的时候，官网没有对应的中文教程。经人提醒，该文章现在在官网已经有对应的中文版教程了，链接地址：向您的项目添加 C 和 C++ 代码。有需要的朋友可以直接阅读官方中文解说。
+
+———–分割线————-
+
+Android Studio 2.2 正式版发布后，看到更新内容中有提到对 C/C++ 支持的完善，表示非常高兴。然后将官网">
+<meta property="og:image" content="http://static.zybuluo.com/wl9739/58b11an8k32rylerlh291f7b/Figure-1.png">
+<meta property="og:image" content="http://static.zybuluo.com/wl9739/ltzzvosh6y1uulszsk6l7z5y/Figure-2.png">
+<meta property="og:image" content="http://static.zybuluo.com/wl9739/ei2c0h7dftdi8tp9nuafvt30/Figer-3.png">
+<meta property="og:image" content="http://static.zybuluo.com/wl9739/q80ozydc9jw0ktk8quobcmq3/Figure%203.jpg">
+<meta property="og:updated_time" content="2017-03-16T03:18:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在 Android Studio 2.2 中愉快地使用 C/C++">
+<meta name="twitter:description" content="注：官网上面的技术文章也在不断地汉化中，只是进度有点慢。在我翻译本篇文章的时候，官网没有对应的中文教程。经人提醒，该文章现在在官网已经有对应的中文版教程了，链接地址：向您的项目添加 C 和 C++ 代码。有需要的朋友可以直接阅读官方中文解说。
+
+———–分割线————-
+
+Android Studio 2.2 正式版发布后，看到更新内容中有提到对 C/C++ 支持的完善，表示非常高兴。然后将官网">
+<meta name="twitter:image" content="http://static.zybuluo.com/wl9739/58b11an8k32rylerlh291f7b/Figure-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/"/>
+
+
+  <title> 在 Android Studio 2.2 中愉快地使用 C/C++ | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                在 Android Studio 2.2 中愉快地使用 C/C++
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-21T11:59:31+08:00" content="2016-09-21">
+              2016-09-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/" class="leancloud_visitors" data-flag-title="在 Android Studio 2.2 中愉快地使用 C/C++">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>注：官网上面的技术文章也在不断地汉化中，只是进度有点慢。在我翻译本篇文章的时候，官网没有对应的中文教程。经人提醒，该文章现在在官网已经有对应的中文版教程了，链接地址：<a href="https://developer.android.com/studio/projects/add-native-code.html" target="_blank" rel="external">向您的项目添加 C 和 C++ 代码</a>。有需要的朋友可以直接阅读官方中文解说。</p>
+</blockquote>
+<p>———–分割线————-</p>
+<blockquote>
+<p>Android Studio 2.2 正式版发布后，看到更新内容中有提到对 C/C++ 支持的完善，表示非常高兴。然后将官网上这一部分内容翻译出来，如有错误，欢迎指正。</p>
+</blockquote>
+<p>原文链接：<a href="https://developer.android.com/studio/projects/add-native-code.html#existing-project" target="_blank" rel="external">Add C and C++ Code to Your Project</a></p>
+<p>使用 Android studio，你可以将 C 和 C++ 代码编译成 native library（即 .so 文件），然后打包到你的 APK 中。你的 Java 代码可以通过 Java Native Interface（JNI）调用 native library 中的方法。</p>
+<p>Android Studio 默认使用 CMake 编译原生库。由于已经有大量的代码使用了 ndk-build 来编译 native code，所以 Android Studio 同样也支持 ndk build。如果你想导入一个 ndk-build 库到你的 Android Studio 项目中，请参阅后文的 <strong>关联本地库与 Gradle</strong>。然而，如果你创建了一个新的 native 库工程，你应该使用 CMake。</p>
+<p>本篇文章将会说明如何使用 Android Studio 来创建、配置 Android 项目，以支持 native code，以及将其运行到你的 app 中。</p>
+<a id="more"></a>
+<blockquote>
+<p>注意：要在 Android Studio 中使用 CMake 或者 ndk-build，你需要使用 Android Studio 2.2 或更高的版本，同时需要配合使用 Android Plugin for Gradle 2.2.0 及以上的版本。</p>
+</blockquote>
+<h2 id="下载-NDK-和构建工具"><a href="#下载-NDK-和构建工具" class="headerlink" title="下载 NDK 和构建工具"></a>下载 NDK 和构建工具</h2><p>要编译和调试本地代码（native code），你需要下面的组件：</p>
+<ul>
+<li><em><code>The Android Native Development Kit (NDK)</code></em>: 让你能在 Android 上面使用 C 和 C++ 代码的工具集。</li>
+<li><em><code>CMake</code></em>: 外部构建工具。如果你准备只使用 ndk-build 的话，可以不使用它。</li>
+<li><em><code>LLDB</code></em>: Android Studio 上面调试本地代码的工具。</li>
+</ul>
+<p>你可以使用 SDK Manager 来安装上述组件：</p>
+<ol>
+<li>打开一个项目，从菜单栏中选择 <strong>Tools &gt; Android &gt; SDK Manager</strong>。</li>
+<li>点击 <strong>SDK Tools</strong> 选项卡。</li>
+<li>勾选 <strong>LLDB，CMake</strong> 和 <strong>NDK</strong>。</li>
+</ol>
+<p><img src="http://static.zybuluo.com/wl9739/58b11an8k32rylerlh291f7b/Figure-1.png" alt="Figure-1.png-34.8kB"></p>
+<ol>
+<li>点击 <strong>Apply</strong>，然后点击 <strong>OK</strong>。</li>
+<li>当安装完成后，点击 <strong>Finish</strong>，然后点击 <strong>OK</strong>。</li>
+</ol>
+<h2 id="创建支持-C-C-的新项目"><a href="#创建支持-C-C-的新项目" class="headerlink" title="创建支持 C/C++ 的新项目"></a>创建支持 C/C++ 的新项目</h2><p>创建一个支持 native code 的项目和创建普通的 Android studio 工程很像。但是有几点需要留意的地方：</p>
+<ol>
+<li>在 <strong>Configure your new project</strong> 选项中，勾选 <strong>Include C++ Support</strong> 选项。</li>
+<li>点击 Next，后面的流程和创建普通的 Android studio 工程一样。</li>
+<li><p>在 <strong>Customize C++ Support</strong> 选项卡中。你有下面几种方式来自定义你的项目：</p>
+<ul>
+<li><strong>C++ Standard</strong>：点击下拉框，可以选择标准 C++，或者选择默认 CMake 设置的 <strong>Toolchain Default</strong> 选项。</li>
+<li><strong>Exceptions Support</strong>：如果你想使用有关 C++ 异常处理的支持，就勾选它。勾选之后，Android Studio 会在 module 层的 build.gradle 文件中的 <strong>cppFlags</strong> 中添加 <strong>-fexcetions</strong> 标志。</li>
+<li><strong>Runtime Type Information Support</strong>：如果你想支持 RTTI，那么就勾选它。勾选之后，Android Studio 会在 module 层的 build.gradle 文件中的 <strong>cppFlags</strong> 中添加 <strong>-frtti</strong> 标志。</li>
+</ul>
+</li>
+<li>点击 “Finish”。</li>
+</ol>
+<p>当 Android Studio 完成新项目创建后，打开 <strong>Project</strong> 面板，选择 <strong>Android</strong> 视图。Android Studio 会添加 <strong>cpp</strong> 和 <strong>External Build Files</strong> 目录。</p>
+<p><img src="http://static.zybuluo.com/wl9739/ltzzvosh6y1uulszsk6l7z5y/Figure-2.png" alt="Figure-2.png-41.4kB"></p>
+<ol>
+<li><strong>cpp</strong> 目录存放你所有 native code 的地方，包括源码，头文件，预编译项目等。对于新项目，Android Studio 创建了一个 C++ 模板文件：<strong>native-lib.cpp</strong>，并且将该文件放到了你的 app 模块的 <strong>src/main/cpp/</strong> 目录下。这份模板代码提供了一个简答的 C++ 函数：<code>stringFromJNI()</code>，该函数返回一个字符串：”Hello from C++”。</li>
+<li><strong>External Build Files</strong> 目录是存放 CMake 或 ndk-build 构建脚本的地方。有点类似于 build.gradle 文件告诉 Gradle 如何编译你的 APP 一样，CMake 和 ndk-build 也需要一个脚本来告知如何编译你的 native library。对于一个新的项目，Android Studio 创建了一个 CMake 脚本：<strong>CMakeLists.txt</strong>，并且将其放到了你的 module 的根目录下。</li>
+</ol>
+<h3 id="编译运行示例-APP"><a href="#编译运行示例-APP" class="headerlink" title="编译运行示例 APP"></a>编译运行示例 APP</h3><p>当你点击 <strong>Run</strong> 按钮，Android Studio 会编译并启动一个 APP ，然后在 APP 中显示一段文字”Hello from C++”。从编译到运行示例 APP 的流程简单归纳如下：</p>
+<ol>
+<li>Gradle 调用外部构建脚本，也就是 <strong>CMakeLists.txt</strong>。</li>
+<li>CMake 会根据构建脚本的指令去编译一个 C++ 源文件，也就是 <code>native-lib.cpp</code>，并将编译后的产物扔进共享对象库中，并将其命名为 <strong>libnative-lib.so</strong>，然后 Gradle 将其打包到 APK 中。</li>
+<li>在运行期间，APP 的 MainActivity 会调用 <code>System.loadLibrary()</code> 方法，加载 native library。而这个库的原生函数，<code>stringFromJNI()</code>，就可以为 APP 所用了。</li>
+<li>MainActivity.onCreate() 方法会调用 <code>stringFromJNI()</code>，然后返回 “Hello from C++”，并更新 TextView 的显示。</li>
+</ol>
+<blockquote>
+<p>注意：<strong>Instant Run</strong> 并不兼容使用了 native code 的项目。Android Studio 会自动禁止 <strong>Instant Run</strong> 功能。</p>
+</blockquote>
+<p>如果你想验证一下 Gradle 是否将 native library 打包进了 APK，你可以使用 APK Analyzer:</p>
+<ol>
+<li>选择 <strong>Build &gt; Analyze APK</strong>。</li>
+<li>从 <code>app/build/outputs/apk/</code> 路径中选择 APK，并点击 <strong>OK</strong>。</li>
+<li>如下图，在 APK Analyzer 窗口中，选择 <code>lib/&lt;ABI&gt;/</code>，你就可以看见 <code>libnative-lib.so</code> 。</li>
+</ol>
+<p><img src="http://static.zybuluo.com/wl9739/ei2c0h7dftdi8tp9nuafvt30/Figer-3.png" alt="Figer-3.png-58.5kB"></p>
+<h2 id="将-C-C-代码添加到现有的项目中"><a href="#将-C-C-代码添加到现有的项目中" class="headerlink" title="将 C/C++ 代码添加到现有的项目中"></a>将 C/C++ 代码添加到现有的项目中</h2><p>如果你想将 native code 添加到一个现有的项目中，请按照下面的步骤操作：</p>
+<ol>
+<li>创建新的 native source 文件，并将其添加到你的 Android Studio 项目中。如果你已经有了 native code，也可以跳过这一步。</li>
+<li>创建一个 CMake 构建脚本。如果你已经有了一个 CMakeLists.txt 构建脚本，或者你想使用 ndk-build 然后有一个 Android.mk 构建脚本，也可以跳过这一步。</li>
+<li>将你的 native library 与 Gradle 关联起来。Gradle 使用构建脚本将源码导入到你的 Android Studio 项目中，并且将你的 native library （也就是 .so 文件）打包到 APK 中。</li>
+</ol>
+<p>一旦你配置好了项目，你就可以在 Java 代码中，使用 JNI 框架开调用原生函数（native functions）。只需要点击 <strong>Run</strong> 按钮，就可以编译运行你的 APP 了。</p>
+<h3 id="创建新的-native-source-文件"><a href="#创建新的-native-source-文件" class="headerlink" title="创建新的 native source 文件"></a>创建新的 native source 文件</h3><p>请按照下面的方法来创建一个 <code>cpp/</code> 目录和源文件（native source files）：</p>
+<ol>
+<li>打开IDE左边的 <strong>Project</strong> 面板，选择 <strong>Project</strong> 视图。</li>
+<li>找到你项目的 <strong>module &gt; src </strong>目录，右键点击 <strong>main</strong> 目录，选择 <strong>New &gt; Directory</strong>。</li>
+<li>输入目录的名字（比如 cpp），然后点击 <strong>OK</strong>。</li>
+<li>右键点击刚才创建好的目录，选择 <strong>New &gt; C/C++ Source File</strong>。</li>
+<li>输入文件名，比如 <code>native-lib</code>。</li>
+<li>在 <strong>Type</strong> 菜单下拉选项中，选择源文件的扩展后缀名，比如 <code>.cpp</code>。</li>
+<li>如果你也想创建一个头文件，点击 <strong>Create an associated header</strong> 选项框。</li>
+<li>点击 <strong>OK</strong>。</li>
+</ol>
+<h3 id="创建-CMake-构建脚本"><a href="#创建-CMake-构建脚本" class="headerlink" title="创建 CMake 构建脚本"></a>创建 CMake 构建脚本</h3><p>如果没有一个 CMake 构建脚本，你需要自己手动创建一个，并添加一些合适的 CMake 命令。CMake 构建脚本是一个空白的文本文档（后缀为 .txt 的文件），名字必须为 <code>CMakeLists.txt</code>。</p>
+<blockquote>
+<p>注意：如果你的项目使用了 ndk-build，你就不需要创建 CMake 构建脚本，只需要提供一个路径链，将你的 Android.mk 文件链接到 Gradle 中即可。</p>
+</blockquote>
+<p>将一个空白的文本文档变成一个 CMake 构建脚本，你需要这么做：</p>
+<ol>
+<li>打开 IDE 左边的 <strong>Project</strong> 面板，选择 <strong>Project</strong> 视图。</li>
+<li>在你的 module 根目录下，右键，选择 <strong>New &gt; File</strong>。</li>
+<li>输入 “CMakeLists.txt” 作为文件名，并点击 <strong>OK</strong>。</li>
+</ol>
+<p>现在，你可以添加 CMake 命令来配置你的构建脚本了。为了让 CMake 将源代码（native source code）编译成 native library。需要在编译文件中添加 <code>cmake_minimum_required()</code> 和 <code>add_library()</code> 命令：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># Sets the minimum version of CMake required to build your native library.</div><div class="line"># This ensures that a certain set of CMake features is available to</div><div class="line"># your build.</div><div class="line"></div><div class="line">cmake_minimum_required(VERSION 3.4.1)</div><div class="line"></div><div class="line"># Specifies a library name, specifies whether the library is STATIC or</div><div class="line"># SHARED, and provides relative paths to the source code. You can</div><div class="line"># define multiple libraries by adding multiple add.library() commands,</div><div class="line"># and CMake builds them for you. When you build your app, Gradle</div><div class="line"># automatically packages shared libraries with your APK.</div><div class="line"></div><div class="line">add_library( # Specifies the name of the library.</div><div class="line">             native-lib</div><div class="line"></div><div class="line">            # Sets the library as a shared library.</div><div class="line">             SHARED</div><div class="line"></div><div class="line">            # Provides a relative path to your source file(s).</div><div class="line">            src/main/cpp/native-lib.cpp )</div></pre></td></tr></table></figure>
+<p>当你使用 <code>add_library()</code>，将一个源文件（source file）或库添加到你的 CMake 构建脚本，同步你的项目，然后你会发现 Android studio 将关联的头文件也显示了处理。然而，为了让 CMake 在编译时期能定位到你的头文件，你需要在 CMake 构建脚本中添加 <code>include_directories()</code> 命令，并指定头文件路径：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">add_library(...)</div><div class="line"></div><div class="line"># Specifies a path to native header files.</div><div class="line">include_directories(src/main/cpp/include/)</div></pre></td></tr></table></figure>
+<p>然后，按照约定，CMake 会将生成的 library 命名为下面的形式：</p>
+<p><code>lib*library-name*.so</code></p>
+<p>比如，如果你在构建脚本中，将 library 命名为 “native-lib”，那么 CMake 会创建叫 <code>libnative-lib.so</code> 的文件。但是，当你将 library 加载到 Java 代码中的时候， 你需要使用在 CMake 中指定的名称：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">static &#123;</div><div class="line">        System.loadLibrary(“native-lib”);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：如果你将 CMake 脚本里面的 library 重命名了，或者移除了。你需要清理一下你的工程。在 IDE 的菜单栏中选择 <strong>Build &gt; Clean Project</strong>。</p>
+</blockquote>
+<p>Android Studio 会在 Project 面板中的 cpp 目录中自动添加源文件和头文件。你可以多次使用 <code>add_library()</code> 命令，来添加额外的 library。</p>
+<h3 id="添加-NDK-APIs"><a href="#添加-NDK-APIs" class="headerlink" title="添加 NDK APIs"></a>添加 NDK APIs</h3><p>Android NDK 提供了一些有用的 native APIs。将 NDK librarys 添加到 CMakeLists.txt 脚本文件中，就可以使用这些 API 了。</p>
+<p>预编译的 NDK librarys 已经存在在 Android 平台中了，所以你不需要编译它们，或者是将其打包到你的 APK 中。因为这些 NDK librarys 已经是 CMake 搜索路径的一部分，你甚至不需要提供你本地安装的 NDK 路径。你只需要向 CMake 提供你想使用的 library 名字。</p>
+<p>将 <code>find_library()</code> 命令添加到你的 CMake 构建脚本中，这样就可以定位 NDK library 的位置，并将其位置存储在一个变量之中。你可以在构建脚本的其他地方使用这个变量，来代指 NDK library。下面的示例代码将 <code>Android-specific log support library</code> 的位置存储到变量 <code>log-lib</code> 中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">find_library( # Defines the name of the path variable that stores the</div><div class="line">              # location of the NDK library.</div><div class="line">              log-lib</div><div class="line"></div><div class="line">              # Specifies the name of the NDK library that</div><div class="line">              # CMake needs to locate.</div><div class="line">              log )</div></pre></td></tr></table></figure>
+<p>NDK 同样也包含一些只包含源码的 library，这些就需要你去编译，然后链接到你的本地库（native library）。你可以在 CMake 构建脚本中使用 <code>add_library()</code> 命令将源码编译进本地库。这时就需要提供你的本地 NDK 安装路径，通常将该路径保存在 <code>ANDROID_NDK</code> 变量中，这样 Android Studio 可以自动为你识别。</p>
+<p>下面的命令告诉 CMake 去构建 <code>android_native_app_glue.c</code>，这个命令可以管理 <code>NativeActivity</code> 的生命周期以及点击输入，并将其导入静态库中，然后将其链接至 <code>native-lib</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">add_library( app-glue</div><div class="line">             STATIC</div><div class="line">             $&#123;ANDROID_NDK&#125;/sources/android/native_app_glue/android_native_app_glue.c )</div><div class="line"></div><div class="line"># You need to link static libraries against your shared native library.</div><div class="line">target_link_libraries( native-lib app-glue $&#123;log-lib&#125; )</div></pre></td></tr></table></figure>
+<h3 id="添加其他的预编译库"><a href="#添加其他的预编译库" class="headerlink" title="添加其他的预编译库"></a>添加其他的预编译库</h3><p>添加预编译库和添加本地库（native library）类似。由于预编译库是已经构建好的，你想就要使用 <code>IMPORTED</code> 标志去告诉 CMake ，你只需要将其导入到你的项目中即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">add_library( imported-lib</div><div class="line">             SHARED</div><div class="line">             IMPORTED )</div></pre></td></tr></table></figure>
+<p>然后你需要使用 <code>set_target_properties()</code> 命令去指定库的路径，就像下面的代码那样。</p>
+<p>一些库会根据不同的 CPU 使用不同的包，或者是 <code>Application Binary Interfaces(ABI)</code>，并且将他们归类到不同的目录中。这样做的好处是，可以充分发挥特定的 CPU 架构。你可以使用 <code>ANDROID_ABI</code> 路径变量，将多个 ABI 版本的库添加到你的 CMake 构建脚本中。这个变量使用了一些 NDK 默认支持的 ABI，以及一些需要手动配置到 Gradle 的 ABI，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">add_library(...)</div><div class="line">set_target_properties( # Specifies the target library.</div><div class="line">                       imported-lib</div><div class="line"></div><div class="line">                       # Specifies the parameter you want to define.</div><div class="line">                       PROPERTIES IMPORTED_LOCATION</div><div class="line"></div><div class="line">                       # Provides the path to the library you want to import.</div><div class="line">                       imported-lib/src/$&#123;ANDROID_ABI&#125;/libimported-lib.so )</div></pre></td></tr></table></figure>
+<p>为了让 CMake 在编译时期能找到你的头文件，你需要使用 <code>include_directories()</code> 命令，并且将你的头文件地址传进去：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">include_directories( imported-lib/include/ )</div></pre></td></tr></table></figure>
+<p>在 CMake 构建脚本中使用 <code>target_link_libraries()</code> 命令，将预构建库与你本地库相关联：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">target_link_libraries( native-lib imported-lib app-glue $&#123;log-lib&#125; )</div></pre></td></tr></table></figure>
+<p>当你构建你的 APP 的时候，Gradle 会自动将导入的库打包到你的 APK 中。你可以使用 APK Analyzer 来检查。</p>
+<h2 id="关联本地库与-Gradle"><a href="#关联本地库与-Gradle" class="headerlink" title="关联本地库与 Gradle"></a>关联本地库与 Gradle</h2><p>为了将本地库与 Gradle 相关联，你需要在 CMake 或 ndk-build 构建脚本中提供一个路径地址。当你构建你的 APP 时，Gradle 会将 CMake 或 ndk-build 作为一个依赖运行，然后将共享库（.so 文件）打包到你的 APK 中。Gradle 同样使用构建脚本来识别哪些文件需要导入到 Android Studio 项目，你可以从 <strong>Project</strong> 窗口面板中看到相应的文件。如果你还没有一个为 native sources 准备的构建脚本，你需要先创建一个。</p>
+<h3 id="使用-Android-Studio-图形化界面"><a href="#使用-Android-Studio-图形化界面" class="headerlink" title="使用 Android Studio 图形化界面"></a>使用 Android Studio 图形化界面</h3><p>你可以使用 Android Studio 的图形化界面来将 Gradle 与外部 CMake 或者 ndk-build 项目关联起来。</p>
+<ol>
+<li>打开 IDE 左边的 <strong>Project</strong> 面板，选择 <strong>Android</strong> 视图。</li>
+<li>右键点击你想链接本地库的 module，比如 <strong>app</strong> module，然后从菜单中选择 <strong>Link C++ Project with Gradle</strong>。你应该能看见一个和下图很像的对话框。</li>
+<li><p>在下拉菜单中，选择 <strong>CMake</strong> 或者 <strong>ndk-build</strong>。<br> a. 如果你选择 <strong>CMake</strong>，需要在 <strong>Project Path</strong> 中指定 <code>CMakeLists.txt</code> 脚本文件的路径。<br> b. 如果你选择 <strong>ndk-build</strong>，你需要在 <strong>Project Path</strong> 中指定 <code>Android.mk</code> 脚本文件的路径。</p>
+<p> <img src="http://static.zybuluo.com/wl9739/q80ozydc9jw0ktk8quobcmq3/Figure%203.jpg" alt="Figure 3.jpg-86.4kB"></p>
+</li>
+<li><p>点击 <strong>OK</strong>。</p>
+</li>
+</ol>
+<h3 id="手动配置-Gradle"><a href="#手动配置-Gradle" class="headerlink" title="手动配置 Gradle"></a>手动配置 Gradle</h3><p>如果要手动将 Gradle 与你的本地库相关联，你需要在 module 层级的 build.gradle 文件中添加 <code>externalNativeBuild {}</code> 代码块，并且在该代码块中配置 <code>cmake {}</code> 或 <code>ndkBuild {}</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">  ...</div><div class="line">  defaultConfig &#123;...&#125;</div><div class="line">  buildTypes &#123;...&#125;</div><div class="line"></div><div class="line">  // Encapsulates your external native build configurations.</div><div class="line">  externalNativeBuild &#123;</div><div class="line"></div><div class="line">    // Encapsulates your CMake build configurations.</div><div class="line">    cmake &#123;</div><div class="line"></div><div class="line">      // Provides a relative path to your CMake build script.</div><div class="line">      path &quot;CMakeLists.txt&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="可选配置"><a href="#可选配置" class="headerlink" title="可选配置"></a>可选配置</h4><p>你可以在你的 module 层级的 build.gradle 文件中的 <code>defaultConfig {}</code> 代码块中，添加 <code>externalNativeBuild {}</code> 代码块，为 CMake 或 ndk-build 配置一些额外参数。当然，你也可以在你的构建配置中的其他每一个生产渠道重写这些属性。</p>
+<p>比如，如果你的 CMake 或者 ndk-build 项目中定义了多个本地库，你想在某个生产渠道使用这些本地库中的几个，你就可以使用 <code>targets</code> 属性来构建和打包。下面的代码展示了一些你可能会用到的属性：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">  ...</div><div class="line">  defaultConfig &#123;</div><div class="line">    ...</div><div class="line">    <span class="comment">// This block is different from the one you use to link Gradle</span></div><div class="line">    <span class="comment">// to your CMake or ndk-build script.</span></div><div class="line">    externalNativeBuild &#123;</div><div class="line"></div><div class="line">      <span class="comment">// For ndk-build, instead use ndkBuild &#123;&#125;</span></div><div class="line">      cmake &#123;</div><div class="line"></div><div class="line">        <span class="comment">// Passes optional arguments to CMake.</span></div><div class="line">        arguments <span class="string">"-DCMAKE_VERBOSE_MAKEFILE=TRUE"</span></div><div class="line"></div><div class="line">        <span class="comment">// Sets optional flags for the C compiler.</span></div><div class="line">        cFlags <span class="string">"-D_EXAMPLE_C_FLAG1"</span>, <span class="string">"-D_EXAMPLE_C_FLAG2"</span></div><div class="line"></div><div class="line">        <span class="comment">// Sets a flag to enable format macro constants for the C++ compiler.</span></div><div class="line">        cppFlags <span class="string">"-D__STDC_FORMAT_MACROS"</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  buildTypes &#123;...&#125;</div><div class="line"></div><div class="line">  productFlavors &#123;</div><div class="line">    ...</div><div class="line">    demo &#123;</div><div class="line">      ...</div><div class="line">      externalNativeBuild &#123;</div><div class="line">        cmake &#123;</div><div class="line">          ...</div><div class="line">          <span class="comment">// Specifies which native libraries to build and package for this</span></div><div class="line">          <span class="comment">// product flavor. If you don't configure this property, Gradle</span></div><div class="line">          <span class="comment">// builds and packages all shared object libraries that you define</span></div><div class="line">          <span class="comment">// in your CMake or ndk-build project.</span></div><div class="line">          targets <span class="string">"native-lib-demo"</span></div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    paid &#123;</div><div class="line">      ...</div><div class="line">      externalNativeBuild &#123;</div><div class="line">        cmake &#123;</div><div class="line">          ...</div><div class="line">          targets <span class="string">"native-lib-paid"</span></div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// You use this block to link Gradle to your CMake or ndk-build script.</span></div><div class="line">  externalNativeBuild &#123;</div><div class="line">    cmake &#123;...&#125;</div><div class="line">    <span class="comment">// or ndkBuild &#123;...&#125;</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="指定-ABI"><a href="#指定-ABI" class="headerlink" title="指定 ABI"></a>指定 ABI</h4><p>一般情况下，Gradle 会将你的本地库构建成 <code>.so</code> 文件，然后将其打包到你的 APK 中。如果你想 Gradle 构建并打包某个特定的 ABI 。你可以在你的 module 层级的 build.gradle 文件中使用 <code>ndk.abiFilters</code> 标签来指定他们：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">  ...</div><div class="line">  defaultConfig &#123;</div><div class="line">    ...</div><div class="line">    externalNativeBuild &#123;</div><div class="line">      cmake &#123;...&#125;</div><div class="line">      <span class="comment">// or ndkBuild &#123;...&#125;</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ndk &#123;</div><div class="line">      <span class="comment">// Specifies the ABI configurations of your native</span></div><div class="line">      <span class="comment">// libraries Gradle should build and package with your APK.</span></div><div class="line">      abiFilters <span class="string">'x86'</span>, <span class="string">'x86_64'</span>, <span class="string">'armeabi'</span>, <span class="string">'armeabi-v7a'</span>,</div><div class="line">                   <span class="string">'arm64-v8a'</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  buildTypes &#123;...&#125;</div><div class="line">  externalNativeBuild &#123;...&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>大多数情况，你只需要像上面的代码那样，在 <code>ndk {}</code> 代码块中指定 <code>abiFilters</code> 即可。如果你想控制 Gradle 构建、依赖你希望的东西，你就需要在 <code>defaultConfig.externalNativeBuild.cmake {}</code> 代码块或 <code>defaultConfig.externalNativeBuild.ndkBuild {}</code> 代码块中，配置其他的 <code>abiFilters</code> 标签。Gradle 会构建这些 ABI 配置，但是只会将 <code>defaultConfig.ndk {}</code> 代码块中指定的东西打包到 APk 中。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/18/ViewPager-解析-一/" rel="next" title="ViewPager 解析(一)">
+                <i class="fa fa-chevron-left"></i> ViewPager 解析(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/16/Android-中的转场动画及兼容处理/" rel="prev" title="Android 中的转场动画及兼容处理">
+                Android 中的转场动画及兼容处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载-NDK-和构建工具"><span class="nav-number">1.</span> <span class="nav-text">下载 NDK 和构建工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建支持-C-C-的新项目"><span class="nav-number">2.</span> <span class="nav-text">创建支持 C/C++ 的新项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译运行示例-APP"><span class="nav-number">2.1.</span> <span class="nav-text">编译运行示例 APP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将-C-C-代码添加到现有的项目中"><span class="nav-number">3.</span> <span class="nav-text">将 C/C++ 代码添加到现有的项目中</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建新的-native-source-文件"><span class="nav-number">3.1.</span> <span class="nav-text">创建新的 native source 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-CMake-构建脚本"><span class="nav-number">3.2.</span> <span class="nav-text">创建 CMake 构建脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加-NDK-APIs"><span class="nav-number">3.3.</span> <span class="nav-text">添加 NDK APIs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加其他的预编译库"><span class="nav-number">3.4.</span> <span class="nav-text">添加其他的预编译库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关联本地库与-Gradle"><span class="nav-number">4.</span> <span class="nav-text">关联本地库与 Gradle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Android-Studio-图形化界面"><span class="nav-number">4.1.</span> <span class="nav-text">使用 Android Studio 图形化界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动配置-Gradle"><span class="nav-number">4.2.</span> <span class="nav-text">手动配置 Gradle</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可选配置"><span class="nav-number">4.2.1.</span> <span class="nav-text">可选配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指定-ABI"><span class="nav-number">4.2.2.</span> <span class="nav-text">指定 ABI</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/';
+      var disqus_title = "在 Android Studio 2.2 中愉快地使用 C/C++";
+      var disqus_url = 'http://yoursite.com/2016/09/21/在-Android-Studio-2-2-中愉快地使用-C-C-md/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

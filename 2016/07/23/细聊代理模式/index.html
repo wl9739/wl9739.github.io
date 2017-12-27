@@ -1,0 +1,872 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="设计模式," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="代理模式在生活中其实很常见，比如，你一觉睡到中午不想去食堂打饭，于是你委托阿黄让他帮你把饭带回来，这就产生了一种代理关系，其中委托人是你，代理人是阿黄，而事件就是打饭，你为了足不出户就能吃到午饭而想到的这馊主意，就是一种代理方法。又比如，你女朋友从外地回来下飞机了，而你又因为一些不可描述的事情不能去接机，这时候你就可以叫你的好基友去机场帮你把女朋友接回来啊，于是你和你好基友就形成了一种代理关系，委">
+<meta property="og:type" content="article">
+<meta property="og:title" content="细聊代理模式">
+<meta property="og:url" content="http://yoursite.com/2016/07/23/细聊代理模式/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="代理模式在生活中其实很常见，比如，你一觉睡到中午不想去食堂打饭，于是你委托阿黄让他帮你把饭带回来，这就产生了一种代理关系，其中委托人是你，代理人是阿黄，而事件就是打饭，你为了足不出户就能吃到午饭而想到的这馊主意，就是一种代理方法。又比如，你女朋友从外地回来下飞机了，而你又因为一些不可描述的事情不能去接机，这时候你就可以叫你的好基友去机场帮你把女朋友接回来啊，于是你和你好基友就形成了一种代理关系，委">
+<meta property="og:image" content="http://static.zybuluo.com/wl9739/6480uv1m67vsqfr3lgnz125h/Class%20Diagram%20%281%29.png">
+<meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="细聊代理模式">
+<meta name="twitter:description" content="代理模式在生活中其实很常见，比如，你一觉睡到中午不想去食堂打饭，于是你委托阿黄让他帮你把饭带回来，这就产生了一种代理关系，其中委托人是你，代理人是阿黄，而事件就是打饭，你为了足不出户就能吃到午饭而想到的这馊主意，就是一种代理方法。又比如，你女朋友从外地回来下飞机了，而你又因为一些不可描述的事情不能去接机，这时候你就可以叫你的好基友去机场帮你把女朋友接回来啊，于是你和你好基友就形成了一种代理关系，委">
+<meta name="twitter:image" content="http://static.zybuluo.com/wl9739/6480uv1m67vsqfr3lgnz125h/Class%20Diagram%20%281%29.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/23/细聊代理模式/"/>
+
+
+  <title> 细聊代理模式 | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                细聊代理模式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-23T22:14:29+08:00" content="2016-07-23">
+              2016-07-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/23/细聊代理模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/23/细聊代理模式/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/23/细聊代理模式/" class="leancloud_visitors" data-flag-title="细聊代理模式">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>代理模式在生活中其实很常见，比如，你一觉睡到中午不想去食堂打饭，于是你委托阿黄让他帮你把饭带回来，这就产生了一种代理关系，其中委托人是你，代理人是阿黄，而事件就是打饭，你为了足不出户就能吃到午饭而想到的这馊主意，就是一种代理方法。又比如，你女朋友从外地回来下飞机了，而你又因为一些不可描述的事情不能去接机，这时候你就可以叫你的好基友去机场帮你把女朋友接回来啊，于是你和你好基友就形成了一种代理关系，委托人是你，代理人是好基友，而事件就是接女朋友回来，这种很有可能戴绿帽子的方法就是一种代理方法。然后，将这些代理方法总结规律，抽象出来，上升到一个通用层面的高度，就是代理模式。什么是代理模式呢？<strong>通俗地讲，有些事情本应该是你做的，但是你不想做或者不方便做的时候，叫别人替你完成。</strong>生活中种种“帮帮忙”的事件，都有代理模式的影子，所以说代理模式在生活中很常见。</p>
+<a id="more"></a>
+<h2 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h2><p>那么我们如何使用代码来描述代理模式呢？我们将上面的例子总结规律，抽象出来，就大概有下面两点：</p>
+<ul>
+<li>委托人和代理人都要完成同样的事情（共同实现事件的接口）。</li>
+<li>代理人要做的这件事其实是委托人请求的，也就是说，代理人本身并不知道如何做这件事，只有委托人告诉他了，代理人才知道怎么做。所以，代理人需要持有委托人的引用，在做这件事的时候就按照委托人的意愿去做。</li>
+</ul>
+<p>就比如第一个例子，“打饭”这件事情，由于你和阿黄都能做，所以可以写成一个接口，让你和阿黄都能实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 一个抽象的午饭类, 具体要吃什么样午饭, 看子类的心情。</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Lunch</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 吃什么样的午饭, 糖醋排骨?宫保鸡丁?。。。。</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">catagory</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后就要创建“你”这个对象了，由于你要吃午饭，就需要实现<code>Lunch</code>类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 你, 需要考虑午饭吃什么</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">You</span> <span class="keyword">implements</span> <span class="title">Lunch</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">catagory</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 你想吃宫保鸡丁</span></div><div class="line">        System.out.println(<span class="string">"我要吃宫保鸡丁盖饭"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后你很懒啊，需要找阿黄这个代理人帮你带午饭回来，所以还需要一个代理人对象，注意，由于代理事件是委托人（“你”）下发的，所以代理人对象里面还需要持有委托人的应用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 代理人, 由于需要帮委托人带饭, 也必须实现午饭接口</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyMan</span> <span class="keyword">implements</span> <span class="title">Lunch</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 必须是要有委托人的存在才行,没有委托人还需要代理人干嘛?</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> You mYou;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 在创建代理人对象的时候就传入一个委托人进来，这样就使得代理人可以持有委托人的引用了。</div><div class="line">     * 当然这只是一种方法，你也可以使用其他方法让代理人持有委托人的引用。</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ProxyMan</span><span class="params">(You you)</span> </span>&#123;</div><div class="line">        mYou = you;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">catagory</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// "你"要让代理人帮你做的事情。</span></div><div class="line">        mYou.catagory();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>OK，大功告成，然后我们创建一个场景（客户端）来模拟一下这个事情：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Proxy</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="comment">// 创建一个委托人</span></div><div class="line">        You you = <span class="keyword">new</span> You();</div><div class="line">        <span class="comment">// 创建一个代理人, 可以是阿黄, 也可以是其他人</span></div><div class="line">        ProxyMan aHuang = <span class="keyword">new</span> ProxyMan(you);</div><div class="line">        <span class="comment">// 让阿黄帮你带饭。</span></div><div class="line">        aHuang.catagory();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上便是代理模式的一种模版，结合代码，我们可以总结出代理模式的类图如下：</p>
+<p><img src="http://static.zybuluo.com/wl9739/6480uv1m67vsqfr3lgnz125h/Class%20Diagram%20%281%29.png" alt="Class Diagram (1).png-12.5kB"></p>
+<p>好了，扯了这么多，该给代理模式来下一个正式的定义了：<strong>为其他对象提供一种代理以控制对这个对象的访问。</strong></p>
+<p>另外，我们现在看到的代理模式，又称之为<strong>静态代理</strong>，因为代理类是需要我们自己手动编写的，后面我们会谈谈如何不用手动编写代理类，来实现代理模式。</p>
+<h3 id="静态代理的作用"><a href="#静态代理的作用" class="headerlink" title="静态代理的作用"></a>静态代理的作用</h3><p>当然，你会说，这种小事，委托类自己就能完成的嘛，非要多增加一些类干嘛。的确，如果单是这种简单的例子，使用任何设计模式都是多此一举。但在实际工作中，使用代理模式就会有如下的有点：</p>
+<ul>
+<li>解耦。这几乎是设计模式解决的根本问题。在这里，委托类可以专心地做好自己，麻烦的事情让别人代劳。</li>
+<li>拦截、扩展方法。代理类在实现接口方法的时候，除了直接调用委托类的方法外，还可以在不修改委托类的情况下，增加一些其他的功能，比如顺便带瓶可乐回来？</li>
+</ul>
+<p>为了能让我们的代理人阿黄能带瓶可乐回来，我们只需要在代理类中对<code>catagory()</code>方法增加一个“带瓶可乐回来”的功能即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyMan</span> <span class="keyword">implements</span> <span class="title">Lunch</span> </span>&#123;</div><div class="line">   </div><div class="line">    <span class="keyword">private</span> You mYou;</div><div class="line">  </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ProxyMan</span><span class="params">(You you)</span> </span>&#123;</div><div class="line">        mYou = you;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">catagory</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// "你"要让代理人帮你做的事情。</span></div><div class="line">        mYou.catagory();</div><div class="line">        </div><div class="line">        <span class="comment">// 打完饭后再去买瓶可乐</span></div><div class="line">        System.out.println(<span class="string">"嗯，买瓶可乐来喝"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在你应该能明显地感受到代理类的作用了。对，就是拦截方法、对委托的方法进行加工处理。  </p>
+<h2 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h2><p>然后有一天，当你中午醒来的时候，发现寝室里除了你以外空无一人，你为了双倍经验双倍金币所以不想浪费时间下楼去食堂打饭，但是你饿啊，要吃饭啊，这时你就只有等寝室再进来个人，让他帮你带饭（假设你不会叫外卖）。但是这会有一个问题，之前一醒来就可以让阿黄帮你带饭，是因为阿黄在你醒来之前就在寝室的（程序编译阶段就存在一个代理类），并且设定了阿黄“能打饭”（实现了<code>Lunch</code>接口）这个属性，所以简单的几行代码就能搞定。但是现在，你醒来之后（程序开始运行），发现并没有人可以帮你带饭（没有一个在编译阶段就实现了<code>Lunch</code>接口的代理类），在你等待的过程中也并不知道会是谁进来，阿黄，阿猫还是阿三（我们需要在程序运行的时候动态生成一个对象）？而且最重要的是，进来的那个家伙能帮你带饭才行（运行阶段生成的对象要实现<code>Lunch</code>接口）。</p>
+<p>那么我们再梳理一遍，现在的你应该怎么做才能吃到午饭呢？</p>
+<ul>
+<li>首先，“你”这个对象和“午饭”这个事件是必须存在的。</li>
+<li>其次，创建一个代理人。由于这个代理人是帮你做事情的，所以创建这个代理人的方法必须和“你”这个对象以及“午饭”事件接口相关。</li>
+<li>最后，让代理人去帮你打饭回来。</li>
+</ul>
+<p>让我们来用代码实现一下，<code>You</code>这个委托类和<code>Lunch</code>接口是要保留的，而<code>ProxyMan</code>这个代理类就不需要了。在场景中（client客户端），我们可以使用代理的一个静态方法<code>newProxyInstance</code>来创建一个代理对象，这个代理对象当然是实现了<code>Lunch</code>这个接口的。那么client中的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    <span class="comment">// 创建一个委托人</span></div><div class="line">    You you = <span class="keyword">new</span> You();</div><div class="line">    <span class="comment">// 创建一个代理人, 第一个参数是委托类的ClassLoader, 第二个参数是要实现的接口数组,</span></div><div class="line">    <span class="comment">// 第三个参数是一个匿名内部类, 对于代理人将要做的任何事情做拦截处理。</span></div><div class="line">    Lunch somebodyCouldTakeLunch = (Lunch) Proxy.newProxyInstance(you.getClass().getClassLoader(), <span class="keyword">new</span> Class[]&#123;Lunch.class&#125;, <span class="keyword">new</span> InvocationHandler() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">            <span class="keyword">return</span> method.invoke(you, args);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    <span class="comment">//  动态生成的代理人去带饭了</span></div><div class="line">    somebodyCouldTakeLunch.catagory();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当动态生成的代理人对象调用方法去带饭时（<code>somebodyCouldTakeLunch.catagory()</code>），就会触发匿名内部类<code>InvocationHandler</code>中的<code>invoke()</code>方法，这里面没有做其他处理，直接返回了“你”这个对象的对应方法。也就是说，动态生成的代理人是安装你的要求带回来宫爆鸡丁盖饭！</p>
+<p>一个简单的动态代理就这么完成了。然而动态代理是想当强大的，为了显示这种强大，这里再举一个例子，List集合大家都用过，这个接口有很多方法，如果我们想要屏蔽<code>remove</code>这个方法，这时我们就可以使用动态代理，来生成一个代理类List，每当调用到代理类的<code>remove()</code>方法时，就跑出异常，实现代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List <span class="title">getList</span><span class="params">(List list)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> (List) Proxy.newProxyInstance(List.class.getClassLoader(), <span class="keyword">new</span> Class[]&#123;List.class&#125;, <span class="keyword">new</span> InvocationHandler() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">                <span class="keyword">if</span> (method.getName().equals(<span class="string">"remove"</span>)) &#123;</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="keyword">return</span> method.invoke(list, args);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>当我们传入一个List对象进去，返回的就是经过处理后的代理List类，这时如果调用代理List的<code>remove</code>方法时就会报错了。 </p>
+<p>估计你已经知道了如何使用动态代理了，但是你肯定有很多疑惑，Proxy.newProxyInstance这个静态方法是怎么完成这件事的呢？我们看一下源码（以下分析的源码是基于jdk 1.6，相比起来比较简单易懂）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">newProxyInstance</span><span class="params">(ClassLoader loader, </span></span></div><div class="line">            Class&lt;?&gt;[] interfaces, </div><div class="line">            InvocationHandler h) </div><div class="line">            <span class="keyword">throws</span> IllegalArgumentException &#123; </div><div class="line">    </div><div class="line">    <span class="comment">// 检查 h 不为空，否则抛异常</span></div><div class="line">    <span class="keyword">if</span> (h == <span class="keyword">null</span>) &#123; </div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(); </div><div class="line">    &#125; </div><div class="line"></div><div class="line">    <span class="comment">// 获得与制定类装载器和一组接口相关的代理类类型对象</span></div><div class="line">    Class cl = getProxyClass(loader, interfaces); </div><div class="line"></div><div class="line">    <span class="comment">// 通过反射获取构造函数对象并生成代理类实例</span></div><div class="line">    <span class="keyword">try</span> &#123; </div><div class="line">        Constructor cons = cl.getConstructor(constructorParams); </div><div class="line">        <span class="keyword">return</span> (Object) cons.newInstance(<span class="keyword">new</span> Object[] &#123; h &#125;); </div><div class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(e.toString()); </div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(e.toString()); </div><div class="line">    &#125; <span class="keyword">catch</span> (InstantiationException e) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(e.toString()); </div><div class="line">    &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(e.toString()); </div><div class="line">    &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其他都好懂，可能就是<code>getProxyClass()</code>这个方法没见过。同时该方法也是动态代理中最核心的东西。由于该方法比较长，去除注释后也有120+行代码，所以我就不粘贴代码了，你可以自己去Java源码中去寻找，或者你可以查看这个链接: <a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/reflect/Proxy.java#Proxy.getProxyClass%28java.lang.ClassLoader,java.lang.Class%5B%5D%29" target="_blank" rel="external">getProxyClass()</a>，里面大概的流程是：先将传入的接口数组进行一系列检查，并存储所有接口名称，然后创建一个HashMap的缓存表，里面以不同的键值对形式来存放着待创建的代理类、正在被创建的代理类。然后根据一系列的规则确定包名，调用<code>ProxyGenerator.generateProxyClass()</code>方法创建代理类，这个方法会调用<code>ProxyGenerator</code>对象的<code>generateClassFile()</code>方法来生成代理类类文件的字节数组，具体生成方法可以参见这个链接中的源码: <a href="http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/sun/misc/ProxyGenerator.java#ProxyGenerator.generateClassFile%28%29" target="_blank" rel="external">generateClassFile()</a>，我就不再深入阐述了。生成代理类对象后，将其记录到<code>proxyClasses</code>表中，然后就是更新缓存表、清楚缓存表等一系列善后工作了。</p>
+<p>由于所有的代理类都有一个共同的父类<code>Proxy</code>，Java 的继承机制注定了这些动态代理类们无法实现对class的动态代理，原因是多继承在 Java 中本质上就行不通。所以Java只能进行接口的动态代理，这不得不说是一个遗憾。</p>
+<h2 id="静态代理和动态代理的联系"><a href="#静态代理和动态代理的联系" class="headerlink" title="静态代理和动态代理的联系"></a>静态代理和动态代理的联系</h2><p>然而在大多数情况下，我们的代理类在敲代码的时候就能确定下来，也就是说，我们日常开发的大多数情况都能使用静态代理。那么能不能用动态代理呢？当然能！为什么要用动态代理呢？</p>
+<p>当委托类实现的接口方法比较多的时候，写一个代理类一个个地处理委托方法就太麻烦了。这时我们可以在<code>invoke()</code>方法中对委托类的所有方法进行判断、拦截、扩展等处理。减少代码量。</p>
+<h2 id="Retrofit中的动态代理"><a href="#Retrofit中的动态代理" class="headerlink" title="Retrofit中的动态代理"></a>Retrofit中的动态代理</h2><p>Retrofit可谓是当下最火的Android网络请求框架之一了，我们在Retrofit的wiki上可以看到Retrofit的使用方法如下：</p>
+<p>1.创建一个请求方法的接口:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubService</span> </span>&#123;</div><div class="line">  <span class="meta">@GET</span>(<span class="string">"users/&#123;user&#125;/repos"</span>)</div><div class="line">  Call&lt;List&lt;Repo&gt;&gt; listRepos(<span class="meta">@Path</span>(<span class="string">"user"</span>) String user);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2.生成Retrofit对象，并且创建一个实现了<code>GitHubServiece</code>接口的实体类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</div><div class="line">    .baseUrl(<span class="string">"https://api.github.com/"</span>)</div><div class="line">    .build();</div><div class="line"></div><div class="line">GitHubService service = retrofit.create(GitHubService.class);</div></pre></td></tr></table></figure>
+<p>3.发起网络请求：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Call&lt;List&lt;Repo&gt;&gt; repos = service.listRepos(<span class="string">"octocat"</span>);</div></pre></td></tr></table></figure>
+<p>我们看第二步，传入了一个接口对象，然后就创建了一个实现了<code>GitHubService</code>接口的实体类？怎么实现的？Excuse me？这时候，就需要轻轻地点击去看源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">create</span><span class="params">(<span class="keyword">final</span> Class&lt;T&gt; service)</span> </span>&#123;</div><div class="line">    Utils.validateServiceInterface(service);</div><div class="line">    <span class="keyword">if</span> (validateEagerly) &#123;</div><div class="line">      eagerlyValidateMethods(service);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(service.getClassLoader(), <span class="keyword">new</span> Class&lt;?&gt;[] &#123; service &#125;,</div><div class="line">        <span class="keyword">new</span> InvocationHandler() &#123;</div><div class="line">          <span class="keyword">private</span> <span class="keyword">final</span> Platform platform = Platform.get();</div><div class="line"></div><div class="line">          <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object... args)</span></span></div><div class="line">              <span class="keyword">throws</span> Throwable &#123;</div><div class="line">            <span class="comment">// If the method is a method from Object then defer to normal invocation.</span></div><div class="line">            <span class="keyword">if</span> (method.getDeclaringClass() == Object.class) &#123;</div><div class="line">              <span class="keyword">return</span> method.invoke(<span class="keyword">this</span>, args);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (platform.isDefaultMethod(method)) &#123;</div><div class="line"></div><div class="line">              <span class="keyword">return</span> platform.invokeDefaultMethod(method, service, proxy, args);</div><div class="line">            &#125;</div><div class="line">            ServiceMethod serviceMethod = loadServiceMethod(method);</div><div class="line">            OkHttpCall okHttpCall = <span class="keyword">new</span> OkHttpCall&lt;&gt;(serviceMethod, args);</div><div class="line">            <span class="keyword">return</span> serviceMethod.callAdapter.adapt(okHttpCall);</div><div class="line">          &#125;</div><div class="line">        &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一个大写的动态代理！！！当然这里用的并不是规范的代理模式，因为我们知道，代理模式是需要有一个具体的委托类的，但是这里并没有一个具体的委托类，它是直接将传入的<code>GitHubService</code>接口，既作为事件接口，又作为代理类使用，显然这里拦截了接口中的方法，并不能对该接口的方法本身进行任何操作，这里使用动态代理，纯粹是为了拦截方法，获取接口方法上的注解信息，然后返回一个Adapter。这种可以算得上一个动态代理的扩展应用吧。</p>
+<p>静态代理和动态代理的应用场景很多，常见的框架都有用到（比如Spring框架、OrmLite框架），希望读完本篇文章能帮你理解静态代理和动态代理。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计模式/" rel="tag">#设计模式</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/14/教你一分钟实现模糊效果/" rel="next" title="教你一分钟实现动态模糊效果">
+                <i class="fa fa-chevron-left"></i> 教你一分钟实现动态模糊效果
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/25/Java中的注解/" rel="prev" title="Java中的注解">
+                Java中的注解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态代理"><span class="nav-number">1.</span> <span class="nav-text">静态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态代理的作用"><span class="nav-number">1.1.</span> <span class="nav-text">静态代理的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态代理"><span class="nav-number">2.</span> <span class="nav-text">动态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态代理和动态代理的联系"><span class="nav-number">3.</span> <span class="nav-text">静态代理和动态代理的联系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Retrofit中的动态代理"><span class="nav-number">4.</span> <span class="nav-text">Retrofit中的动态代理</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2016/07/23/细聊代理模式/';
+      var disqus_title = "细聊代理模式";
+      var disqus_url = 'http://yoursite.com/2016/07/23/细聊代理模式/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

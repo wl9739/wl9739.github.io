@@ -1,0 +1,925 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="如果只是为了看Android源码的话，有一个很方便的方法，用Android studio打开一个项目，双击shift，然后输入你想查看的类名，比如ListView，再敲一下回车，就OK了。那么，为什么要大费周章地下载源码然后编译导入呢？因为
+ 生命不息，折腾不止
+
+ 哈哈，开个玩笑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android源码的下载、编译与导入到Android Studio">
+<meta property="og:url" content="http://yoursite.com/2016/05/09/Android源码的下载、编译与导入到Android-Studio/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="如果只是为了看Android源码的话，有一个很方便的方法，用Android studio打开一个项目，双击shift，然后输入你想查看的类名，比如ListView，再敲一下回车，就OK了。那么，为什么要大费周章地下载源码然后编译导入呢？因为
+ 生命不息，折腾不止
+
+ 哈哈，开个玩笑。">
+<meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android源码的下载、编译与导入到Android Studio">
+<meta name="twitter:description" content="如果只是为了看Android源码的话，有一个很方便的方法，用Android studio打开一个项目，双击shift，然后输入你想查看的类名，比如ListView，再敲一下回车，就OK了。那么，为什么要大费周章地下载源码然后编译导入呢？因为
+ 生命不息，折腾不止
+
+ 哈哈，开个玩笑。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/05/09/Android源码的下载、编译与导入到Android-Studio/"/>
+
+
+  <title> Android源码的下载、编译与导入到Android Studio | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android源码的下载、编译与导入到Android Studio
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-09T00:02:03+08:00" content="2016-05-09">
+              2016-05-09
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/09/Android源码的下载、编译与导入到Android-Studio/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/09/Android源码的下载、编译与导入到Android-Studio/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/05/09/Android源码的下载、编译与导入到Android-Studio/" class="leancloud_visitors" data-flag-title="Android源码的下载、编译与导入到Android Studio">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>如果只是为了看Android源码的话，有一个很方便的方法，用Android studio打开一个项目，双击<code>shift</code>，然后输入你想查看的类名，比如<code>ListView</code>，再敲一下回车，就OK了。那么，为什么要大费周章地下载源码然后编译导入呢？因为</p>
+ <blockquote class="blockquote-center">生命不息，折腾不止</blockquote>
+
+<p> 哈哈，开个玩笑。</p>
+ <a id="more"></a>
+<p>首先要注意一点，Android源码只能在Linux和Mac OS系统上进行编译，如果你使用的是Windows系统，可以在Linux虚拟机中进行编译。</p>
+<p>如果你使用的是Mac OS，那么可以参考官网的这一篇文章来进行环境配置：<a href="https://source.android.com/source/initializing.html#setting-up-a-mac-os-x-build-environment" target="_blank" rel="external">Setting up a Mac OS build environment
+</a></p>
+<blockquote>
+<p>如果是用的Linux系统，则可以参考这里：<a href="https://source.android.com/source/initializing.html#setting-up-a-linux-build-environment" target="_blank" rel="external">Setting up a Linux build environment
+</a></p>
+</blockquote>
+<p>由于我使用的是Mac OS系统，所以下面所有的方法适合于Mac。</p>
+<h2 id="下载Android源码"><a href="#下载Android源码" class="headerlink" title="下载Android源码"></a>下载Android源码</h2><h3 id="创建一块大小写敏感的磁盘分区"><a href="#创建一块大小写敏感的磁盘分区" class="headerlink" title="创建一块大小写敏感的磁盘分区"></a>创建一块大小写敏感的磁盘分区</h3><p>由于Mac OS默认的是大小写不敏感的文件系统，而一些git的命令（比如git status）在这种系统中会有一些行为异常。所以我们要创建一个大小写敏感的分区，在Mac下，分区有两种方式：</p>
+<p>可以使用Mac自带的<code>磁盘工具</code>进行分区，注意选择的格式是<code>：OS X扩展（区分大小写，日志式）</code>，建议大小为80G（下载源码需要36G，编译完后一共占用75G）。</p>
+<p>官方推荐的做法是使用命令行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hdiutil create -type SPARSE -fs &apos;Case-sensitive Journaled HFS+&apos; -size 80g ~/android.dmg</div></pre></td></tr></table></figure>
+<p>该命令会创建一个后缀为<code>.dmg</code>或<code>.dmg.sparseimage</code>的文件。</p>
+<p>如果在下载编译过程中需要将分区扩容，可以使用如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hdiutil resize -size &lt;new-size-you-want&gt;g ~/android.dmg.sparseimage</div></pre></td></tr></table></figure>
+<h3 id="安装jdk。"><a href="#安装jdk。" class="headerlink" title="安装jdk。"></a>安装jdk。</h3><p>按照<a href="https://source.android.com/source/requirements.html#software-requirements" target="_blank" rel="external">Software requirements</a>的要求，jdk版本必须为<code>jdk-7u71-macosx-x64</code>，如果电脑里面安装的是jdk8，则需重新下载安装。</p>
+<p>为了方便，我在<code>~/.bash_profile</code>文件中做了配置，方便jdk版本切换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export JAVA_7_PATH=/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home</div><div class="line">export JAVA_8_PATH=/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home</div><div class="line">export JAVA_HOME=$JAVA_7_PATTH</div></pre></td></tr></table></figure>
+<h3 id="安装其他软件"><a href="#安装其他软件" class="headerlink" title="安装其他软件"></a>安装其他软件</h3><p>然后需要下载<a href="https://www.macports.org/install.php" target="_blank" rel="external">MacPorts</a>，安装完成之后调用下面的命令来下载安装其他需要的软件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ POSIXLY_CORRECT=1 sudo port install gmake libsdl git gnupg</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果这里报错了，说找不到<code>port</code>命令，就需要在<code>~/.bash_profile</code>中添加一行：<code>export PATH=/opt/local/bin:$PATH</code>。</p>
+</blockquote>
+<p>当然，还需要安装Xcode。官网上要求Mac OS系统中需要使用的Xcode的版本很低，但实际证明，我电脑上使用的新版Xcode同样可以正常运行。</p>
+<h3 id="设置文件描述符限制"><a href="#设置文件描述符限制" class="headerlink" title="设置文件描述符限制"></a>设置文件描述符限制</h3><p>在Mac OS中，默认限制的同时打开的文件数量很少，不能满足编译过程中的高并发需要，因此，在<code>~/.bash_profile</code>中添加下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># set the number of open files to be 1024</div><div class="line">ulimit -S -n 1024</div></pre></td></tr></table></figure>
+<h2 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h2><h3 id="下载Repo"><a href="#下载Repo" class="headerlink" title="下载Repo"></a>下载Repo</h3><p>下载Repo之前，需要创建一个<code>bin</code>文件，并且将路径写入到path中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir ~/bin</div><div class="line">$ PATH=~/bin:$PATH</div></pre></td></tr></table></figure>
+<p>然后在命令行中输入下面的命令，下载Repo，并且修改属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</div><div class="line">$ chmod a+x ~/bin/repo</div></pre></td></tr></table></figure>
+<p>可以将Repo中的下载地址改为清华大学tuna镜像源，这样就不用挂着VPN下载了。编辑Repo，修改<code>REPO_URL</code>后的地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REPO_URL = &apos;https://gerrit-googlesource.lug.ustc.edu.cn/git-repo&apos;</div></pre></td></tr></table></figure>
+<h3 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h3><p>现在，进入到我们创建的额分区，创建一个文件夹作为源码的根文件，进入根目录后，调用下面的方法，执行repo init：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-6.0.1_r17</div></pre></td></tr></table></figure>
+<p>完成之后，调用下面的命令来下载源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ repo sync</div></pre></td></tr></table></figure>
+<p>由于下载源码的时间太长，中途可能会出现链接断开的情况，虽然repo同步是支持断点续传，但是不知道什么时候会断开，这一点很麻烦，所以可以写一个shell脚本来开启同步：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash </div><div class="line">   #FileName  get_android.sh</div><div class="line">   PATH=~/bin:$PATH </div><div class="line">   repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-6.0.1_r17</div><div class="line">   repo sync </div><div class="line">   while [ $? = 1 ]; do </div><div class="line">       echo &quot;================sync failed, re-sync again =====&quot; </div><div class="line">       sleep 3 </div><div class="line">       repo sync </div><div class="line">   done</div></pre></td></tr></table></figure>
+<p>将上面的代码保存成get_android.sh，放在下载的源码的根目录下，输入下面的指令开始下载:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./get_android.sh</div></pre></td></tr></table></figure>
+<p>完成后可以删除<code>.repo/</code>文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm -rf .repo/</div></pre></td></tr></table></figure>
+<h3 id="编译源码-1"><a href="#编译源码-1" class="headerlink" title="编译源码"></a>编译源码</h3><h4 id="兼容处理"><a href="#兼容处理" class="headerlink" title="兼容处理"></a>兼容处理</h4><p>如果你和我一样，使用的是Mac OS 的EI Capitan系统，在编译之前，需要做一些兼容性处理。</p>
+<p>打开<code>build/core/combo/mac_version.mk</code>文件，在<code>mac_sdk_versions_supported</code>变量后添加版本号10.11:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mac_sdk_versions_supported :=  10.6 10.7 10.8 10.9 10.11</div></pre></td></tr></table></figure>
+<p>然后在源码根目录下调用下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ source build/envsetup.sh</div></pre></td></tr></table></figure>
+<p>或者为了少输入几个字母，你也可以用下面的命令代替：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ . build/envsetup.sh</div></pre></td></tr></table></figure>
+<h4 id="选择设备"><a href="#选择设备" class="headerlink" title="选择设备"></a>选择设备</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">$ $lunch</div><div class="line"></div><div class="line">You&apos;re building on Darwin</div><div class="line"></div><div class="line">Lunch menu... pick a combo:</div><div class="line">     1. aosp_arm-eng</div><div class="line">     2. aosp_arm64-eng</div><div class="line">     3. aosp_mips-eng</div><div class="line">     4. aosp_mips64-eng</div><div class="line">     5. aosp_x86-eng</div><div class="line">     6. aosp_x86_64-eng</div><div class="line">     7. aosp_deb-userdebug</div><div class="line">     8. aosp_flo-userdebug</div><div class="line">     9. full_fugu-userdebug</div><div class="line">     10. aosp_fugu-userdebug</div><div class="line">     11. mini_emulator_arm64-userdebug</div><div class="line">     12. m_e_arm-userdebug</div><div class="line">     13. mini_emulator_mips-userdebug</div><div class="line">     14. mini_emulator_x86-userdebug</div><div class="line">     15. mini_emulator_x86_64-userdebug</div><div class="line">     16. aosp_flounder-userdebug</div><div class="line">     17. aosp_angler-userdebug</div><div class="line">     18. aosp_bullhead-userdebug</div><div class="line">     19. aosp_hammerhead-userdebug</div><div class="line">     20. aosp_hammerhead_fp-userdebug</div><div class="line">     21. aosp_shamu-userdebug</div></pre></td></tr></table></figure>
+<p>根据后缀可以判断出使用的场景如下：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user</td>
+<td>权限少，用于刷机使用</td>
+</tr>
+<tr>
+<td>userdebug</td>
+<td>和“user”类似，但可以root，并且可以调试</td>
+</tr>
+<tr>
+<td>eng</td>
+<td>具有开发配置，并且有额外的调试工具</td>
+</tr>
+</tbody>
+</table>
+<p>然后选择需要的类型，比如5。</p>
+<h4 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h4><p>从<a href="https://developers.google.com/android/nexus/drivers" target="_blank" rel="external">这里</a>下载所需的驱动，下载完后解压，会发现三个<code>.sh</code>文件，依次执行。如果不安装驱动的话，机器（真机和模拟器）运行时只能停留在启动界面。</p>
+<h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>使用下面的命令开始编译源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ make -j16</div></pre></td></tr></table></figure>
+<p>参数<code>-jN</code>中的数字N，根据你电脑的线程数量的1～2倍来设置，比如我的电脑是双核CPU，每个CPU为双核心四线程，那么就有8个线程。所以我配置的数量为16。</p>
+<p>编译过程中可能会失败，不过不用担心，再次编译的时候会接着编译，而不会从头开始编译。</p>
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><h4 id="刷机"><a href="#刷机" class="headerlink" title="刷机"></a>刷机</h4><p>如果有真机并且连接到了电脑，准备刷机的话，输入以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ adb reboot bootloader</div></pre></td></tr></table></figure>
+<p>进入刷机模式后，输入下面的指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ fastboot -w flashall</div></pre></td></tr></table></figure>
+<h4 id="运行模拟器"><a href="#运行模拟器" class="headerlink" title="运行模拟器"></a>运行模拟器</h4><p>运行模拟器很简单，输入下面的命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ emulator</div></pre></td></tr></table></figure>
+<h2 id="导入到Android-Studio"><a href="#导入到Android-Studio" class="headerlink" title="导入到Android Studio"></a>导入到Android Studio</h2><p>在导入到Android Studio之前，还需要进行一些处理。首先是要编译idegen模块，使用如下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mmm development/tools/idegen/</div></pre></td></tr></table></figure>
+<blockquote>
+<p>m、mm、mmm命令可以让你只编译单独模块，而不用费大量的时间比编译整个Android系统。</p>
+</blockquote>
+<p>如果你的shell和我一样使用的是zsh，而不是bash，使用<code>mmm</code>就会得到错误信息。因为<code>oh-my-zsh</code>是不支持<code>mmm</code>的，具体可以参见：<a href="https://code.google.com/p/android/issues/detail?id=174268" target="_blank" rel="external">Android source code build commend “mm or mmm” couldn’t use in oh-my-zsh</a>，因此，这里只能切换回bash，切换回bash的命令是<code>chsh -s /bin/bash</code>。</p>
+<blockquote>
+<p>当然如果你和我一样得到了错误信息<code>-bash: mmm: command not found</code>，那么就需要在源码目录下执行如下指令（点与build之间是有空格的）：<code>. build/envsetup.sh</code>  </p>
+</blockquote>
+<p>然后在根目录生成对应的android.ipr、android.iml IDEA工程配置文件。使用以下脚本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ development/tools/idegen/idegen.sh</div></pre></td></tr></table></figure>
+<p>大概半分钟后（视你的电脑配置决定），会在源码根目录下生成<code>android.ipr</code>和<code>android.iml</code>。</p>
+<p>使用<code>Android studio</code>打开任意一个项目，然后选择<code>File</code>-&gt;<code>Open</code>，打开根目录下的<code>android.ipr</code>文件夹，然后等待漫长的index完成后，就可以方便查看源码了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/01/使用注解代替Enum的使用/" rel="next" title="使用注解代替Enum的使用">
+                <i class="fa fa-chevron-left"></i> 使用注解代替Enum的使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/17/Android-获取设备信息/" rel="prev" title="Android 获取设备信息">
+                Android 获取设备信息 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载Android源码"><span class="nav-number">1.</span> <span class="nav-text">下载Android源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一块大小写敏感的磁盘分区"><span class="nav-number">1.1.</span> <span class="nav-text">创建一块大小写敏感的磁盘分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装jdk。"><span class="nav-number">1.2.</span> <span class="nav-text">安装jdk。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装其他软件"><span class="nav-number">1.3.</span> <span class="nav-text">安装其他软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置文件描述符限制"><span class="nav-number">1.4.</span> <span class="nav-text">设置文件描述符限制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译源码"><span class="nav-number">2.</span> <span class="nav-text">编译源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载Repo"><span class="nav-number">2.1.</span> <span class="nav-text">下载Repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载源码"><span class="nav-number">2.2.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译源码-1"><span class="nav-number">2.3.</span> <span class="nav-text">编译源码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#兼容处理"><span class="nav-number">2.3.1.</span> <span class="nav-text">兼容处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择设备"><span class="nav-number">2.3.2.</span> <span class="nav-text">选择设备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装驱动"><span class="nav-number">2.3.3.</span> <span class="nav-text">安装驱动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译"><span class="nav-number">2.3.4.</span> <span class="nav-text">编译</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行"><span class="nav-number">2.4.</span> <span class="nav-text">运行</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#刷机"><span class="nav-number">2.4.1.</span> <span class="nav-text">刷机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行模拟器"><span class="nav-number">2.4.2.</span> <span class="nav-text">运行模拟器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入到Android-Studio"><span class="nav-number">3.</span> <span class="nav-text">导入到Android Studio</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2016/05/09/Android源码的下载、编译与导入到Android-Studio/';
+      var disqus_title = "Android源码的下载、编译与导入到Android Studio";
+      var disqus_url = 'http://yoursite.com/2016/05/09/Android源码的下载、编译与导入到Android-Studio/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>

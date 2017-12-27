@@ -1,0 +1,940 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="在开发过程中，往往会听到 “性能优化” 这个概念，这个概念很大，比如网络性能优化、耗电量优化等等，对我们开发者而言，最容易做的，或者是影响最大的，应该是 View 的性能优化。一般小项目或许用不上 View 性能优化，然而，当业务愈加庞大、界面愈加复杂的时候，没有一个良好的开发习惯和 View 布局优化常识，做出来的界面很容易出现 “卡顿” 现象，从而严重影响用户体验。而对于我们开发者来说，了解一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 View 绘制谈性能优化">
+<meta property="og:url" content="http://yoursite.com/2017/02/26/从-View-绘制谈性能优化/index.html">
+<meta property="og:site_name" content="湫水">
+<meta property="og:description" content="在开发过程中，往往会听到 “性能优化” 这个概念，这个概念很大，比如网络性能优化、耗电量优化等等，对我们开发者而言，最容易做的，或者是影响最大的，应该是 View 的性能优化。一般小项目或许用不上 View 性能优化，然而，当业务愈加庞大、界面愈加复杂的时候，没有一个良好的开发习惯和 View 布局优化常识，做出来的界面很容易出现 “卡顿” 现象，从而严重影响用户体验。而对于我们开发者来说，了解一">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcly1fd3x1rxbj3j30iv0c0dgr.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fd3x3lqjtyj31kw0htn06.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fd3x3kz079j316o0v0n0a.jpg">
+<meta property="og:updated_time" content="2017-02-26T07:47:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 View 绘制谈性能优化">
+<meta name="twitter:description" content="在开发过程中，往往会听到 “性能优化” 这个概念，这个概念很大，比如网络性能优化、耗电量优化等等，对我们开发者而言，最容易做的，或者是影响最大的，应该是 View 的性能优化。一般小项目或许用不上 View 性能优化，然而，当业务愈加庞大、界面愈加复杂的时候，没有一个良好的开发习惯和 View 布局优化常识，做出来的界面很容易出现 “卡顿” 现象，从而严重影响用户体验。而对于我们开发者来说，了解一">
+<meta name="twitter:image" content="https://ww3.sinaimg.cn/large/006tKfTcly1fd3x1rxbj3j30iv0c0dgr.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/26/从-View-绘制谈性能优化/"/>
+
+
+  <title> 从 View 绘制谈性能优化 | 湫水 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">湫水</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                从 View 绘制谈性能优化
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-26T15:36:52+08:00" content="2017-02-26">
+              2017-02-26
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/26/从-View-绘制谈性能优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/02/26/从-View-绘制谈性能优化/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/26/从-View-绘制谈性能优化/" class="leancloud_visitors" data-flag-title="从 View 绘制谈性能优化">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在开发过程中，往往会听到 “性能优化” 这个概念，这个概念很大，比如网络性能优化、耗电量优化等等，对我们开发者而言，最容易做的，或者是影响最大的，应该是 View 的性能优化。一般小项目或许用不上 View 性能优化，然而，当业务愈加庞大、界面愈加复杂的时候，没有一个良好的开发习惯和 View 布局优化常识，做出来的界面很容易出现 “卡顿” 现象，从而严重影响用户体验。而对于我们开发者来说，了解一些 View 性能优化的常识，增强开发技巧，可以说是一门必备的功课。</p>
+<p>为了更好地理解 View 性能优化的原理，以及造成 “卡顿” 的可能原因，我们从 View 的绘制流程开始讨论。之后，会介绍一些写界面布局常用的一些标签及使用注意事项。</p>
+<a id="more"></a>
+<h2 id="View-绘制流程"><a href="#View-绘制流程" class="headerlink" title="View 绘制流程"></a><strong>View 绘制流程</strong></h2><p>我们都知道，View 的绘制分为三个阶段：测量、布局和绘制，这三个阶段各自的作用如下：</p>
+<ul>
+<li>measure: 为整个 View 树计算实际的大小，即设置实际的高（对应属性：mMeasureHeight）和宽（对应属性：mMeasureWidth），每个 View 的控件的实际宽高都是由父视图和本身视图所决定的。</li>
+<li>layout：为将整个根据子视图的大小以及布局参数将 View 树放到合适的位置上。</li>
+<li>draw：利用前两部得到的参数，将视图显示在屏幕上。</li>
+</ul>
+<p>当一个 Activity 对象被创建完成之后，会将一个 DecorView 对象添加到 Window 中，同时会创建一个 ViewRootImpl 对象，并将 ViewRootImpl 对象和 DecorView 对象建立联系，然后绘制流程就会从 ViewGroup 的 performTraversals 方法开始执行，如下图所示：</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tKfTcly1fd3x1rxbj3j30iv0c0dgr.jpg" alt="View 绘制流程"></p>
+<p>整个绘制流程从 ViewRootImpl 的 <code>performTraversals()</code> 方法开始，在该方法内会调用 <code>performMeasure()</code> 方法进行测量子 View（也就是根 View，顶级的 ViewGroup）。然后在 performMeasure 中会调用 <code>measure()</code> 方法来执行具体的测量逻辑，这个时候，代码逻辑就从 ViewRootImp 跳转到了 View 类中了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">performMeasure</span><span class="params">(<span class="keyword">int</span> childWidthMeasureSpec, <span class="keyword">int</span> childHeightMeasureSpec)</span> </span>&#123;</div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_VIEW, <span class="string">"measure"</span>);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        Trace.traceEnd(Trace.TRACE_TAG_VIEW);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 <code>measure()</code> 方法中，有一个 <code>onMeasure()</code> 方法，用于这个方法用来测量子元素的大小，也将测量流程从父元素传递到子元素当中去。紧接着子元素会重复父元素的测量流程，如此反复，就完成了一颗 View 树的遍历。当 measure() 方法完成后，会将结果存储在 LongSparseLongArray 类型的变量 mMeasureCache 中。</p>
+<p>在 <code>performTraversals()</code> 方法中，调用完 <code>performMeasure()</code>，后，会接着调用 <code>performLayout()</code> 和 <code>performDraw()</code> 进行 View 的布局和绘制。这两个流程和测量的流程差不多，就不再叙述。</p>
+<p>而这三个阶段分别作了什么呢？源码太长就不贴了，主要的作用如下：</p>
+<p><strong>Measure 过程</strong></p>
+<ul>
+<li>设置本 View 视图的最终大小。</li>
+<li>如果该 View 对象是个 ViewGroup 类型，需要重写该 onMeasure() 方法，对其子视图进行遍历 measure() 过程。<ul>
+<li>measureChildren()，内部使用了一个 for 循环对子视图进行遍历，分别调用了子视图的 measure() 方法。</li>
+<li>measureChild()，为指定的子视图 measure，会被 measureChildren 调用。</li>
+<li>measureChildWidthMargins()，为指定的子视图考虑了 margin 和 padding 的 measure。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Layout 过程</strong></p>
+<ul>
+<li>layout() 方法会设置该 View 视图位于父视图的坐标轴，即 mLeft, mTop, mRight, mBottom.（调用 setFrame() 方法去实现），接下来回调 onLayout() 方法（如果该 View 是 ViewGroup 对象，需要实现该方法，对每个视图进行布局）；</li>
+<li>如果该 View 是个 ViewGroup 类型，需要遍历每个子视图 childView。调用该子视图的 layout() 方法去设置它的坐标值。</li>
+</ul>
+<p><strong>Draw 过程</strong></p>
+<ul>
+<li>绘制背景</li>
+<li>如果要视图显示渐变框，这里会做一些准备工作</li>
+<li>绘制视图本身，即调用 onDraw() 方法。在 view 中，onDraw() 是个空方法，也就是说具体的视图都啊哟覆盖该方法来实现自己的显示（比如 TextView 在这里实现了绘制文字的过程）。而对于 ViewGroup 则不需要实现该方法，因为作为<strong>容器</strong>是没有内容的，其包含了多个子 View，而子 View 已经实现了自己的绘制方法，因此只需要告诉子 View 绘制自己就行了，也就是下面的 dispatchDraw() 方法。</li>
+<li>绘制视图，即 dispatchDraw() 方法。在 View 中这是个空方法，具体的视图不需要实现该方法，它是专门为容器类准备的，也就是容器必须实现该方法。</li>
+<li>如果需要，开始绘制渐变框。</li>
+<li>绘制滚动条。</li>
+</ul>
+<p>因此，如果我们去掉不必要的背景，去掉渐变框，去掉滚动条，在一定程度上是能加快绘制速度的。</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p><strong>帧率</strong>（frame per second，即 FPS），指的是每秒刷新的次数。一般电影的帧率为 24FPS、25FPS 和 30FPS。而游戏的帧率一般要保持 60FPS 才能叫做流畅，当游戏的 FPS 低于 30 时，我们就会感受到明显地卡顿。Android 系统每隔 16ms 触发一次 UI 刷新操作，这就要求我们的应用都能在 16ms 内绘制完成。如果有一次的界面绘制用了 22ms，那么，用户在 32ms 内看见的都是同一个界面。情况严重的就会让用户感受到应用运行”卡顿“。</p>
+<p>因此，优化的目的，主要就是减少绘制时间，尽量保证每个界面都能在 16ms 内完成绘制。而优化的方案，从上面的分析，我们可以分两个方面：</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fd3x3lqjtyj31kw0htn06.jpg" alt="如何优化"></p>
+<p><strong>从内优化</strong></p>
+<ol>
+<li>减少 View 层级。这样会加快 View 的循环遍历过程。</li>
+<li>去除不必要的背景。由于 在 draw 的步骤中，会单独绘制背景。因此去除不必要的背景会加快 View 的绘制。</li>
+<li>尽可能少的使用 margin、padding。在测量和布局的过程中，对有 margin 和 padding 的 View 会进行单独的处理步骤，这样会花费时间。我们可以在父 View 中设置 margin 和 padding，从而避免在子 View 中每个单独设置和配置。</li>
+<li>去除不必要的 scrollbar。这样能减少 draw 的流程。</li>
+<li>慎用渐变。能减少 draw 的流程。</li>
+</ol>
+<p><strong>从外优化</strong></p>
+<ol>
+<li>布局嵌套过于复杂。这会直接 View 的层级变多。</li>
+<li>View 的过渡绘制。</li>
+<li>View 的频繁重新渲染。</li>
+<li>UI 线程中进行耗时操作。在 Android 4.0 之后，不允许在 UI 线程做网络操作。</li>
+<li>冗余资源及错误逻辑导致加载和执行缓慢。简单的说，就是代码写的烂。</li>
+<li>频繁触发 GC，导致渲染受阻。当系统在短时间内有大量对象销毁，会造成内存抖动，频繁触发 GC 线程，而 GC 线程的优先级高于 UI 线程，因而会造成渲染受阻。</li>
+</ol>
+<p>外部因素最为致命！日常开发中更多的应该关心布局的嵌套层级和冗余资源。</p>
+<p>比如，当需要将一个 TextView 和一张图片放在一起展示时，我们可以考虑使用 TextView 的 <code>drawableLeft</code>(drawableRight、drawableTop、drawableBottom) 属性来设置图片，而不是使用一个 LinearLayout 来将 TextView 和 ImageView 封装在一起，这样就能减少 View 的绘制层级。</p>
+<p>又比如，子元素和父元素都是相同的背景时，就不必在每个子元素中都添加背景属性，等等。</p>
+<h2 id="线性布局和相对布局"><a href="#线性布局和相对布局" class="headerlink" title="线性布局和相对布局"></a>线性布局和相对布局</h2><p>线性布局和相对布局是我们平时使用最多的布局方式。在一般开发场景中，两者的渲染效率没有明显差别，但是如果真要较真的话，他们之间还是有细微差别的。</p>
+<p>RelativeLayout 在测量子 View 排列方式是基于彼此的依赖关系，这种依赖关系导致了子 View 的显示顺序不一定和布局中的 View 的顺序相同，在确定所有子 View 的时候，会先对所有的 View 进行排序，同时，由于 RelativeLayout 允许 “A在横向上依赖于 B，B 在纵向上依赖于 A“，因此会测量两次，导致测量效率较低。而 LinearLayout 由于有 orientation 属性，则测量就很简单了。</p>
+<p>LinearLayout 在设置 weight 属性的时候，也会导致二次测量：首先会遍历测量没有 weight 属性的 View，然后再遍历测量包含 weight 属性的 View。</p>
+<p><strong>布局比较</strong></p>
+<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fd3x3kz079j316o0v0n0a.jpg" alt="布局比较"></p>
+<p>选择布局容器的基本准则：</p>
+<ul>
+<li>尽可能的使用 RelativeLayout 以减少 View 层级，使 View 树趋于扁平化。</li>
+<li>在<strong>不影响层级深度的情况下，使用 LinearLayout 和 FrameLayout 而不是 RelativeLayout</strong>。</li>
+</ul>
+<h2 id="布局标签"><a href="#布局标签" class="headerlink" title="布局标签"></a>布局标签</h2><p>说到布局标签，我想大概很多人都用过一些。为了说明 Android 系统对于这些标签的处理，我们先看一下 XML 布局是如何解析绘制到屏幕的。</p>
+<p>在 Activity 的 <code>onCreate()</code>  方法中，我们一般会调用 <code>setContentView()</code> 方法，这个方法负责将 XML 文件解析绘制到屏幕上，这个方法很简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(@LayoutRes <span class="keyword">int</span> layoutResID)</span> </span>&#123;</div><div class="line">    getWindow().setContentView(layoutResID);</div><div class="line">    initWindowDecorActionBar();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个方法第一行是调用 Window 类的 setContentView()，第二行是初始化 ActionBar。Window 类是一个抽象类，它是所有视图相关类的顶层类，其唯一一个实现类是 <code>PhoneWindow</code>，在 <code>PhoneWindow</code> 类的 <code>setContentView()</code> 方法中，会先移除掉所有的 view 视图，然后再调用 LayoutInflater.inflate() 方法绘制，在 LayoutInflater 的 inflate() 方法中，会创建一个 <code>XmlResourceParser</code> 解析器，然后再进行解析。我们来看看 inflate() 方法里面干了什么：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(XmlPullParser parser, @Nullable ViewGroup root, <span class="keyword">boolean</span> attachToRoot)</span> </span>&#123;</div><div class="line">  	View result = root;</div><div class="line">  	......</div><div class="line">    <span class="keyword">final</span> String name = parser.getName();</div><div class="line">  	<span class="comment">// 这里的 TAG_MERGE 其实就是 merge 标签</span></div><div class="line">    <span class="keyword">if</span> (TAG_MERGE.equals(name)) &#123;</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span> || !attachToRoot) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InflateException(<span class="string">"&lt;merge /&gt; can be used only with a valid "</span> + <span class="string">"ViewGroup root and attachToRoot=true"</span>);</div><div class="line">        &#125;</div><div class="line">        rInflate(parser, root, inflaterContext, attrs, <span class="keyword">false</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      	<span class="comment">// 这里的 createViewFromTag() 方法创建的是根布局</span></div><div class="line">      	<span class="keyword">final</span> View temp = createViewFromTag(root, name, inflaterContext, attrs);</div><div class="line">		......</div><div class="line">        ViewGroup.LayoutParams params = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (root != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">// 根据 xml 属性生成布局参数</span></div><div class="line">            params = root.generateLayoutParams(attrs);</div><div class="line">            <span class="comment">// 生成子元素的布局</span></div><div class="line">            rInflateChildren(parser, temp, attrs, <span class="keyword">true</span>);</div><div class="line">            <span class="keyword">if</span> (root != <span class="keyword">null</span> &amp;&amp; attachToRoot) &#123;</div><div class="line">                root.addView(temp, params);</div><div class="line">            &#125;</div><div class="line">            ......</div><div class="line">        &#125;</div><div class="line">		......</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>为了方便阅读，我将一些代码省略掉，从上面可以看出大致的解析流程：先判断是否有 merge 标签，然后检查其合理性，注意源码已经说明了，<strong>merge 标签只能用在 ViewGroup 的根布局中，并且 attachToRoot 必须要设置为 true</strong>。然后调用 <code>rInflate()</code> 方法；如果没有 merge 标签，就会调用 <code>rInflateChildren()</code> 方法生成子元素的布局，而这个 <code>rInflateChildren()</code> 方法最终也是辗转到前面的 <code>rInflate()</code> 方法中，我们来看一下这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">rInflate</span><span class="params">(XmlPullParser parser, View parent, Context context,</span></span></div><div class="line">    AttributeSet attrs, <span class="keyword">boolean</span> finishInflate) <span class="keyword">throws</span> XmlPullParserException, IOException &#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> depth = parser.getDepth();</div><div class="line">    <span class="keyword">int</span> type;</div><div class="line">    <span class="keyword">while</span> (((type = parser.next()) != XmlPullParser.END_TAG ||</div><div class="line">            parser.getDepth() &gt; depth) &amp;&amp; type != XmlPullParser.END_DOCUMENT) &#123;</div><div class="line">        <span class="keyword">if</span> (type != XmlPullParser.START_TAG) &#123;</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">final</span> String name = parser.getName();</div><div class="line">        <span class="comment">// 判断是否有标签 requestFocus    </span></div><div class="line">        <span class="keyword">if</span> (TAG_REQUEST_FOCUS.equals(name)) &#123;</div><div class="line">          	<span class="comment">// parseRequestFocus() 方法里面其实就是 parent.requestFocus() 方法！就这么简单！</span></div><div class="line">            parseRequestFocus(parser, parent);</div><div class="line">        &#125; </div><div class="line">      	<span class="comment">// 判断是否有标签 tag</span></div><div class="line">      	<span class="keyword">else</span> <span class="keyword">if</span> (TAG_TAG.equals(name)) &#123;</div><div class="line">           parseViewTag(parser, parent, attrs);</div><div class="line">        &#125; </div><div class="line">      	<span class="comment">// 判断是否有标签 include，该标签不能用在根元素中。</span></div><div class="line">      	<span class="keyword">else</span> <span class="keyword">if</span> (TAG_INCLUDE.equals(name)) &#123;</div><div class="line">            <span class="keyword">if</span> (parser.getDepth() == <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InflateException(<span class="string">"&lt;include /&gt; cannot be the root element"</span>);</div><div class="line">            &#125;</div><div class="line">            parseInclude(parser, context, parent, attrs);</div><div class="line">        &#125; </div><div class="line">      	<span class="comment">// 判断是否有标签 merge，该标签只能用在根元素中。由于这里是处理 View 元素的布局，因此直接抛异常</span></div><div class="line">      	<span class="keyword">else</span> <span class="keyword">if</span> (TAG_MERGE.equals(name)) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InflateException(<span class="string">"&lt;merge /&gt; must be the root element"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">          	<span class="comment">// 这里的 createViewFromTag() 方法会根据 View 标签创建 View 对象。</span></div><div class="line">            <span class="keyword">final</span> View view = createViewFromTag(parent, name, context, attrs);</div><div class="line">            <span class="keyword">final</span> ViewGroup viewGroup = (ViewGroup) parent;</div><div class="line">            <span class="keyword">final</span> ViewGroup.LayoutParams params = viewGroup.generateLayoutParams(attrs);</div><div class="line">          rInflateChildren(parser, view, attrs, <span class="keyword">true</span>);</div><div class="line">            viewGroup.addView(view, params);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (finishInflate) &#123;</div><div class="line">        parent.onFinishInflate();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>  关于 attachToRoot ，还记得我们在自定义 View 的时候有一句代码：LayoutInflater.from(parent.getContext).inflater(R.layout.xxx, parent, true)，这段代码最后一个参数 true，就是讲 attachToRoot 设置为 true。</p>
+</blockquote>
+<p>这里面一共涉及到了四个标签：<requestfocus>，<tag>，<include> 和 <merge>。下面来分别说一下：</merge></include></tag></requestfocus></p>
+<h3 id="requestFocus"><a href="#requestFocus" class="headerlink" title="requestFocus"></a>requestFocus</h3><p>requestFocus 标签就是让标签内的 View 获取焦点，其内部就是使用 view.requestFocus() 方法实现的。</p>
+<h3 id="tag"><a href="#tag" class="headerlink" title="tag"></a>tag</h3><p>tag 标签是 API 21 里面新增的，用来给 View 对象添加额外的信息。从 Android 1.0 开始，Android 就开始支持给 View 对象调用 setTag(Object) 和 getTag(Object) 来添加和获取标签信息，到了 Android 1.6 ，添加和获取标签信息有了新的方法：<code>setTag(int, Object)</code>。而在 Android 4.0 之后，<code>setTag(int, Object)</code> 的内部实现改为非静态的 SparseArray 来实现。Android 5.0 的时候，提供了一种全新的写法，就是 tag 标签。</p>
+<p>举一个例子来说明这个标签怎么用，先编写一个 XML 布局文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:orientation</span>=<span class="string">"horizontal"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/btn_negative"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_weight</span>=<span class="string">"1"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"cancel"</span>&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">tag</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_state_negative"</span></div><div class="line">            <span class="attr">android:value</span>=<span class="string">"@string/btn_state_negative"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">Button</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/btn_positive"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_weight</span>=<span class="string">"1"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"ok"</span>&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">tag</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/btn_state_positive"</span></div><div class="line">            <span class="attr">android:value</span>=<span class="string">"@string/btn_state_positive"</span> /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">Button</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>然后我们就可以通过下面的方式获取标签信息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Button btn_negative = (Button) findViewById(R.id.btn_negative);</div><div class="line">String tag = (String) btn_negative.getTag(R.id.btn_state_negative);</div></pre></td></tr></table></figure>
+<p><strong>tag 标签是这四个标签中唯一一个需要指定 id 属性的！</strong></p>
+<h3 id="include"><a href="#include" class="headerlink" title="include"></a>include</h3><p>我们来看看 处理 include 标签的方法 <code>parseInclude()</code> 里面的逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">parseInclude</span><span class="params">(XmlPullParser parser, Context context, View parent,</span></span></div><div class="line">            AttributeSet attrs) <span class="keyword">throws</span> XmlPullParserException, IOException &#123;</div><div class="line">  	<span class="comment">// ATTR_LAYOUT 即 layout 属性，</span></div><div class="line">	<span class="keyword">int</span> layout = attrs.getAttributeResourceValue(<span class="keyword">null</span>, ATTR_LAYOUT, <span class="number">0</span>);</div><div class="line">  	......</div><div class="line">    <span class="comment">// 使用了 include 标签而没有为其设置 layout 属性，是会抛异常的！</span></div><div class="line">  	<span class="keyword">if</span> (layout == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">final</span> String value = attrs.getAttributeValue(<span class="keyword">null</span>, ATTR_LAYOUT);</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InflateException(<span class="string">"You must specify a valid layout "</span></div><div class="line">                        + <span class="string">"reference. The layout ID "</span> + value + <span class="string">" is not valid."</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	    ......</div><div class="line">        <span class="keyword">final</span> String childName = childParser.getName();</div><div class="line">        <span class="keyword">if</span> (TAG_MERGE.equals(childName)) &#123;</div><div class="line">            <span class="comment">// The &lt;merge&gt; tag doesn't support android:theme, so</span></div><div class="line">            <span class="comment">// nothing special to do here.</span></div><div class="line">            rInflate(childParser, parent, context, childAttrs, <span class="keyword">false</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">      	    <span class="comment">// createViewFromTag() 方法采用反射的方式，根据标签名创建一个 view 对象</span></div><div class="line">      	    <span class="comment">// 注意这里的标签并不包括之前提到的 merge 和 include 等等，而是指的 Button、TextView 等 View 相关标签。</span></div><div class="line">            <span class="keyword">final</span> View view = createViewFromTag(parent, childName, context, childAttrs, hasThemeOverride);</div><div class="line">            ViewGroup.LayoutParams params = <span class="keyword">null</span>;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                params = group.generateLayoutParams(attrs);</div><div class="line">            &#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</div><div class="line">                <span class="comment">// Ignore, just fail over to child attrs.</span></div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (params == <span class="keyword">null</span>) &#123;</div><div class="line">                params = group.generateLayoutParams(childAttrs);</div><div class="line">            &#125;</div><div class="line">            view.setLayoutParams(params);</div><div class="line">            <span class="comment">// Inflate all children.</span></div><div class="line">            rInflateChildren(childParser, view, childAttrs, <span class="keyword">true</span>);</div><div class="line">		    <span class="comment">// 设置 View 对象的 id 属性</span></div><div class="line">            <span class="keyword">if</span> (id != View.NO_ID) &#123;</div><div class="line">                view.setId(id);</div><div class="line">            &#125;</div><div class="line">		    <span class="comment">// 设置 View 对象的可见性</span></div><div class="line">            <span class="keyword">switch</span> (visibility) &#123;</div><div class="line">                <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">                    view.setVisibility(View.VISIBLE);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">                    view.setVisibility(View.INVISIBLE);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                    view.setVisibility(View.GONE);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            group.addView(view);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> 	......</div><div class="line">    LayoutInflater.consumeChildElements(parser);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 <code>parseInclude()</code> 方法里面会判断是否需要处理 merge 标签，然后根据标签名（如 Button、TextView 等）调用 <code>createViewFromTag()</code> 方法创建一个 view 对象，然后生成该对象的布局参数，设置 id 属性，设置可见性等等。</p>
+<p>然后注意到 <code>createViewFromTag()</code>，顾名思义，该方法会根据 XML 的标签来创建 View 对象，这个方法里面最终会调用到  <code>createView()</code> 方法，是使用反射来创建 View 对象的具体实现。</p>
+<p>有个问题不知道大家注意到没有，这些 id、可见性等等的属性都是 view 对象的，而 include 标签和 merge 标签并并没有这些属性，也就是说，<strong>如果你在 include 或 merge 标签中设置了一个 id，然后在代码中通过 findViewById() 方法企图找到这个 include 或 merge 的布局，是会报空指针异常的！</strong></p>
+<blockquote>
+<p>  我这里为了方便区分，将 include、merge 等标签称为“布局标签”，它们不能创建为 View 对象，设置 id 属性对它们没有意义。而将 XML 中的 Button、TextView 等标签称为“视图标签”（视图元素、控件等），因为它们能被创建为 View 对象，可以设置 id 等熟悉。</p>
+</blockquote>
+<h3 id="其他比较有趣的标签"><a href="#其他比较有趣的标签" class="headerlink" title="其他比较有趣的标签"></a>其他比较有趣的标签</h3><p>除了上面介绍的 merge、include、requestFocus 和 tag 等布局标签外，还有如下常用的 View 标签：</p>
+<p><strong>ViewStub</strong></p>
+<p>利用 ViewStub 标签可以让布局懒加载。当你界面要显示很多内容，而其中一些不用立即显示出来的时候（比如商品详情、下载进度条等等），可以使用 ViewStub 标签来隐藏这些内容，当需要的时候再让它们加载出来。ViewStub 虽然是 View 标签，但是其本身没有大小，不会绘制任何东西，因此是一个非常轻量的 View 标签。</p>
+<p>使用 ViewStub 和 include 标签类似，需要使用 <code>android:layout</code> 属性来确定需要隐藏的布局，同时，由于 ViewStub 是一个 View 标签，因此需要使用一个 id 来操作 ViewStub。比如使用 ViewStub 简单的 XML 如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ViewStub</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/stab_view"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout</span>=<span class="string">"@layout/text_view"</span> /&gt;</div></pre></td></tr></table></figure>
+<p>在 Java 代码中，对 ViewStub 的操作有两种方式：</p>
+<ul>
+<li><p>设置 View 的可见性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">findViewById(R.id.stab_view)).setVisibility(View.VISIBLE);</div></pre></td></tr></table></figure>
+</li>
+<li><p>调用 ViewStub 的 <code>inflate()</code> 方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ViewStub stubView = (ViewStub) findViewById(R.id.stab_view);</div><div class="line">stubView.inflate();</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面两种方法都可以加载由 ViewStub 引用的布局。使用 ViewStub 有两点需要注意：</p>
+<ol>
+<li>当调用了 <code>inflate()</code> 方法后，ViewStub 标签就从视图中移除了，也就是说，<code>inflate()</code> 方法不能对同一个 ViewStub 调用两次。</li>
+<li>ViewStub 所引用的布局的根标签不能为 <merge> 标签。</merge></li>
+</ol>
+<p><strong>Space</strong></p>
+<p>这是是一个空控件，该 View 没有实现 onDraw() 方法，因此绘制效率比较高。该控件可以用来占用空白（比如代替 padding 和 margin）。</p>
+<p>大概差不多了，View 的性能优化还有一些没有介绍，比如 Overdraw 等，这里就给个链接吧：<a href="https://developer.android.com/studio/profile/dev-options-overdraw.html" target="_blank" rel="external">OverDraw</a></p>
+<p>同时，对于 View 性能优化有兴趣的同学，欢迎参加视频课程：<a href="http://www.stay4it.com/course/26" target="_blank" rel="external">有心课堂</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/13/Gson-中文指南/" rel="next" title="Gson中文指南">
+                <i class="fa fa-chevron-left"></i> Gson中文指南
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/02/自动装箱和自动拆箱/" rel="prev" title="自动装箱和自动拆箱">
+                自动装箱和自动拆箱 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="湫水" />
+          <p class="site-author-name" itemprop="name">湫水</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#View-绘制流程"><span class="nav-number">1.</span> <span class="nav-text">View 绘制流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">2.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性布局和相对布局"><span class="nav-number">3.</span> <span class="nav-text">线性布局和相对布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布局标签"><span class="nav-number">4.</span> <span class="nav-text">布局标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#requestFocus"><span class="nav-number">4.1.</span> <span class="nav-text">requestFocus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tag"><span class="nav-number">4.2.</span> <span class="nav-text">tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#include"><span class="nav-number">4.3.</span> <span class="nav-text">include</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他比较有趣的标签"><span class="nav-number">4.4.</span> <span class="nav-text">其他比较有趣的标签</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">湫水</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'https-wl9739-github-io';
+      var disqus_identifier = '2017/02/26/从-View-绘制谈性能优化/';
+      var disqus_title = "从 View 绘制谈性能优化";
+      var disqus_url = 'http://yoursite.com/2017/02/26/从-View-绘制谈性能优化/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+</body>
+</html>
