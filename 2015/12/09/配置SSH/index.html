@@ -88,8 +88,7 @@
 <meta property="og:description" content="SSH简介 Secure Shell（缩写为SSH），由IETF的网络工作小组（Network Working Group）所制定；SSH为一项创建在应用层和传输层基础上的安全协议，为计算机上的Shell（壳层）提供安全的传输和使用环境。  以上内容来自维基百科，算是对SSH的一个简单的介绍。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://7xook5.com1.z0.glb.clouddn.com/github.png">
-<meta property="og:image" content="http://7xook5.com1.z0.glb.clouddn.com/vim.png">
-<meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
+<meta property="og:updated_time" content="2018-01-03T09:13:22.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="配置SSH key">
 <meta name="twitter:description" content="SSH简介 Secure Shell（缩写为SSH），由IETF的网络工作小组（Network Working Group）所制定；SSH为一项创建在应用层和传输层基础上的安全协议，为计算机上的Shell（壳层）提供安全的传输和使用环境。  以上内容来自维基百科，算是对SSH的一个简单的介绍。">
@@ -391,9 +390,8 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enter file in which to save the key(/Users/当前用户/.ssh/id_rsa):id_rsa_gitlab</span><br></pre></td></tr></table></figure>
 <p>这时候可以一路回车了。</p>
 <p>这时候如果再用<code>ls</code>命令查看<code>.ssh</code>文件夹下的内容时，就会发现多了两个文件：<code>id_rsa_gitlab</code>和<code>id_rsa_gitlab.pub</code>。然后，为了明确每个服务器使用对应的ssh key，需要进行一下配置。</p>
-<p>在<code>.ssh/</code>路径下，使用<code>touch config</code>命令生成<code>config</code>文件，再使用<code>vim config</code>使用vim来编辑<code>config</code>文件（当然你也可以用其它文本编辑器打开<code>config</code>文件进行编辑）。</p>
-<p>输入<code>i</code>，将vim的<strong>命令行模式</strong>(command mode)切换到<strong>插入模式</strong>(insert mode)，然后输入一下内容：</p>
-<p><img src="http://7xook5.com1.z0.glb.clouddn.com/vim.png" alt="config内容"></p>
+<p>在<code>.ssh/</code>路径下，使用<code>touch config</code>命令生成<code>config</code>文件，再使用<code>vim config</code>使用vim来编辑<code>config</code>文件（当然你也可以用其它文本编辑器打开<code>config</code>文件进行编辑）,然后输入以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># gitlab</span><br><span class="line">Host gitlab.com</span><br><span class="line">HostName gitlab.com</span><br><span class="line">IdentityFile ~/.ssh/id_rsa_gitlab</span><br><span class="line"></span><br><span class="line"># github</span><br><span class="line">Host github.com</span><br><span class="line">HostName github.com</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注意：如果Gitlab是用的公司的服务器，需要在<code>HostName</code>中指定公司的域名。</p>
 </blockquote>
