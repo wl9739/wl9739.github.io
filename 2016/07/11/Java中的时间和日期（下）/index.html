@@ -1,20 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 
 
 
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next muse use-motion" lang="">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
 
 
 
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
 
 
 
@@ -34,38 +45,27 @@
 
 
 
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
 
 
 
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Java," />
@@ -77,18 +77,14 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
-
-
-
-
 
 
 <meta name="description" content="上篇文章Java中的时间和日期（上）简单介绍了Java中的Date类，Calendar类以及用于格式化的SimpleDateFormater类。使用这些的时候我们会明显地感受到其中的不便之处，比如，Calendar类的月份是从0开始计数的；日期格式输出不够友好，很多情况下都需要使用SimpleDateFormater类来格式化；一些简单得日期计算也比较麻烦等等。所以就有了joda-time这种第三">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java中的时间和日期（下）">
 <meta property="og:url" content="http://yoursite.com/2016/07/11/Java中的时间和日期（下）/index.html">
-<meta property="og:site_name" content="湫水">
+<meta property="og:site_name" content="next">
 <meta property="og:description" content="上篇文章Java中的时间和日期（上）简单介绍了Java中的Date类，Calendar类以及用于格式化的SimpleDateFormater类。使用这些的时候我们会明显地感受到其中的不便之处，比如，Calendar类的月份是从0开始计数的；日期格式输出不够友好，很多情况下都需要使用SimpleDateFormater类来格式化；一些简单得日期计算也比较麻烦等等。所以就有了joda-time这种第三">
 <meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
 <meta name="twitter:card" content="summary">
@@ -97,80 +93,84 @@
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
-    motion: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://yoursite.com/2016/07/11/Java中的时间和日期（下）/"/>
 
 
-  <title> Java中的时间和日期（下） | 湫水 </title>
-</head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
 
+
+  <title>Java中的时间和日期（下） | next</title>
   
 
 
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
 
 
 
 
 
+</head>
 
-
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
 
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">湫水</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">next</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
-  <p class="site-subtitle"></p>
-</div>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
 <nav class="site-nav">
@@ -185,27 +185,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            首页
+            Home
           </a>
         </li>
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
+            Archives
           </a>
         </li>
       
@@ -216,6 +206,8 @@
 
   
 </nav>
+
+
 
  </div>
     </header>
@@ -230,80 +222,84 @@
     
 
   
-  
 
   
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/11/Java中的时间和日期（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="next">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Java中的时间和日期（下）
-              
-            
-          </h1>
+          <h1 class="post-title" itemprop="name headline">Java中的时间和日期（下）</h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-11T18:31:37+08:00" content="2016-07-11">
-              2016-07-11
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-11T18:31:37+08:00">
+                2016-07-11
+              </time>
+            
+
+            
+
+            
           </span>
 
           
 
           
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/11/Java中的时间和日期（下）/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/11/Java中的时间和日期（下）/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
+          
+
+          
           
 
           
 
           
-          
-             <span id="/2016/07/11/Java中的时间和日期（下）/" class="leancloud_visitors" data-flag-title="Java中的时间和日期（下）">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
 
           
+
         </div>
       </header>
     
 
-
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
       
 
       
-        <p>上篇文章<a href="http://wl9739.github.io/2016/07/06/Java%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%92%8C%E6%97%A5%E6%9C%9F/" target="_blank" rel="external">Java中的时间和日期（上）</a>简单介绍了Java中的Date类，Calendar类以及用于格式化的SimpleDateFormater类。使用这些的时候我们会明显地感受到其中的不便之处，比如，Calendar类的月份是从0开始计数的；日期格式输出不够友好，很多情况下都需要使用SimpleDateFormater类来格式化；一些简单得日期计算也比较麻烦等等。所以就有了<code>joda-time</code>这种第三方库来简化java对于时间和日期的操作。为了改变这种情况，java 8中对时间和日期对处理就吸收了<code>joda-time</code>库的特性。那么新的时间日期处理会带来怎样的便捷呢？这便是本篇文章所要聊的内容。</p>
+        <p>上篇文章<a href="http://wl9739.github.io/2016/07/06/Java%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%92%8C%E6%97%A5%E6%9C%9F/" target="_blank" rel="noopener">Java中的时间和日期（上）</a>简单介绍了Java中的Date类，Calendar类以及用于格式化的SimpleDateFormater类。使用这些的时候我们会明显地感受到其中的不便之处，比如，Calendar类的月份是从0开始计数的；日期格式输出不够友好，很多情况下都需要使用SimpleDateFormater类来格式化；一些简单得日期计算也比较麻烦等等。所以就有了<code>joda-time</code>这种第三方库来简化java对于时间和日期的操作。为了改变这种情况，java 8中对时间和日期对处理就吸收了<code>joda-time</code>库的特性。那么新的时间日期处理会带来怎样的便捷呢？这便是本篇文章所要聊的内容。</p>
 <a id="more"></a>
 <h2 id="月份和星期的枚举类"><a href="#月份和星期的枚举类" class="headerlink" title="月份和星期的枚举类"></a>月份和星期的枚举类</h2><h3 id="Month"><a href="#Month" class="headerlink" title="Month"></a>Month</h3><p>在以前使用Java的时候，你一定痛恨了月份的表示和计算，最主要的原因就是因为一月份是从0开始计数的。而在Java 8中为了改变这一现状，增加了一个<code>Month</code>枚举类来表示月份。使用这个枚举类甚至还可以直接进行月份的加减运算！</p>
 <ul>
@@ -319,20 +315,20 @@
 </li>
 </ul>
 <p>下面用代码来说明上述方法的使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    System.out.println(Month.DECEMBER);         <span class="comment">// DECEMBER</span></div><div class="line">    System.out.println(Month.of(<span class="number">2</span>));            <span class="comment">// FEBRUARY</span></div><div class="line"></div><div class="line">    Month month = Month.FEBRUARY;        </div><div class="line">    System.out.println(month.getValue());       <span class="comment">// 2</span></div><div class="line">    System.out.println(month.minus(<span class="number">3</span>));         <span class="comment">// NOVEMBER</span></div><div class="line">    System.out.println(month.plus(<span class="number">2</span>));          <span class="comment">// APRIL</span></div><div class="line">    System.out.println(month.length(<span class="keyword">false</span>));    <span class="comment">// 28</span></div><div class="line">    System.out.println(month.length(<span class="keyword">true</span>));     <span class="comment">// 29</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    System.out.println(Month.DECEMBER);         <span class="comment">// DECEMBER</span></span><br><span class="line">    System.out.println(Month.of(<span class="number">2</span>));            <span class="comment">// FEBRUARY</span></span><br><span class="line"></span><br><span class="line">    Month month = Month.FEBRUARY;        </span><br><span class="line">    System.out.println(month.getValue());       <span class="comment">// 2</span></span><br><span class="line">    System.out.println(month.minus(<span class="number">3</span>));         <span class="comment">// NOVEMBER</span></span><br><span class="line">    System.out.println(month.plus(<span class="number">2</span>));          <span class="comment">// APRIL</span></span><br><span class="line">    System.out.println(month.length(<span class="keyword">false</span>));    <span class="comment">// 28</span></span><br><span class="line">    System.out.println(month.length(<span class="keyword">true</span>));     <span class="comment">// 29</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>有时候我们希望返回月份是中文，而不是英文。毕竟程序员大多都比较懒，能少转化一次自然是很好的。又或者你需要显示的是月份的英文缩写？Java 8都为你想到了。只要调用<code>getDisplayName(TextStyle, Locale)</code>方法就行，该方法第一个参数是文本类型，也就是说你想显示完整的名称还是缩写；第二个参数表示地区，如果没有特殊要求，传入<code>Locale.getDefault()</code>就行。就像下面的代码演示的那样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    Month month = Month.APRIL;</div><div class="line">    </div><div class="line">    System.out.println(month.getDisplayName(TextStyle.FULL, Locale.getDefault()));      <span class="comment">// 四月</span></div><div class="line">    System.out.println(month.getDisplayName(TextStyle.SHORT, Locale.getDefault()));     <span class="comment">// 四月</span></div><div class="line">    System.out.println(month.getDisplayName(TextStyle.NARROW, Locale.getDefault()));    <span class="comment">// 4</span></div><div class="line"></div><div class="line">    System.out.println(month.getDisplayName(TextStyle.FULL, Locale.ENGLISH));           <span class="comment">// April</span></div><div class="line">    System.out.println(month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH));          <span class="comment">// Apr</span></div><div class="line">    System.out.println(month.getDisplayName(TextStyle.NARROW, Locale.ENGLISH));         <span class="comment">// A</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Month month = Month.APRIL;</span><br><span class="line">    </span><br><span class="line">    System.out.println(month.getDisplayName(TextStyle.FULL, Locale.getDefault()));      <span class="comment">// 四月</span></span><br><span class="line">    System.out.println(month.getDisplayName(TextStyle.SHORT, Locale.getDefault()));     <span class="comment">// 四月</span></span><br><span class="line">    System.out.println(month.getDisplayName(TextStyle.NARROW, Locale.getDefault()));    <span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">    System.out.println(month.getDisplayName(TextStyle.FULL, Locale.ENGLISH));           <span class="comment">// April</span></span><br><span class="line">    System.out.println(month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH));          <span class="comment">// Apr</span></span><br><span class="line">    System.out.println(month.getDisplayName(TextStyle.NARROW, Locale.ENGLISH));         <span class="comment">// A</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="DayOfWeek"><a href="#DayOfWeek" class="headerlink" title="DayOfWeek"></a>DayOfWeek</h3><p>DayOfWeek枚举类用来表示一个周的七天。常用的方法和<code>Month</code>枚举类的几乎一致，包括<code>of(int dayOfWeek)</code>静态方法用于创建<code>DayOfWeek</code>对象；<code>getValue()</code>方法用来获取该对象的值；<code>plus(long days)</code>和<code>minus(long days)</code>方法用来进行加减法计算。也可以使用<code>getDisplayName(TextStyle style, Locale locale)</code>来格式化输出。代码演示如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    System.out.println(DayOfWeek.FRIDAY);           <span class="comment">// FRIDAY</span></div><div class="line">    System.out.println(DayOfWeek.of(<span class="number">7</span>));            <span class="comment">// SUNDAY</span></div><div class="line"></div><div class="line">    DayOfWeek dayOfWeek = DayOfWeek.TUESDAY;</div><div class="line">    System.out.println(dayOfWeek.getValue());       <span class="comment">// 2</span></div><div class="line">    System.out.println(dayOfWeek.plus(<span class="number">3</span>));          <span class="comment">// FRIDAY</span></div><div class="line">    System.out.println(dayOfWeek.minus(<span class="number">2</span>));         <span class="comment">// SUNDAY</span></div><div class="line"></div><div class="line">    Locale defaultLocal = Locale.getDefault();</div><div class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.FULL, defaultLocal));     <span class="comment">// 星期二</span></div><div class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.SHORT, defaultLocal));    <span class="comment">// 星期二</span></div><div class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.NARROW, defaultLocal));   <span class="comment">// 二</span></div><div class="line"></div><div class="line">    Locale locale = Locale.ENGLISH;</div><div class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.FULL, locale));           <span class="comment">// Tuesday</span></div><div class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.SHORT, locale));          <span class="comment">// Tue</span></div><div class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.NARROW, locale));         <span class="comment">// T</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    System.out.println(DayOfWeek.FRIDAY);           <span class="comment">// FRIDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.of(<span class="number">7</span>));            <span class="comment">// SUNDAY</span></span><br><span class="line"></span><br><span class="line">    DayOfWeek dayOfWeek = DayOfWeek.TUESDAY;</span><br><span class="line">    System.out.println(dayOfWeek.getValue());       <span class="comment">// 2</span></span><br><span class="line">    System.out.println(dayOfWeek.plus(<span class="number">3</span>));          <span class="comment">// FRIDAY</span></span><br><span class="line">    System.out.println(dayOfWeek.minus(<span class="number">2</span>));         <span class="comment">// SUNDAY</span></span><br><span class="line"></span><br><span class="line">    Locale defaultLocal = Locale.getDefault();</span><br><span class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.FULL, defaultLocal));     <span class="comment">// 星期二</span></span><br><span class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.SHORT, defaultLocal));    <span class="comment">// 星期二</span></span><br><span class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.NARROW, defaultLocal));   <span class="comment">// 二</span></span><br><span class="line"></span><br><span class="line">    Locale locale = Locale.ENGLISH;</span><br><span class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.FULL, locale));           <span class="comment">// Tuesday</span></span><br><span class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.SHORT, locale));          <span class="comment">// Tue</span></span><br><span class="line">    System.out.println(dayOfWeek.getDisplayName(TextStyle.NARROW, locale));         <span class="comment">// T</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>但是呢，在<code>DayOfWeek</code>枚举类中，是没有<code>maxLength(), minLength()和length(boolean leapYear)</code>这三个方法的，相信你们也知道是为什么。</p>
 <p>最后说一句，由于<code>Month</code>和<code>DayOfWeek</code>只是枚举类，它们并不持有当前时间信息，所以就别妄想使用这两个枚举类来解决”今天是星期几”，”明天是几号”等问题了。</p>
 <h3 id="源码中的加减法计算"><a href="#源码中的加减法计算" class="headerlink" title="源码中的加减法计算"></a>源码中的加减法计算</h3><p>刚开始学Java的时候，计算月份／星期几乎是必备作业，不过当时用的是Date/Calendar类来计算，相当麻烦，Java 8使用枚举来表示月份和星期之后，进行相应的加减法计算就变的相对简单了，我们可以看一下是怎么实现的。</p>
 <p>由于月份的计算和星期的计算原理是一样的，我们就只看<code>Month</code>的加减法计算。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Month[] ENUMS = Month.values();</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Month <span class="title">plus</span><span class="params">(<span class="keyword">long</span> months)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> amount = (<span class="keyword">int</span>) (months % <span class="number">12</span>);</div><div class="line">    <span class="keyword">return</span> ENUMS[(ordinal() + (amount + <span class="number">12</span>)) % <span class="number">12</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">public</span> Month <span class="title">minus</span><span class="params">(<span class="keyword">long</span> months)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> plus(-(months % <span class="number">12</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Month[] ENUMS = Month.values();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Month <span class="title">plus</span><span class="params">(<span class="keyword">long</span> months)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> amount = (<span class="keyword">int</span>) (months % <span class="number">12</span>);</span><br><span class="line">    <span class="keyword">return</span> ENUMS[(ordinal() + (amount + <span class="number">12</span>)) % <span class="number">12</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> Month <span class="title">minus</span><span class="params">(<span class="keyword">long</span> months)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> plus(-(months % <span class="number">12</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里的处理方法很巧妙，减法直接调用加法的处理逻辑，当年我就没想到过，哈哈，值得学习。</p>
 <h2 id="LocalDate和LocalTime"><a href="#LocalDate和LocalTime" class="headerlink" title="LocalDate和LocalTime"></a>LocalDate和LocalTime</h2><p>重头戏来了，现在开始隆重介绍Java 8的常用的时间日期类：<code>LocalDate</code>和<code>LocalTime</code>。使用<code>LocalDate</code>可以获取当前日期（注意只是日期，不包含时间），并可以进行相应处理。使用<code>LocalTime</code>可以获取当前时间（注意只是时间，不包含日期）并进行相应处理。这样就更好的符合“单一职责原则”。</p>
 <h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><p>根据不同的需求，提供了不同的创建方式，主要包括两个静态方法<code>now()</code>和<code>of()</code>方法。其实，在后面我们会看到，在Java 8中，创建时间和日期几乎都会用的这两个方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalDate date1 = LocalDate.now();</div><div class="line">    LocalDate date2 = LocalDate.of(<span class="number">1998</span>, <span class="number">2</span>, <span class="number">4</span>);</div><div class="line">    LocalDate date3 = LocalDate.ofEpochDay(<span class="number">180</span>);</div><div class="line"></div><div class="line">    System.out.println(date1);      <span class="comment">// 2016-07-11</span></div><div class="line">    System.out.println(date2);      <span class="comment">// 1998-02-04</span></div><div class="line">    System.out.println(date3);      <span class="comment">// 1970-06-30</span></div><div class="line"></div><div class="line">    LocalTime time1 = LocalTime.now();</div><div class="line">    LocalTime time2 = LocalTime.now().withNano(<span class="number">0</span>);</div><div class="line">    LocalTime time3 = LocalTime.of(<span class="number">12</span>, <span class="number">30</span>);</div><div class="line">    LocalTime time4 = LocalTime.ofSecondOfDay(<span class="number">60</span> * <span class="number">60</span> * <span class="number">2</span>);</div><div class="line"></div><div class="line">    System.out.println(time1);      <span class="comment">// 10:56:04.772</span></div><div class="line">    System.out.println(time2);      <span class="comment">// 10:56:04</span></div><div class="line">    System.out.println(time3);      <span class="comment">// 12:30</span></div><div class="line">    System.out.println(time4);      <span class="comment">// 02:00</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalDate date1 = LocalDate.now();</span><br><span class="line">    LocalDate date2 = LocalDate.of(<span class="number">1998</span>, <span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line">    LocalDate date3 = LocalDate.ofEpochDay(<span class="number">180</span>);</span><br><span class="line"></span><br><span class="line">    System.out.println(date1);      <span class="comment">// 2016-07-11</span></span><br><span class="line">    System.out.println(date2);      <span class="comment">// 1998-02-04</span></span><br><span class="line">    System.out.println(date3);      <span class="comment">// 1970-06-30</span></span><br><span class="line"></span><br><span class="line">    LocalTime time1 = LocalTime.now();</span><br><span class="line">    LocalTime time2 = LocalTime.now().withNano(<span class="number">0</span>);</span><br><span class="line">    LocalTime time3 = LocalTime.of(<span class="number">12</span>, <span class="number">30</span>);</span><br><span class="line">    LocalTime time4 = LocalTime.ofSecondOfDay(<span class="number">60</span> * <span class="number">60</span> * <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    System.out.println(time1);      <span class="comment">// 10:56:04.772</span></span><br><span class="line">    System.out.println(time2);      <span class="comment">// 10:56:04</span></span><br><span class="line">    System.out.println(time3);      <span class="comment">// 12:30</span></span><br><span class="line">    System.out.println(time4);      <span class="comment">// 02:00</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>withNano()</code>方法会在后面提及，主要是修改当前对象表示的纳秒数的值。在上面的代码中，有几点需要注意的地方：</p>
 <ul>
 <li><code>ofEpochDay(long epochDay)</code>方法中的参数，指的是距1970年1月1日那天的时间间隔。</li>
@@ -481,10 +477,10 @@
 <li>当一个方法返回的是<code>LocalDate</code>对象时，便可以使用<code>链式调用</code>。举个例子，获取昨天的日期，我们可以直接这样写：<code>LocalDate.now().minusDays(1)</code>。</li>
 </ul>
 <p>下面用代码演示几个方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalDate now = LocalDate.now();</div><div class="line">    System.out.println(now.getYear());                  <span class="comment">// 2016</span></div><div class="line">    System.out.println(now.getDayOfWeek());             <span class="comment">// MONDAY</span></div><div class="line">    System.out.println(now.getDayOfMonth());            <span class="comment">// 11</span></div><div class="line">    System.out.println(now.withMonth(<span class="number">3</span>));               <span class="comment">// 2016-03-11</span></div><div class="line">    System.out.println(now.minusWeeks(<span class="number">2</span>));              <span class="comment">// 2016-06-27</span></div><div class="line">    System.out.println(now.plusDays(<span class="number">10</span>));               <span class="comment">// 2016-07-21</span></div><div class="line"></div><div class="line">    LocalDate firstDayOfYear = LocalDate.of(<span class="number">2016</span>,<span class="number">1</span>,<span class="number">1</span>);</div><div class="line">    System.out.println(now.compareTo(firstDayOfYear));  <span class="comment">// 6</span></div><div class="line">    System.out.println(now.isAfter(firstDayOfYear));    <span class="comment">// true</span></div><div class="line">    System.out.println(now.isEqual(firstDayOfYear));    <span class="comment">// false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalDate now = LocalDate.now();</span><br><span class="line">    System.out.println(now.getYear());                  <span class="comment">// 2016</span></span><br><span class="line">    System.out.println(now.getDayOfWeek());             <span class="comment">// MONDAY</span></span><br><span class="line">    System.out.println(now.getDayOfMonth());            <span class="comment">// 11</span></span><br><span class="line">    System.out.println(now.withMonth(<span class="number">3</span>));               <span class="comment">// 2016-03-11</span></span><br><span class="line">    System.out.println(now.minusWeeks(<span class="number">2</span>));              <span class="comment">// 2016-06-27</span></span><br><span class="line">    System.out.println(now.plusDays(<span class="number">10</span>));               <span class="comment">// 2016-07-21</span></span><br><span class="line"></span><br><span class="line">    LocalDate firstDayOfYear = LocalDate.of(<span class="number">2016</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    System.out.println(now.compareTo(firstDayOfYear));  <span class="comment">// 6</span></span><br><span class="line">    System.out.println(now.isAfter(firstDayOfYear));    <span class="comment">// true</span></span><br><span class="line">    System.out.println(now.isEqual(firstDayOfYear));    <span class="comment">// false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>LocalTime</strong></p>
 <p><code>LocalDate</code>类中的方法和<code>LocalDate</code>中的类似，同样可以分为：获取时间信息，修改时间信息，加减法运算和时间对象间的比较。方法的具体描述我就不写了。根据<code>LocalDate</code>类中列举的常用方法，你也能猜得出在<code>LocalTime</code>类中有哪些对应的常用方法。下面还是用代码演示几个方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalTime now = LocalTime.now();</div><div class="line">    System.out.println(now.getHour());              <span class="comment">// 14</span></div><div class="line">    System.out.println(now.getMinute());            <span class="comment">// 15</span></div><div class="line">    System.out.println(now.getSecond());            <span class="comment">// 22</span></div><div class="line">    System.out.println(now.getNano());              <span class="comment">// 881000000</span></div><div class="line">    System.out.println(now.withNano(<span class="number">0</span>));            <span class="comment">// 14:15:22</span></div><div class="line">    System.out.println(now.minusHours(<span class="number">3</span>));          <span class="comment">// 11:15:22.881</span></div><div class="line">    System.out.println(now.minusMinutes(<span class="number">15</span>));       <span class="comment">// 14:00:22.881</span></div><div class="line">    System.out.println(now.minusSeconds(<span class="number">20</span>));       <span class="comment">// 14:15:02.881</span></div><div class="line"></div><div class="line">    LocalTime halfOfDay = LocalTime.of(<span class="number">12</span> ,<span class="number">0</span>);</div><div class="line">    System.out.println(now.compareTo(halfOfDay));   <span class="comment">// 1</span></div><div class="line">    System.out.println(now.isAfter(halfOfDay));     <span class="comment">// true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalTime now = LocalTime.now();</span><br><span class="line">    System.out.println(now.getHour());              <span class="comment">// 14</span></span><br><span class="line">    System.out.println(now.getMinute());            <span class="comment">// 15</span></span><br><span class="line">    System.out.println(now.getSecond());            <span class="comment">// 22</span></span><br><span class="line">    System.out.println(now.getNano());              <span class="comment">// 881000000</span></span><br><span class="line">    System.out.println(now.withNano(<span class="number">0</span>));            <span class="comment">// 14:15:22</span></span><br><span class="line">    System.out.println(now.minusHours(<span class="number">3</span>));          <span class="comment">// 11:15:22.881</span></span><br><span class="line">    System.out.println(now.minusMinutes(<span class="number">15</span>));       <span class="comment">// 14:00:22.881</span></span><br><span class="line">    System.out.println(now.minusSeconds(<span class="number">20</span>));       <span class="comment">// 14:15:02.881</span></span><br><span class="line"></span><br><span class="line">    LocalTime halfOfDay = LocalTime.of(<span class="number">12</span> ,<span class="number">0</span>);</span><br><span class="line">    System.out.println(now.compareTo(halfOfDay));   <span class="comment">// 1</span></span><br><span class="line">    System.out.println(now.isAfter(halfOfDay));     <span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>不过有几点需要说明：</p>
 <ul>
 <li><code>LocalTime</code>中没有<code>isEqual()</code>方法。</li>
@@ -492,22 +488,22 @@
 </ul>
 <h2 id="LocalDateTime"><a href="#LocalDateTime" class="headerlink" title="LocalDateTime"></a>LocalDateTime</h2><p>或许有人觉得，将日期和时间分开处理有些不方便。我想将时间和日期一起处理怎么办？当然可以，Java 8中还提供了<code>LocalDateTime</code>来满足你的这个需求。</p>
 <h3 id="构造方法-1"><a href="#构造方法-1" class="headerlink" title="构造方法"></a>构造方法</h3><p>和前面的类似，可以使用静态方法<code>now()</code>和静态方法<code>of()</code>来创建一个<code>LocalDateTime</code>对象。比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalDateTime now = LocalDateTime.now();</div><div class="line">    System.out.println(now);        <span class="comment">// 2016-07-11T14:27:20.169</span></div><div class="line">    LocalDateTime dateTime1 = LocalDateTime.of(<span class="number">1990</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">12</span>, <span class="number">3</span>);</div><div class="line">    LocalDateTime dateTime2 = LocalDateTime.of(<span class="number">2000</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">20</span>);</div><div class="line">    System.out.println(dateTime1);  <span class="comment">// 1990-01-01T12:03</span></div><div class="line">    System.out.println(dateTime2);  <span class="comment">// 2000-02-04T08:04:20</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalDateTime now = LocalDateTime.now();</span><br><span class="line">    System.out.println(now);        <span class="comment">// 2016-07-11T14:27:20.169</span></span><br><span class="line">    LocalDateTime dateTime1 = LocalDateTime.of(<span class="number">1990</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">12</span>, <span class="number">3</span>);</span><br><span class="line">    LocalDateTime dateTime2 = LocalDateTime.of(<span class="number">2000</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">20</span>);</span><br><span class="line">    System.out.println(dateTime1);  <span class="comment">// 1990-01-01T12:03</span></span><br><span class="line">    System.out.println(dateTime2);  <span class="comment">// 2000-02-04T08:04:20</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>通常，你需要在<code>of()</code>方法中传入6个参数，表示年月日时分秒。关于月份，既可以传入Month对象，也可以传入int值（当然1表示一月份）。也可以将秒这个参数省略了，传入5个参数。也可以增加一个纳秒参数，变为7个参数。</p>
 <h3 id="常用方法-1"><a href="#常用方法-1" class="headerlink" title="常用方法"></a>常用方法</h3><p>这个不想再说了，和<code>LocalDate</code>及<code>LocalTime</code>类似。</p>
 <h3 id="和LocalDate、LocalTime之间的转化"><a href="#和LocalDate、LocalTime之间的转化" class="headerlink" title="和LocalDate、LocalTime之间的转化"></a>和LocalDate、LocalTime之间的转化</h3><p>LocalDateTime既然是“集LocalDate和LocalTime的大成者”，自然能将LocalDateTime转化位LocalDate或者LocalTime，而且方法很简单，只需要调用<code>toLocalDate()</code>或者<code>toLocalTime()</code>方法，就像下面演示的那样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalDateTime dateTime = LocalDateTime.now();</div><div class="line">    System.out.println(dateTime);   <span class="comment">// 2016-07-11T16:57:41.217</span></div><div class="line"></div><div class="line">    LocalDate date = dateTime.toLocalDate();</div><div class="line">    LocalTime time = dateTime.toLocalTime();</div><div class="line">    System.out.println(date);       <span class="comment">// 2016-07-11</span></div><div class="line">    System.out.println(time);       <span class="comment">// 16:57:41.217</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalDateTime dateTime = LocalDateTime.now();</span><br><span class="line">    System.out.println(dateTime);   <span class="comment">// 2016-07-11T16:57:41.217</span></span><br><span class="line"></span><br><span class="line">    LocalDate date = dateTime.toLocalDate();</span><br><span class="line">    LocalTime time = dateTime.toLocalTime();</span><br><span class="line">    System.out.println(date);       <span class="comment">// 2016-07-11</span></span><br><span class="line">    System.out.println(time);       <span class="comment">// 16:57:41.217</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="解析和格式化"><a href="#解析和格式化" class="headerlink" title="解析和格式化"></a>解析和格式化</h2><p>在Date和Calendar统治的时代，想要格式化一个日期，只能用Date来格式化，并且SimpleDateFormat还有线程安全隐患，无疑很麻烦。而现在，在Java 8中，这些问题都不复存在了。</p>
 <p>有一点需要再次强调，再Java 8中，时间日期的格式是按照ISO-8061的时间和日期标准来显示的。年份为4位数，月日时分秒都是2位数，不足两位用0补齐，日期之间需要用短横线连接，时间之间要用<code>:</code>连接。必须按照此规则来进行解析，比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalDate date = LocalDate.parse(<span class="string">"2016-09-08"</span>);</div><div class="line">    LocalTime time = LocalTime.parse(<span class="string">"12:24:43"</span>);</div><div class="line">    System.out.println(date);   <span class="comment">// 2016-09-08</span></div><div class="line">    System.out.println(time);   <span class="comment">// 12:24:43</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalDate date = LocalDate.parse(<span class="string">"2016-09-08"</span>);</span><br><span class="line">    LocalTime time = LocalTime.parse(<span class="string">"12:24:43"</span>);</span><br><span class="line">    System.out.println(date);   <span class="comment">// 2016-09-08</span></span><br><span class="line">    System.out.println(time);   <span class="comment">// 12:24:43</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>当然，Java是宽容的，如果你不按照<code>ISO-8061</code>的格式传入，也有解决办法，这个可以使用<code>parse(CharSequence text, DateTimeFormatter formatter)</code>这个方法，第二个参数传入你所想要的格式类型。</p>
 <p>或者，你也可以使用如下的方法，来解析一个日期字符串</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    String input = <span class="string">"20160708"</span>;</div><div class="line">    DateTimeFormatter formatter =</div><div class="line">            DateTimeFormatter.ofPattern(<span class="string">"yyyyMMdd"</span>);</div><div class="line">    LocalDate date = LocalDate.parse(input, formatter);</div><div class="line">    System.out.printf(<span class="string">"%s%n"</span>, date);        <span class="comment">// 2016-07-08</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    String input = <span class="string">"20160708"</span>;</span><br><span class="line">    DateTimeFormatter formatter =</span><br><span class="line">            DateTimeFormatter.ofPattern(<span class="string">"yyyyMMdd"</span>);</span><br><span class="line">    LocalDate date = LocalDate.parse(input, formatter);</span><br><span class="line">    System.out.printf(<span class="string">"%s%n"</span>, date);        <span class="comment">// 2016-07-08</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后，格式化一个时间日期对象也很简单，就想下面一样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    DateTimeFormatter format = DateTimeFormatter.ofPattern(<span class="string">"MMM d yyyy  hh:mm a"</span>);</div><div class="line">    LocalDateTime date = LocalDateTime.now();</div><div class="line">    String dateStr = date.format(format);</div><div class="line">    System.out.println(dateStr);    <span class="comment">// 七月 11 2016  05:54 下午</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    DateTimeFormatter format = DateTimeFormatter.ofPattern(<span class="string">"MMM d yyyy  hh:mm a"</span>);</span><br><span class="line">    LocalDateTime date = LocalDateTime.now();</span><br><span class="line">    String dateStr = date.format(format);</span><br><span class="line">    System.out.println(dateStr);    <span class="comment">// 七月 11 2016  05:54 下午</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="调节器-Temporal-Adjuster"><a href="#调节器-Temporal-Adjuster" class="headerlink" title="调节器(Temporal Adjuster)"></a>调节器(Temporal Adjuster)</h2><p>如果说，新版的时间日期处理方法，和我们以前使用的Date和Calendar类有什么使用上的区别的话，最明显的使用区别就是调节器的使用了。调节器有什么用呢？比如要获取下周星期一的日期，用之前的方法不容易获得，而这时使用调节器就能轻松解决。</p>
 <p>先看一下使用方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalDate date = LocalDate.now();</div><div class="line">    DayOfWeek dotw = date.getDayOfWeek();</div><div class="line">    System.out.printf(<span class="string">"%s is on a %s%n"</span>, date, dotw);         <span class="comment">// 2016-07-11 is on a MONDAY</span></div><div class="line">    System.out.printf(<span class="string">"Next Monday: %s%n"</span>,</div><div class="line">            date.with(TemporalAdjusters.next(DayOfWeek.MONDAY)));<span class="comment">// Next Monday: 2016-07-18</span></div><div class="line">    System.out.printf(<span class="string">"First day of Month: %s%n"</span>,</div><div class="line">            date.with(TemporalAdjusters.firstDayOfMonth()));  <span class="comment">// First day of Month: 2016-07-01</span></div><div class="line">    System.out.printf(<span class="string">"First Monday of Month: %s%n"</span>,</div><div class="line">            date.with(TemporalAdjusters.firstInMonth(DayOfWeek.MONDAY)));<span class="comment">// First Monday of Month: 2016-07-04</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalDate date = LocalDate.now();</span><br><span class="line">    DayOfWeek dotw = date.getDayOfWeek();</span><br><span class="line">    System.out.printf(<span class="string">"%s is on a %s%n"</span>, date, dotw);         <span class="comment">// 2016-07-11 is on a MONDAY</span></span><br><span class="line">    System.out.printf(<span class="string">"Next Monday: %s%n"</span>,</span><br><span class="line">            date.with(TemporalAdjusters.next(DayOfWeek.MONDAY)));<span class="comment">// Next Monday: 2016-07-18</span></span><br><span class="line">    System.out.printf(<span class="string">"First day of Month: %s%n"</span>,</span><br><span class="line">            date.with(TemporalAdjusters.firstDayOfMonth()));  <span class="comment">// First day of Month: 2016-07-01</span></span><br><span class="line">    System.out.printf(<span class="string">"First Monday of Month: %s%n"</span>,</span><br><span class="line">            date.with(TemporalAdjusters.firstInMonth(DayOfWeek.MONDAY)));<span class="comment">// First Monday of Month: 2016-07-04</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>很简单，得到LocalDate对象后，调用<code>with()</code>方法，传入一个TemporalAdjusters对象即可。TemporalAdjusters类有许多静态工厂方法来创建该对象，比如：</p>
 <ul>
 <li>firstDayOfMonth()</li>
@@ -528,37 +524,36 @@
 <h3 id="自定义调节器"><a href="#自定义调节器" class="headerlink" title="自定义调节器"></a>自定义调节器</h3><p>自定义一个调节器很简单，创建一个类，实现<code>TemporalAdjuster</code>接口，重写<code>adjustInto(Temporal input)</code>方法，将你需要的逻辑都在里面实现。</p>
 <p>假设一个场景，一个商店每个月进货两次，上半月一次，下半月一次，上半月的那次进货是在15号，如果实在下半月，则是该月的最后一天进货。如果进货的那天恰逢周六周日，则提前到该周周五进货（货车司机也要双休嘛），那么如何自定义一个调节器，计算下一次的进货时间呢？</p>
 <p>我们可以使用下面的代码实现一个自定义调节器：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PurchaseAdjuster</span> <span class="keyword">implements</span> <span class="title">TemporalAdjuster</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Temporal <span class="title">adjustInto</span><span class="params">(Temporal input)</span> </span>&#123;</div><div class="line">        LocalDate date = LocalDate.from(input);</div><div class="line">        <span class="keyword">int</span> day;</div><div class="line">        <span class="keyword">if</span> (date.getDayOfMonth() &lt; <span class="number">15</span>) &#123;</div><div class="line">            day = <span class="number">15</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            day = date.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();</div><div class="line">        &#125;</div><div class="line">        date = date.withDayOfMonth(day);</div><div class="line">        <span class="keyword">if</span> (date.getDayOfWeek() == DayOfWeek.SATURDAY ||</div><div class="line">                date.getDayOfWeek() == DayOfWeek.SUNDAY) &#123;</div><div class="line">            date = date.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> input.with(date);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PurchaseAdjuster</span> <span class="keyword">implements</span> <span class="title">TemporalAdjuster</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Temporal <span class="title">adjustInto</span><span class="params">(Temporal input)</span> </span>&#123;</span><br><span class="line">        LocalDate date = LocalDate.from(input);</span><br><span class="line">        <span class="keyword">int</span> day;</span><br><span class="line">        <span class="keyword">if</span> (date.getDayOfMonth() &lt; <span class="number">15</span>) &#123;</span><br><span class="line">            day = <span class="number">15</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            day = date.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();</span><br><span class="line">        &#125;</span><br><span class="line">        date = date.withDayOfMonth(day);</span><br><span class="line">        <span class="keyword">if</span> (date.getDayOfWeek() == DayOfWeek.SATURDAY ||</span><br><span class="line">                date.getDayOfWeek() == DayOfWeek.SUNDAY) &#123;</span><br><span class="line">            date = date.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> input.with(date);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里面使用到了<code>LocalDate.from(TemporalAccessor temporal)</code>方法，该方法获取一个<code>Temporal</code>对象，返回一个<code>LocalDate</code>对象（<code>LocalTime</code>和<code>LocalDateTime</code>都有此静态方法），然后使用内置的<code>TemporalAdjuster</code>静态工厂方法完成逻辑处理，最后返回修改之后的Temporal对象。</p>
 <p>让我们看看效果如何：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    LocalDate date = LocalDate.now();</div><div class="line">    LocalDate nextPayday = date.with(<span class="keyword">new</span> PurchaseAdjuster());</div><div class="line">    System.out.println(nextPayday);     <span class="comment">// 2016-07-15</span></div><div class="line"></div><div class="line">    LocalDate customDate = LocalDate.now().withDayOfMonth(<span class="number">18</span>);</div><div class="line">    LocalDate otherPayday = customDate.with(<span class="keyword">new</span> PurchaseAdjuster());</div><div class="line">    System.out.println(otherPayday);    <span class="comment">// 2016-07-29</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LocalDate date = LocalDate.now();</span><br><span class="line">    LocalDate nextPayday = date.with(<span class="keyword">new</span> PurchaseAdjuster());</span><br><span class="line">    System.out.println(nextPayday);     <span class="comment">// 2016-07-15</span></span><br><span class="line"></span><br><span class="line">    LocalDate customDate = LocalDate.now().withDayOfMonth(<span class="number">18</span>);</span><br><span class="line">    LocalDate otherPayday = customDate.with(<span class="keyword">new</span> PurchaseAdjuster());</span><br><span class="line">    System.out.println(otherPayday);    <span class="comment">// 2016-07-29</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>7月29日是星期五，嗯，看来效果不错哈？</p>
 <h2 id="最后，其实还有很多没说完"><a href="#最后，其实还有很多没说完" class="headerlink" title="最后，其实还有很多没说完"></a>最后，其实还有很多没说完</h2><p>聊了这么多，但是仍然有很多没聊完。Java 8中对时间和日期的处理比较复杂，涉及的东西比较广泛，本篇只说了一些常用的类和方法，希望通过这些方法，让你能熟悉使用Java 8中的时间和日期的处理。如果需要更多的信息，可以去查阅官方文档。</p>
 
       
     </div>
+    
+    
+    
 
-    <div>
-      
-        
+    
 
-      
-    </div>
+    
 
-    <div>
-      
-        
-
-      
-    </div>
+    
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag">#Java</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
+      
+
+      
+      
       
 
       
@@ -570,6 +565,8 @@
               </a>
             
           </div>
+
+          <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
@@ -584,34 +581,15 @@
       
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
 
     <div class="post-spread">
-      
-        <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-  <a class="jiathis_button_tsina"></a>
-  <a class="jiathis_button_tqq"></a>
-  <a class="jiathis_button_weixin"></a>
-  <a class="jiathis_button_cqq"></a>
-  <a class="jiathis_button_douban"></a>
-  <a class="jiathis_button_renren"></a>
-  <a class="jiathis_button_qzone"></a>
-  <a class="jiathis_button_kaixin001"></a>
-  <a class="jiathis_button_copy"></a>
-  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
-  <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" >
-  var jiathis_config={
-    hideMore:false
-  }
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-
       
     </div>
   </div>
@@ -622,16 +600,7 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
+  
 
 
         </div>
@@ -647,95 +616,93 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
           </li>
         </ul>
       
 
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.png"
-               alt="湫水" />
-          <p class="site-author-name" itemprop="name">湫水</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">29</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
           </div>
 
           
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
           
 
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
           
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
-                  
-                    <i class="fa fa-fw fa-weibo"></i>
-                  
-                  Weibo
-                </a>
-              </span>
-            
           
+
+          
+
         </div>
-
-        
-        
-
-        
-        
-
       </section>
 
       
+      <!--noindex-->
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
             
               
             
+
             
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#月份和星期的枚举类"><span class="nav-number">1.</span> <span class="nav-text">月份和星期的枚举类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Month"><span class="nav-number">1.1.</span> <span class="nav-text">Month</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DayOfWeek"><span class="nav-number">1.2.</span> <span class="nav-text">DayOfWeek</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码中的加减法计算"><span class="nav-number">1.3.</span> <span class="nav-text">源码中的加减法计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalDate和LocalTime"><span class="nav-number">2.</span> <span class="nav-text">LocalDate和LocalTime</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法"><span class="nav-number">2.1.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法"><span class="nav-number">2.2.</span> <span class="nav-text">常用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalDateTime"><span class="nav-number">3.</span> <span class="nav-text">LocalDateTime</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法-1"><span class="nav-number">3.1.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法-1"><span class="nav-number">3.2.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#和LocalDate、LocalTime之间的转化"><span class="nav-number">3.3.</span> <span class="nav-text">和LocalDate、LocalTime之间的转化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析和格式化"><span class="nav-number">4.</span> <span class="nav-text">解析和格式化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调节器-Temporal-Adjuster"><span class="nav-number">5.</span> <span class="nav-text">调节器(Temporal Adjuster)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义调节器"><span class="nav-number">5.1.</span> <span class="nav-text">自定义调节器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后，其实还有很多没说完"><span class="nav-number">6.</span> <span class="nav-text">最后，其实还有很多没说完</span></a></li></ol></div>
             
+
           </div>
         </section>
+      <!--/noindex-->
+      
+
       
 
     </div>
@@ -748,36 +715,48 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">湫水</span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
 
         
+
+
+
+
+
+
 
         
       </div>
     </footer>
 
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
   </div>
 
   
@@ -797,6 +776,15 @@
 
 
   
+
+
+
+
+
+
+
+
+
 
 
 
@@ -822,67 +810,9 @@
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-
-
-  
-
-    <script type="text/javascript">
-      var disqus_shortname = 'https-wl9739-github-io';
-      var disqus_identifier = '2016/07/11/Java中的时间和日期（下）/';
-      var disqus_title = "Java中的时间和日期（下）";
-      var disqus_url = 'http://yoursite.com/2016/07/11/Java中的时间和日期（下）/';
-
-      function run_disqus_script(disqus_script){
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      }
-
-      run_disqus_script('count.js');
-      
-        var disqus_config = function () {
-            this.page.url = disqus_url;
-            this.page.identifier = disqus_identifier;
-            this.page.title = disqus_title;
-        };
-        run_disqus_script('embed.js');
-      
-    </script>
-  
-
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
 
 
 
@@ -890,155 +820,64 @@
   
 
   
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-  </script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for (i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-    });
-  </script>
-  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
 
 
   
 
   
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
 
   
 
-  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+  
+
+  
+
+  
+
 </body>
 </html>

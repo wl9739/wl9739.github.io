@@ -1,20 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 
 
 
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next muse use-motion" lang="">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
 
 
 
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
 
 
 
@@ -34,38 +45,27 @@
 
 
 
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
 
 
 
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Android," />
@@ -77,118 +77,100 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
 
 
-
-
-
-
-<meta name="description" content="最近项目需要使用到指纹识别的功能，查阅了相关资料后，整理成此文。
-指纹识别是在Android 6.0之后新增的功能，因此在使用的时候需要先判断用户手机的系统版本是否支持指纹识别。另外，实际开发场景中，使用指纹的主要场景有两种：
-
-纯本地使用。即用户在本地完成指纹识别后，不需要将指纹的相关信息给后台。
-与后台交互。用户在本地完成指纹识别后，需要将指纹相关的信息传给后台。
-
-由于使用指纹识别功能需要一">
+<meta name="description" content="最近项目需要使用到指纹识别的功能，查阅了相关资料后，整理成此文。 指纹识别是在Android 6.0之后新增的功能，因此在使用的时候需要先判断用户手机的系统版本是否支持指纹识别。另外，实际开发场景中，使用指纹的主要场景有两种：  纯本地使用。即用户在本地完成指纹识别后，不需要将指纹的相关信息给后台。 与后台交互。用户在本地完成指纹识别后，需要将指纹相关的信息传给后台。  由于使用指纹识别功能需要一">
+<meta name="keywords" content="Android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 中的指纹识别">
 <meta property="og:url" content="http://yoursite.com/2016/09/05/Android-中的指纹识别/index.html">
-<meta property="og:site_name" content="湫水">
-<meta property="og:description" content="最近项目需要使用到指纹识别的功能，查阅了相关资料后，整理成此文。
-指纹识别是在Android 6.0之后新增的功能，因此在使用的时候需要先判断用户手机的系统版本是否支持指纹识别。另外，实际开发场景中，使用指纹的主要场景有两种：
-
-纯本地使用。即用户在本地完成指纹识别后，不需要将指纹的相关信息给后台。
-与后台交互。用户在本地完成指纹识别后，需要将指纹相关的信息传给后台。
-
-由于使用指纹识别功能需要一">
+<meta property="og:site_name" content="next">
+<meta property="og:description" content="最近项目需要使用到指纹识别的功能，查阅了相关资料后，整理成此文。 指纹识别是在Android 6.0之后新增的功能，因此在使用的时候需要先判断用户手机的系统版本是否支持指纹识别。另外，实际开发场景中，使用指纹的主要场景有两种：  纯本地使用。即用户在本地完成指纹识别后，不需要将指纹的相关信息给后台。 与后台交互。用户在本地完成指纹识别后，需要将指纹相关的信息传给后台。  由于使用指纹识别功能需要一">
 <meta property="og:updated_time" content="2017-06-05T11:56:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 中的指纹识别">
-<meta name="twitter:description" content="最近项目需要使用到指纹识别的功能，查阅了相关资料后，整理成此文。
-指纹识别是在Android 6.0之后新增的功能，因此在使用的时候需要先判断用户手机的系统版本是否支持指纹识别。另外，实际开发场景中，使用指纹的主要场景有两种：
-
-纯本地使用。即用户在本地完成指纹识别后，不需要将指纹的相关信息给后台。
-与后台交互。用户在本地完成指纹识别后，需要将指纹相关的信息传给后台。
-
-由于使用指纹识别功能需要一">
+<meta name="twitter:description" content="最近项目需要使用到指纹识别的功能，查阅了相关资料后，整理成此文。 指纹识别是在Android 6.0之后新增的功能，因此在使用的时候需要先判断用户手机的系统版本是否支持指纹识别。另外，实际开发场景中，使用指纹的主要场景有两种：  纯本地使用。即用户在本地完成指纹识别后，不需要将指纹的相关信息给后台。 与后台交互。用户在本地完成指纹识别后，需要将指纹相关的信息传给后台。  由于使用指纹识别功能需要一">
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
-    motion: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: '博主'
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://yoursite.com/2016/09/05/Android-中的指纹识别/"/>
 
 
-  <title> Android 中的指纹识别 | 湫水 </title>
-</head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
 
+
+  <title>Android 中的指纹识别 | next</title>
   
 
 
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
 
 
 
 
 
+</head>
 
-
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
 
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">湫水</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">next</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
-  <p class="site-subtitle"></p>
-</div>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
 <nav class="site-nav">
@@ -203,27 +185,17 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            首页
+            Home
           </a>
         </li>
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
+            Archives
           </a>
         </li>
       
@@ -234,6 +206,8 @@
 
   
 </nav>
+
+
 
  </div>
     </header>
@@ -248,73 +222,77 @@
     
 
   
-  
 
   
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/05/Android-中的指纹识别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="next">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Android 中的指纹识别
-              
-            
-          </h1>
+          <h1 class="post-title" itemprop="name headline">Android 中的指纹识别</h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-05T22:29:33+08:00" content="2016-09-05">
-              2016-09-05
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-05T22:29:33+08:00">
+                2016-09-05
+              </time>
+            
+
+            
+
+            
           </span>
 
           
 
           
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/05/Android-中的指纹识别/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/09/05/Android-中的指纹识别/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
+          
+
+          
           
 
           
 
           
-          
-             <span id="/2016/09/05/Android-中的指纹识别/" class="leancloud_visitors" data-flag-title="Android 中的指纹识别">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
 
           
+
         </div>
       </header>
     
 
-
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -353,18 +331,18 @@
 </ol>
 <h3 id="创建密钥"><a href="#创建密钥" class="headerlink" title="创建密钥"></a>创建密钥</h3><p>创建密钥要涉及到两个类：KeyStore 和 KeyGenerator。</p>
 <p>KeyStore 是用于存储、获取密钥（Key）的容器，获取 KeyStore的方法如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    mKeyStore = KeyStore.getInstance(<span class="string">"AndroidKeyStore"</span>);</div><div class="line">&#125; <span class="keyword">catch</span> (KeyStoreException e) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to get an instance of KeyStore"</span>, e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mKeyStore = KeyStore.getInstance(<span class="string">"AndroidKeyStore"</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (KeyStoreException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to get an instance of KeyStore"</span>, e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>而生成 Key，如果是对称加密，就需要 KeyGenerator 类。获取一个 KeyGenerator 对象比较简单，方法如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 对称加密， 创建 KeyGenerator 对象</span></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    mKeyGenerator = KeyGenerator</div><div class="line">            .getInstance(KeyProperties.KEY_ALGORITHM_AES, <span class="string">"AndroidKeyStore"</span>);</div><div class="line">&#125; <span class="keyword">catch</span> (NoSuchAlgorithmException | NoSuchProviderException e) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to get an instance of KeyGenerator"</span>, e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对称加密， 创建 KeyGenerator 对象</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mKeyGenerator = KeyGenerator</span><br><span class="line">            .getInstance(KeyProperties.KEY_ALGORITHM_AES, <span class="string">"AndroidKeyStore"</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (NoSuchAlgorithmException | NoSuchProviderException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to get an instance of KeyGenerator"</span>, e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>获得 KeyGenerator 对象后，就可以生成一个 Key 了:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">try</span> &#123;</div><div class="line">    keyStore.load(<span class="keyword">null</span>);</div><div class="line">    KeyGenParameterSpec.Builder builder = <span class="keyword">new</span> KeyGenParameterSpec.Builder(defaultKeyName,</div><div class="line">            KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)</div><div class="line">            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)</div><div class="line">            .setUserAuthenticationRequired(<span class="keyword">true</span>)</div><div class="line">            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.N) &#123;</div><div class="line">        builder.setInvalidatedByBiometricEnrollment(<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">    keyGenerator.init(builder.build());</div><div class="line">    keyGenerator.generateKey();</div><div class="line">&#125; <span class="keyword">catch</span> (CertificateException | NoSuchAlgorithmException | IOException | InvalidAlgorithmParameterException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>关于 KeyStrore 和 KeyGenerator 的相关介绍，推荐阅读：<a href="http://blog.csdn.net/lintcgirl/article/details/51355203" target="_blank" rel="external">Android KeyStore + FingerprintManager 存储密码</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">    keyStore.load(<span class="keyword">null</span>);</span><br><span class="line">    KeyGenParameterSpec.Builder builder = <span class="keyword">new</span> KeyGenParameterSpec.Builder(defaultKeyName,</span><br><span class="line">            KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)</span><br><span class="line">            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)</span><br><span class="line">            .setUserAuthenticationRequired(<span class="keyword">true</span>)</span><br><span class="line">            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.N) &#123;</span><br><span class="line">        builder.setInvalidatedByBiometricEnrollment(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    keyGenerator.init(builder.build());</span><br><span class="line">    keyGenerator.generateKey();</span><br><span class="line">&#125; <span class="keyword">catch</span> (CertificateException | NoSuchAlgorithmException | IOException | InvalidAlgorithmParameterException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于 KeyStrore 和 KeyGenerator 的相关介绍，推荐阅读：<a href="http://blog.csdn.net/lintcgirl/article/details/51355203" target="_blank" rel="noopener">Android KeyStore + FingerprintManager 存储密码</a></p>
 <h3 id="创建并初始化-Cipher-对象"><a href="#创建并初始化-Cipher-对象" class="headerlink" title="创建并初始化 Cipher 对象"></a>创建并初始化 Cipher 对象</h3><p>Cipher 对象是一个按照一定的加密规则，将数据进行加密后的一个对象。调用指纹识别功能需要使用到这个对象。创建 Cipher 对象很简单，如同下面代码那样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Cipher defaultCipher;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    defaultCipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + <span class="string">"/"</span></div><div class="line">            + KeyProperties.BLOCK_MODE_CBC + <span class="string">"/"</span> + KeyProperties.ENCRYPTION_PADDING_PKCS7);</div><div class="line">&#125; <span class="keyword">catch</span> (NoSuchAlgorithmException | NoSuchPaddingException e) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"创建Cipher对象失败"</span>, e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Cipher defaultCipher;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    defaultCipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + <span class="string">"/"</span></span><br><span class="line">            + KeyProperties.BLOCK_MODE_CBC + <span class="string">"/"</span> + KeyProperties.ENCRYPTION_PADDING_PKCS7);</span><br><span class="line">&#125; <span class="keyword">catch</span> (NoSuchAlgorithmException | NoSuchPaddingException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"创建Cipher对象失败"</span>, e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后使用刚才创建好的密钥，初始化 Cipher 对象:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">try</span> &#123;</div><div class="line">    keyStore.load(<span class="keyword">null</span>);</div><div class="line">    SecretKey key = (SecretKey) keyStore.getKey(keyName, <span class="keyword">null</span>);</div><div class="line">    cipher.init(Cipher.ENCRYPT_MODE, key);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">&#125; <span class="keyword">catch</span> (IOException | NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException | KeyStoreException | InvalidKeyException e) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"初始化 cipher 失败"</span>, e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">    keyStore.load(<span class="keyword">null</span>);</span><br><span class="line">    SecretKey key = (SecretKey) keyStore.getKey(keyName, <span class="keyword">null</span>);</span><br><span class="line">    cipher.init(Cipher.ENCRYPT_MODE, key);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException | NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException | KeyStoreException | InvalidKeyException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"初始化 cipher 失败"</span>, e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="使用指纹识别功能"><a href="#使用指纹识别功能" class="headerlink" title="使用指纹识别功能"></a>使用指纹识别功能</h3><p>真正到了使用指纹识别功能的时候，你会发现其实很简单，只是调用 <strong>FingerprintManager</strong> 类的的方法<strong>authenticate()</strong>而已，然后系统会有相应的回调反馈给我们，该方法如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">authenticate</span><span class="params">(CryptoObject crypto, CancellationSignal cancel, <span class="keyword">int</span> flags, AuthenticationCallback callback, Handler handler)</span></span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">authenticate</span><span class="params">(CryptoObject crypto, CancellationSignal cancel, <span class="keyword">int</span> flags, AuthenticationCallback callback, Handler handler)</span></span></span><br></pre></td></tr></table></figure>
 <p>该方法的几个参数解释如下：</p>
 <ul>
 <li>第一个参数是一个加密对象。还记得之前我们大费周章地创建和初始化的Cipher对象吗？这里的 CryptoObject 对象就是使用 Cipher 对象创建创建出来的：<code>new FingerprintManager.CryptoObject(cipher)</code>。</li>
@@ -374,9 +352,9 @@
 <li>最后一个 <strong>Handler</strong>，可以用于处理回调事件，可以传null。</li>
 </ul>
 <p>完成指纹识别后，还要记得将 <strong>AuthenticationCallback</strong> 关闭掉：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stopListening</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (cancellationSignal != <span class="keyword">null</span>) &#123;</div><div class="line">        selfCancelled = <span class="keyword">true</span>;</div><div class="line">        cancellationSignal.cancel();</div><div class="line">        cancellationSignal = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stopListening</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (cancellationSignal != <span class="keyword">null</span>) &#123;</span><br><span class="line">        selfCancelled = <span class="keyword">true</span>;</span><br><span class="line">        cancellationSignal.cancel();</span><br><span class="line">        cancellationSignal = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="重写回调方法"><a href="#重写回调方法" class="headerlink" title="重写回调方法"></a>重写回调方法</h3><p>调用了 <code>authenticate()</code> 方法后，系统就会启动指纹传感器，并开始扫描。这时候根据扫描结果，会通过<strong>FingerprintManager.AuthenticationCallback</strong>类返回几个回调方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 成功</div><div class="line">onAuthenticationSucceeded()</div><div class="line">// 失败</div><div class="line">onAuthenticationFaile()</div><div class="line">// 错误</div><div class="line">onAuthenticationError()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 成功</span><br><span class="line">onAuthenticationSucceeded()</span><br><span class="line">// 失败</span><br><span class="line">onAuthenticationFaile()</span><br><span class="line">// 错误</span><br><span class="line">onAuthenticationError()</span><br></pre></td></tr></table></figure>
 <p>一般我们需要重写这几个方法，以实现我们的功能。关于<code>onAuthenticationFaile()</code>和<code>onAuthenticationError()</code>的区别，后面会讲到。</p>
 <h2 id="指纹识别的非对称加密实现"><a href="#指纹识别的非对称加密实现" class="headerlink" title="指纹识别的非对称加密实现"></a>指纹识别的非对称加密实现</h2><p>其实流程和上面的流程差不多：</p>
 <ol>
@@ -386,19 +364,19 @@
 </ol>
 <p>可以看见，指纹识别的非对称加密方式和对称加密方式的实现流程是差不多的，它们之间最明显的差别是在于密钥的生成与使用。</p>
 <h3 id="创建密钥-1"><a href="#创建密钥-1" class="headerlink" title="创建密钥"></a>创建密钥</h3><p>这里要使用 <strong>KeyPairGenerator</strong> 来创建一组非对称密钥，首先是获取 <strong>KeyPairGenerator</strong> 对象：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 非对称加密，创建 KeyPairGenerator 对象</span></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    mKeyPairGenerator =  KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, <span class="string">"AndroidKeyStore"</span>);</div><div class="line">&#125; <span class="keyword">catch</span> (NoSuchAlgorithmException | NoSuchProviderException e) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to get an instance of KeyPairGenerator"</span>, e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非对称加密，创建 KeyPairGenerator 对象</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mKeyPairGenerator =  KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, <span class="string">"AndroidKeyStore"</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (NoSuchAlgorithmException | NoSuchProviderException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to get an instance of KeyPairGenerator"</span>, e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>得到了 KeyPairGenerator 对象后，就可以创建 KeyPair（密钥对）了：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    <span class="comment">// Set the alias of the entry in Android KeyStore where the key will appear</span></div><div class="line">    <span class="comment">// and the constrains (purposes) in the constructor of the Builder</span></div><div class="line">    mKeyPairGenerator.initialize(</div><div class="line">            <span class="keyword">new</span> KeyGenParameterSpec.Builder(KEY_NAME,</div><div class="line">                    KeyProperties.PURPOSE_SIGN)</div><div class="line">                    .setDigests(KeyProperties.DIGEST_SHA256)</div><div class="line">                    .setAlgorithmParameterSpec(<span class="keyword">new</span> ECGenParameterSpec(<span class="string">"secp256r1"</span>))</div><div class="line">                    <span class="comment">// Require the user to authenticate with a fingerprint to authorize</span></div><div class="line">                    <span class="comment">// every use of the private key</span></div><div class="line">                    .setUserAuthenticationRequired(<span class="keyword">true</span>)</div><div class="line">                    .build());</div><div class="line">    mKeyPairGenerator.generateKeyPair();</div><div class="line">&#125; <span class="keyword">catch</span> (InvalidAlgorithmParameterException e) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// Set the alias of the entry in Android KeyStore where the key will appear</span></span><br><span class="line">    <span class="comment">// and the constrains (purposes) in the constructor of the Builder</span></span><br><span class="line">    mKeyPairGenerator.initialize(</span><br><span class="line">            <span class="keyword">new</span> KeyGenParameterSpec.Builder(KEY_NAME,</span><br><span class="line">                    KeyProperties.PURPOSE_SIGN)</span><br><span class="line">                    .setDigests(KeyProperties.DIGEST_SHA256)</span><br><span class="line">                    .setAlgorithmParameterSpec(<span class="keyword">new</span> ECGenParameterSpec(<span class="string">"secp256r1"</span>))</span><br><span class="line">                    <span class="comment">// Require the user to authenticate with a fingerprint to authorize</span></span><br><span class="line">                    <span class="comment">// every use of the private key</span></span><br><span class="line">                    .setUserAuthenticationRequired(<span class="keyword">true</span>)</span><br><span class="line">                    .build());</span><br><span class="line">    mKeyPairGenerator.generateKeyPair();</span><br><span class="line">&#125; <span class="keyword">catch</span> (InvalidAlgorithmParameterException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="签名"><a href="#签名" class="headerlink" title="签名"></a>签名</h3><p>指纹识别的对称加密实现中使用了Cipher对象来创建CryptoObject对象，而在这里，我们将会使用私钥进行签名，用签名对象来创建CryptoObject对象：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 使用私钥签名</span></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    mKeyStore.load(<span class="keyword">null</span>);</div><div class="line">    PrivateKey key = (PrivateKey) mKeyStore.getKey(KEY_NAME, <span class="keyword">null</span>);</div><div class="line">    mSignature.initSign(key);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">&#125; <span class="keyword">catch</span> (KeyPermanentlyInvalidatedException e) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125; <span class="keyword">catch</span> (KeyStoreException | CertificateException | UnrecoverableKeyException | IOException</div><div class="line">        | NoSuchAlgorithmException | InvalidKeyException e) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to init Cipher"</span>, e);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用私钥签名</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    mKeyStore.load(<span class="keyword">null</span>);</span><br><span class="line">    PrivateKey key = (PrivateKey) mKeyStore.getKey(KEY_NAME, <span class="keyword">null</span>);</span><br><span class="line">    mSignature.initSign(key);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span> (KeyPermanentlyInvalidatedException e) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span> (KeyStoreException | CertificateException | UnrecoverableKeyException | IOException</span><br><span class="line">        | NoSuchAlgorithmException | InvalidKeyException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to init Cipher"</span>, e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>同样的，调用<code>new FingerprintManager.CryptoObject(mSignature)</code>方法创建一个CryptoObject对象。</p>
 <h3 id="调用指纹识别方法"><a href="#调用指纹识别方法" class="headerlink" title="调用指纹识别方法"></a>调用指纹识别方法</h3><p>这里的使用方法和前面“指纹识别的对称加密实现”中的调用方法是一样的，都是调用<code>FingerprintManager.authenticate()</code>方法。这里就不再叙述。</p>
 <h3 id="监听回调"><a href="#监听回调" class="headerlink" title="监听回调"></a>监听回调</h3><p>监听回调也和之前的类似，唯一不同的是，我们在识别成功后需要和后台进行交互，也就是<code>onAuthenticationSucceeded()</code>中处理的逻辑不一样。</p>
 <h2 id="实际应用中的注意事项"><a href="#实际应用中的注意事项" class="headerlink" title="实际应用中的注意事项"></a>实际应用中的注意事项</h2><h3 id="判断用户是否可以使用指纹识别功能"><a href="#判断用户是否可以使用指纹识别功能" class="headerlink" title="判断用户是否可以使用指纹识别功能"></a>判断用户是否可以使用指纹识别功能</h3><p>一般来说，为了增加安全性，要求用户在手机的“设置”中开启了密码锁屏功能。当然，使用指纹解锁的前提是至少录入了一个指纹。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果没有设置密码锁屏，则不能使用指纹识别</span></div><div class="line"><span class="keyword">if</span> (!keyguardManager.isKeyguardSecure()) &#123;</div><div class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"请在设置界面开启密码锁屏功能"</span>,</div><div class="line">            Toast.LENGTH_LONG).show();</div><div class="line">&#125;</div><div class="line"><span class="comment">// 如果没有录入指纹，则不能使用指纹识别</span></div><div class="line"><span class="keyword">if</span> (!fingerprintManager.hasEnrolledFingerprints()) &#123;</div><div class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"您还没有录入指纹, 请在设置界面录入至少一个指纹"</span>,</div><div class="line">            Toast.LENGTH_LONG).show();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果没有设置密码锁屏，则不能使用指纹识别</span></span><br><span class="line"><span class="keyword">if</span> (!keyguardManager.isKeyguardSecure()) &#123;</span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"请在设置界面开启密码锁屏功能"</span>,</span><br><span class="line">            Toast.LENGTH_LONG).show();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 如果没有录入指纹，则不能使用指纹识别</span></span><br><span class="line"><span class="keyword">if</span> (!fingerprintManager.hasEnrolledFingerprints()) &#123;</span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"您还没有录入指纹, 请在设置界面录入至少一个指纹"</span>,</span><br><span class="line">            Toast.LENGTH_LONG).show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里用到了两个类：<strong>KeyguardManager</strong> 和 <strong>FingerprintManager</strong>，前者是屏幕保护的相关类。后者是指纹识别的核心类。</p>
 <h3 id="关于指纹识别回调方法"><a href="#关于指纹识别回调方法" class="headerlink" title="关于指纹识别回调方法"></a>关于指纹识别回调方法</h3><p>前面说到<strong>AuthenticationCallback</strong>类里面的几个回调方法，其中有三个是我们开发中需要用到的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">onAuthenticationError()</div><div class="line">onAuthenticationSucceeded()</div><div class="line">onAuthenticationFailed()</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">onAuthenticationError()</span><br><span class="line">onAuthenticationSucceeded()</span><br><span class="line">onAuthenticationFailed()</span><br></pre></td></tr></table></figure>
 <p>关于这三个回调方法，有几点需要注意的：</p>
 <ol>
 <li><p>当指纹识别失败后，会调用<code>onAuthenticationFailed()</code>方法，这时候指纹传感器并没有关闭，系统给我们提供了5次重试机会，也就是说，连续调用了5次<code>onAuthenticationFailed()</code>方法后，会调用<code>onAuthenticationError()</code>方法。</p>
@@ -409,52 +387,51 @@
 </li>
 </ol>
 <h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p>最后， Android Sample 里面关于指纹的示例代码地址如下:</p>
-<p>对称加密方式：<a href="https://github.com/googlesamples/android-FingerprintDialog" target="_blank" rel="external">android-FingerprintDialog</a>。</p>
-<p>非对称加密方式：<a href="https://github.com/googlesamples/android-AsymmetricFingerprintDialog" target="_blank" rel="external">android-AsymmetricFingerprintDialog</a></p>
+<p>对称加密方式：<a href="https://github.com/googlesamples/android-FingerprintDialog" target="_blank" rel="noopener">android-FingerprintDialog</a>。</p>
+<p>非对称加密方式：<a href="https://github.com/googlesamples/android-AsymmetricFingerprintDialog" target="_blank" rel="noopener">android-AsymmetricFingerprintDialog</a></p>
 <hr>
 <p>以下内容更新于 2017.6.5</p>
 <h2 id="获取指纹信息"><a href="#获取指纹信息" class="headerlink" title="获取指纹信息"></a>获取指纹信息</h2><p>越来越多的朋友开始关心指纹识别这一功能模块，并且通过各种渠道向我咨询一些关于指纹识别的需求解决方案。这里就统一说明一下，就不一一回复了。</p>
 <p>前面已经说到了，监听指纹识别成功之后会有一个 <code>onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)</code> 回调方法。该方法会给我们一个 <code>AuthenticationResult</code> 类的对象 <code>result</code>，该类的源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationResult</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Fingerprint mFingerprint;</div><div class="line">    <span class="keyword">private</span> CryptoObject mCryptoObject;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Authentication result</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> crypto the crypto object</div><div class="line">     * <span class="doctag">@param</span> fingerprint the recognized fingerprint data, if allowed.</div><div class="line">     * <span class="doctag">@hide</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AuthenticationResult</span><span class="params">(CryptoObject crypto, Fingerprint fingerprint)</span> </span>&#123;</div><div class="line">        mCryptoObject = crypto;</div><div class="line">        mFingerprint = fingerprint;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Obtain the crypto object associated with this transaction</div><div class="line">     * <span class="doctag">@return</span> crypto object provided to &#123;<span class="doctag">@link</span> FingerprintManager#authenticate(CryptoObject,</div><div class="line">     *     CancellationSignal, int, AuthenticationCallback, Handler)&#125;.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> CryptoObject <span class="title">getCryptoObject</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> mCryptoObject; &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Obtain the Fingerprint associated with this operation. Applications are strongly</div><div class="line">     * discouraged from associating specific fingers with specific applications or operations.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@hide</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Fingerprint <span class="title">getFingerprint</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> mFingerprint; &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationResult</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Fingerprint mFingerprint;</span><br><span class="line">    <span class="keyword">private</span> CryptoObject mCryptoObject;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Authentication result</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> crypto the crypto object</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> fingerprint the recognized fingerprint data, if allowed.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AuthenticationResult</span><span class="params">(CryptoObject crypto, Fingerprint fingerprint)</span> </span>&#123;</span><br><span class="line">        mCryptoObject = crypto;</span><br><span class="line">        mFingerprint = fingerprint;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Obtain the crypto object associated with this transaction</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> crypto object provided to &#123;<span class="doctag">@link</span> FingerprintManager#authenticate(CryptoObject,</span></span><br><span class="line"><span class="comment">     *     CancellationSignal, int, AuthenticationCallback, Handler)&#125;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CryptoObject <span class="title">getCryptoObject</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> mCryptoObject; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Obtain the Fingerprint associated with this operation. Applications are strongly</span></span><br><span class="line"><span class="comment">     * discouraged from associating specific fingers with specific applications or operations.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Fingerprint <span class="title">getFingerprint</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> mFingerprint; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>这个对象里面包含了一个 <code>Fingerprint</code> 对象，如果我们查看 <code>Fingerprint</code> 类的源码，可以得知该类提供了指纹的一些属性，包括指纹的名称、GroupId、FingerId 和 DeviceId 等属性。也就是说，通过 <code>onAuthenticationSucceeded()</code> 回调方法，我们可以得到识别的指纹的一些信息。</p>
 <p>那为什么我们之前不使用该返回给我们的 <code>AuthenticationResult</code> 类对象 <code>result</code> 呢？因为我们没办法通过正常途径获取到这些信息。因为 <code>mFingerprint</code> 属性是私有的，<code>getFingerprint()</code> 方法是被 <code>@hide</code> 修饰的，甚至连存储指纹信息的 <code>Fingerprint</code> 类也是被 <code>@hide</code> 修饰的。</p>
 <p>在 Android SDK 中，有两类 API 是我们无法直接获取的，一种是位于包 <code>com.android.internal</code> 下面的 API，另一种是被 <code>@hide</code> 修饰的类和方法。</p>
 <p>然而，针对第二种被隐藏的 API，我们可以通过反射的方式来调用相关的类和方法。以 <code>onAuthenticationSucceeded()</code> 回调方法为例，看看如何获取识别成功的指纹信息：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationSucceeded</span><span class="params">(FingerprintManager.AuthenticationResult result)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        Field field = result.getClass().getDeclaredField(<span class="string">"mFingerprint"</span>);</div><div class="line">        field.setAccessible(<span class="keyword">true</span>);</div><div class="line">        Object fingerPrint = field.get(result);</div><div class="line"></div><div class="line">        Class&lt;?&gt; clzz = Class.forName(<span class="string">"android.hardware.fingerprint.Fingerprint"</span>);</div><div class="line">        Method getName = clzz.getDeclaredMethod(<span class="string">"getName"</span>);</div><div class="line">        Method getFingerId = clzz.getDeclaredMethod(<span class="string">"getFingerId"</span>);</div><div class="line">        Method getGroupId = clzz.getDeclaredMethod(<span class="string">"getGroupId"</span>);</div><div class="line">        Method getDeviceId = clzz.getDeclaredMethod(<span class="string">"getDeviceId"</span>);</div><div class="line"></div><div class="line">        CharSequence name = (CharSequence) getName.invoke(fingerPrint);</div><div class="line">        <span class="keyword">int</span> fingerId = (<span class="keyword">int</span>) getFingerId.invoke(fingerPrint);</div><div class="line">        <span class="keyword">int</span> groupId = (<span class="keyword">int</span>) getGroupId.invoke(fingerPrint);</div><div class="line">        <span class="keyword">long</span> deviceId = (<span class="keyword">long</span>) getDeviceId.invoke(fingerPrint);</div><div class="line"></div><div class="line">        Log.d(TAG, <span class="string">"name: "</span> + name);</div><div class="line">        Log.d(TAG, <span class="string">"fingerId: "</span> + fingerId);</div><div class="line">        Log.d(TAG, <span class="string">"groupId: "</span> + groupId);</div><div class="line">        Log.d(TAG, <span class="string">"deviceId: "</span> + deviceId);</div><div class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationSucceeded</span><span class="params">(FingerprintManager.AuthenticationResult result)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Field field = result.getClass().getDeclaredField(<span class="string">"mFingerprint"</span>);</span><br><span class="line">        field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object fingerPrint = field.get(result);</span><br><span class="line"></span><br><span class="line">        Class&lt;?&gt; clzz = Class.forName(<span class="string">"android.hardware.fingerprint.Fingerprint"</span>);</span><br><span class="line">        Method getName = clzz.getDeclaredMethod(<span class="string">"getName"</span>);</span><br><span class="line">        Method getFingerId = clzz.getDeclaredMethod(<span class="string">"getFingerId"</span>);</span><br><span class="line">        Method getGroupId = clzz.getDeclaredMethod(<span class="string">"getGroupId"</span>);</span><br><span class="line">        Method getDeviceId = clzz.getDeclaredMethod(<span class="string">"getDeviceId"</span>);</span><br><span class="line"></span><br><span class="line">        CharSequence name = (CharSequence) getName.invoke(fingerPrint);</span><br><span class="line">        <span class="keyword">int</span> fingerId = (<span class="keyword">int</span>) getFingerId.invoke(fingerPrint);</span><br><span class="line">        <span class="keyword">int</span> groupId = (<span class="keyword">int</span>) getGroupId.invoke(fingerPrint);</span><br><span class="line">        <span class="keyword">long</span> deviceId = (<span class="keyword">long</span>) getDeviceId.invoke(fingerPrint);</span><br><span class="line"></span><br><span class="line">        Log.d(TAG, <span class="string">"name: "</span> + name);</span><br><span class="line">        Log.d(TAG, <span class="string">"fingerId: "</span> + fingerId);</span><br><span class="line">        Log.d(TAG, <span class="string">"groupId: "</span> + groupId);</span><br><span class="line">        Log.d(TAG, <span class="string">"deviceId: "</span> + deviceId);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>显示的结果如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">name: </div><div class="line">fingerId: <span class="number">1765296462</span></div><div class="line">groupId: <span class="number">0</span></div><div class="line">deviceId: <span class="number">547946660160</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name: </span><br><span class="line">fingerId: <span class="number">1765296462</span></span><br><span class="line">groupId: <span class="number">0</span></span><br><span class="line">deviceId: <span class="number">547946660160</span></span><br></pre></td></tr></table></figure>
 <p>其中，返回的 name 为空字符串。</p>
 <p>这里要提醒一点，由于每个手机厂商都会对 Android 系统进行或多或少的定制，因此在不同的手机上调用上面的方法得到的结果可能会不一样。比如在我的手机上，<code>fingerId</code> 是一个十位数的整数，在其他手机上面可能就是个一位数的整数。</p>
 <p>得到了指纹信息之后，我们就可以做一些额外的功能了，比如监听用户是否使用同一个指纹来解锁，就可以用上面的方法来判断。</p>
 <p>除了在 <code>onAuthenticationSucceeded()</code> 回调方法中获取被识别的指纹信息外，还可以利用 <code>FingerprintManager</code> 类的 <code>getEnrolledFingerprints()</code> 方法来获取手机中存储的指纹列表：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getFingerprintInfo</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);</div><div class="line">        Method method = FingerprintManager.class.getDeclaredMethod(<span class="string">"getEnrolledFingerprints"</span>);</div><div class="line">        Object obj = method.invoke(fingerprintManager);</div><div class="line">        <span class="keyword">if</span> (obj != <span class="keyword">null</span>) &#123;</div><div class="line">            Class&lt;?&gt; clazz = Class.forName(<span class="string">"android.hardware.fingerprint.Fingerprint"</span>);</div><div class="line">            Method getFingerId = clazz.getDeclaredMethod(<span class="string">"getFingerId"</span>);</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ((List) obj).size(); i++) &#123;</div><div class="line">                Object item = ((List) obj).get(i);</div><div class="line">                <span class="keyword">if</span> (<span class="keyword">null</span> == item) &#123;</div><div class="line">                    <span class="keyword">continue</span>;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                Log.d(TAG, <span class="string">"fingerId: "</span> + getFingerId.invoke(item));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getFingerprintInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);</span><br><span class="line">        Method method = FingerprintManager.class.getDeclaredMethod(<span class="string">"getEnrolledFingerprints"</span>);</span><br><span class="line">        Object obj = method.invoke(fingerprintManager);</span><br><span class="line">        <span class="keyword">if</span> (obj != <span class="keyword">null</span>) &#123;</span><br><span class="line">            Class&lt;?&gt; clazz = Class.forName(<span class="string">"android.hardware.fingerprint.Fingerprint"</span>);</span><br><span class="line">            Method getFingerId = clazz.getDeclaredMethod(<span class="string">"getFingerId"</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ((List) obj).size(); i++) &#123;</span><br><span class="line">                Object item = ((List) obj).get(i);</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">null</span> == item) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                Log.d(TAG, <span class="string">"fingerId: "</span> + getFingerId.invoke(item));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在一些场景中，需要对用户手机里面录入的指纹进行监听，当用户手机里面的指纹列表发生了变化（比如用户删除了指纹或者新增了指纹），就需要用户重新输入密码，这时就可以用上面的方法，记录用户手机里面的指纹 ID，并进行前后对比。（当然，这种做法的安全系数并不高，也难以兼容众多设备，这里只是举例说明用途）</p>
-<p>参考链接：<a href="http://android-developers.blogspot.com/2015/10/new-in-android-samples-authenticating.html" target="_blank" rel="external">New in Android Samples: Authenticating to remote servers using the Fingerprint API</a></p>
+<p>参考链接：<a href="http://android-developers.blogspot.com/2015/10/new-in-android-samples-authenticating.html" target="_blank" rel="noopener">New in Android Samples: Authenticating to remote servers using the Fingerprint API</a></p>
 
       
     </div>
+    
+    
+    
 
-    <div>
-      
-        
+    
 
-      
-    </div>
+    
 
-    <div>
-      
-        
-
-      
-    </div>
+    
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag">#Android</a>
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
         </div>
+      
+
+      
+      
       
 
       
@@ -466,6 +443,8 @@
               </a>
             
           </div>
+
+          <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
@@ -480,34 +459,15 @@
       
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
 
     <div class="post-spread">
-      
-        <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-  <a class="jiathis_button_tsina"></a>
-  <a class="jiathis_button_tqq"></a>
-  <a class="jiathis_button_weixin"></a>
-  <a class="jiathis_button_cqq"></a>
-  <a class="jiathis_button_douban"></a>
-  <a class="jiathis_button_renren"></a>
-  <a class="jiathis_button_qzone"></a>
-  <a class="jiathis_button_kaixin001"></a>
-  <a class="jiathis_button_copy"></a>
-  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
-  <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" >
-  var jiathis_config={
-    hideMore:false
-  }
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-
       
     </div>
   </div>
@@ -518,16 +478,7 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
+  
 
 
         </div>
@@ -543,95 +494,93 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
           </li>
         </ul>
       
 
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.png"
-               alt="湫水" />
-          <p class="site-author-name" itemprop="name">湫水</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">29</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
           </div>
 
           
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
           
 
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
           
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/wl9739" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/2963545984" target="_blank" title="Weibo">
-                  
-                    <i class="fa fa-fw fa-weibo"></i>
-                  
-                  Weibo
-                </a>
-              </span>
-            
           
+
+          
+
         </div>
-
-        
-        
-
-        
-        
-
       </section>
 
       
+      <!--noindex-->
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
             
               
             
+
             
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对称加密、非对称加密和签名"><span class="nav-number">1.</span> <span class="nav-text">对称加密、非对称加密和签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指纹识别的对称加密实现"><span class="nav-number">2.</span> <span class="nav-text">指纹识别的对称加密实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建密钥"><span class="nav-number">2.1.</span> <span class="nav-text">创建密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建并初始化-Cipher-对象"><span class="nav-number">2.2.</span> <span class="nav-text">创建并初始化 Cipher 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用指纹识别功能"><span class="nav-number">2.3.</span> <span class="nav-text">使用指纹识别功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重写回调方法"><span class="nav-number">2.4.</span> <span class="nav-text">重写回调方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指纹识别的非对称加密实现"><span class="nav-number">3.</span> <span class="nav-text">指纹识别的非对称加密实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建密钥-1"><span class="nav-number">3.1.</span> <span class="nav-text">创建密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#签名"><span class="nav-number">3.2.</span> <span class="nav-text">签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用指纹识别方法"><span class="nav-number">3.3.</span> <span class="nav-text">调用指纹识别方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听回调"><span class="nav-number">3.4.</span> <span class="nav-text">监听回调</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实际应用中的注意事项"><span class="nav-number">4.</span> <span class="nav-text">实际应用中的注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断用户是否可以使用指纹识别功能"><span class="nav-number">4.1.</span> <span class="nav-text">判断用户是否可以使用指纹识别功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于指纹识别回调方法"><span class="nav-number">4.2.</span> <span class="nav-text">关于指纹识别回调方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例代码"><span class="nav-number">5.</span> <span class="nav-text">示例代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取指纹信息"><span class="nav-number">6.</span> <span class="nav-text">获取指纹信息</span></a></li></ol></div>
             
+
           </div>
         </section>
+      <!--/noindex-->
+      
+
       
 
     </div>
@@ -644,36 +593,48 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">湫水</span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
 
         
+
+
+
+
+
+
 
         
       </div>
     </footer>
 
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
   </div>
 
   
@@ -693,6 +654,15 @@
 
 
   
+
+
+
+
+
+
+
+
+
 
 
 
@@ -718,67 +688,9 @@
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-
-
-  
-
-    <script type="text/javascript">
-      var disqus_shortname = 'https-wl9739-github-io';
-      var disqus_identifier = '2016/09/05/Android-中的指纹识别/';
-      var disqus_title = "Android 中的指纹识别";
-      var disqus_url = 'http://yoursite.com/2016/09/05/Android-中的指纹识别/';
-
-      function run_disqus_script(disqus_script){
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      }
-
-      run_disqus_script('count.js');
-      
-        var disqus_config = function () {
-            this.page.url = disqus_url;
-            this.page.identifier = disqus_identifier;
-            this.page.title = disqus_title;
-        };
-        run_disqus_script('embed.js');
-      
-    </script>
-  
-
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
 
 
 
@@ -786,155 +698,64 @@
   
 
   
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-  </script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for (i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-    });
-  </script>
-  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
 
 
   
 
   
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
 
   
 
-  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+  
+
+  
+
+  
+
 </body>
 </html>
