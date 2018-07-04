@@ -259,6 +259,232 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/04/Java内存管理简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="码字的地方">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/04/Java内存管理简介/" itemprop="url">Java内存管理简介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T09:31:26+08:00">
+                2018-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/04/Java内存管理简介/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/04/Java内存管理简介/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/07/04/Java内存管理简介/" class="leancloud_visitors" data-flag-title="Java内存管理简介">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java-内存管理简介"><a href="#Java-内存管理简介" class="headerlink" title="Java 内存管理简介"></a>Java 内存管理简介</h1><blockquote>
+<p>本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。</p>
+<p>原文链接：<a href="https://dzone.com/articles/java-memory-management" target="_blank" rel="noopener">https://dzone.com/articles/java-memory-management</a></p>
+</blockquote>
+<p>你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃圾回收器，能在后台清理无用的对象，并释放内存。</p>
+<p>当然，作为一个 Java 程序员，你不需要关注类似于销毁对象之类的事情。然而，即便在 Java 中这些是自动运行的，也不能保证它是完美运行的。如果你不知道垃圾回收器的构造以及 Java 内存的设计，你可能就会有不受垃圾回收器监控的对象，即使他们都不再被使用。</p>
+<p>因此，了解 Java 中的内存是如何运作的十分重要，它能让你编写出高性能并且不会报 OutOfMemoryError 异常的应用。另一方面，如果确实出现了 OutOfMemoryError 异常，你也能迅速找到内存泄漏的地方。</p>
+<p>首先，让我们看一下 Java 中的内存是如何组织的：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fswf23dn19j31ck0tmgof.jpg" alt="image-20180702234142685"></p>
+<p>简单来讲，内存被划分为两大部分：<strong>栈（stack）</strong>区域和 <strong>堆（heap）</strong>区域。当然，上图显示的内存大小比例和实际的比例并不相符。实际上，相对于栈，堆是一块相当大的内存区域。</p>
+<h2 id="栈（stack）"><a href="#栈（stack）" class="headerlink" title="栈（stack）"></a>栈（stack）</h2><p><strong>栈</strong>内存主要负责收集<strong>堆</strong>中对象的引用，以及存储基本数据类型。</p>
+<p>另外，在栈内存中的变量有一个<strong>作用域</strong>的概念。只有当前活跃的作用域的对象能会被使用。举个例子，假设我们没有全局变量（类的属性字段等），只有本地变量，只有当编译器执行到该方法体的时候，它才能在这个方法中获得对象，并且它不能获得其他方法中的本地变量，因为其他方法中的本地变量不在作用域内。当方法执行完毕，并且返回之后，顶部的栈会被弹出，当前活跃的作用域就会变化。</p>
+<p>可能你会发现，在上图中有多个栈内存（图中蓝色长方形）。这是因为在 Java 中，每个线程都会有自己的栈内存空间。因此，每当创建一个线程并启动的时候，它就会有自己的栈内存，并且它是不能获取其他线程的栈内存的。</p>
+<h2 id="堆（Heap）"><a href="#堆（Heap）" class="headerlink" title="堆（Heap）"></a>堆（Heap）</h2><p>这部分内存存储了对象本身。这里面的对象是被栈中的变量所引用的。举个例子，我们来分析下面这行代码会发生什么：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder builder = <span class="keyword">new</span> StringBUilder();</span><br></pre></td></tr></table></figure>
+<p><code>new</code> 关键字会确保堆内存中有足够的空间来存储 <code>StringBuilder</code> 类型的对象，并且通过栈内存中的 <code>builder</code> 这个变量来引用该对象。</p>
+<p>在每个 JVM 进程里，只有一个堆内存空间。因此，无论有多少个线程在运行，它们都是共享同一个堆内存。实际上，堆内存的结构和上图中有点不一样：为了方便垃圾回收，堆内存会划分成几部分。</p>
+<p>一般来说，栈内存的大小和堆内存的大小并没有预先配置——它取决于运行的机器。然而，在后面的文章中，我们会介绍 JVM 的配置文件，该文件允许我们为运行的机器指定内存分配的大小。</p>
+<h2 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h2><p>如果你仔细观察上面那张内存结构图，你可能会发现，从变量指向堆中的对象所用的带箭头的线有不同的类型。这是因为，在 Java 语言中，我们有不同类型的引用：<strong>强引用（strong reference）</strong>，<strong>弱引用（weak reference）</strong>，<strong>软引用（soft reference）</strong> 和<strong>幽灵引用（phantom reference）</strong>。垃圾回收器会针对这些不同的引用类型，实施不同的回收策略。</p>
+<h3 id="1-强引用（strong-reference）"><a href="#1-强引用（strong-reference）" class="headerlink" title="1.  强引用（strong reference）"></a>1.  强引用（strong reference）</h3><p>这是我们最常使用到的引用类型。在上面的 <code>StringBuilder</code> 例子中，我们持有了一个强引用，这个强引用指向堆中的一个对象。如果一个强引用指向堆中的一个对象，或者该对象在强引用链中是可达的，那么垃圾回收器是不会回收它的。</p>
+<h3 id="2-弱引用（weak-reference"><a href="#2-弱引用（weak-reference" class="headerlink" title="2. 弱引用（weak reference)"></a>2. 弱引用（weak reference)</h3><p>简单来说，如果一个弱引用指向堆中的一个对象，那么在下一次垃圾回收器执行处理的时候，是<strong>很有可能</strong>会被回收的。创建一个弱引用的方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WeakReference&lt;StringBuilder&gt; reference = <span class="keyword">new</span> WeakReference&lt;&gt;(<span class="keyword">new</span> StringBuilder());</span><br></pre></td></tr></table></figure>
+<h3 id="3-软引用（soft-reference"><a href="#3-软引用（soft-reference" class="headerlink" title="3. 软引用（soft reference)"></a>3. 软引用（soft reference)</h3><p>这种类型的引用多用于内存敏感的场景。因为只有当你的应用程序内存不足的时候，这种类型的引用对象才会被回收。因此，只要没有严重到需要开辟新的内存空间使用的情况，垃圾回收器是不会染指软引用所指向的对象。Java 能确保所有的软引用对象会在抛出 <code>OutOfMemoryError</code> 之前被回收掉。Java 文档中描述：<code>所有的软引用对象或软引用链可到达的对象都会在虚拟机抛出 OutOfMemory 异常前被清理掉</code>（<em>all soft references to softly-reachable objects are guaranteed to have been cleared before the virtual machine throws an OutOfMemoryError</em>）。</p>
+<p>和弱引用类似，软引用的创建方式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SoftReference&lt;StringBuilder&gt; reference = <span class="keyword">new</span> SoftReference&lt;&gt;(<span class="keyword">new</span> StringBuilder());</span><br></pre></td></tr></table></figure>
+<h3 id="4-幽灵引用（phantom-reference）"><a href="#4-幽灵引用（phantom-reference）" class="headerlink" title="4. 幽灵引用（phantom reference）"></a>4. 幽灵引用（phantom reference）</h3><p>如果使用了幽冥引用，那么在垃圾回收器处理一次之后，我们可以确信该引用的对象不会再存在。因此此类引用的 <code>.get()</code> 方法始终返回 <code>null</code>。通常认为，使用这类引用，优于使用 <code>finalize()</code> 方法。</p>
+<h2 id="字符串类型的对象是如何被引用的"><a href="#字符串类型的对象是如何被引用的" class="headerlink" title="字符串类型的对象是如何被引用的"></a>字符串类型的对象是如何被引用的</h2><p><code>String</code> 类型的对象在 Java 中会有区别待遇。String 是不可变类型，也就是说，每次你对字符串做一些操作的时候，另一个对象就会在堆中被创建出来。对于字符串类型，Java 在内存中管理着一个常量池，也就是说 Java 会把常用的字符串尽可能地重复使用。比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String localPrefix = <span class="string">"297"</span>; <span class="comment">//1</span></span><br><span class="line">String prefix = <span class="string">"297"</span>;      <span class="comment">//2</span></span><br><span class="line"><span class="keyword">if</span> (prefix == localPrefix) &#123;</span><br><span class="line">    System.out.println(<span class="string">"Strings are equal"</span> );</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">"Strings are different"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当代码运行时，会打印如下的语句：</p>
+<p><code>Strings are equal</code></p>
+<p>这就证明了，比较两个 String 类型的引用，他们实际上指向的是堆中的相同对象。然而，这种情况并不适用于用来计算的 String 类型。假设我们修改上面的第一行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String localPrefix = <span class="keyword">new</span> Integer(<span class="number">297</span>).toString();	<span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><code>Strings are different</code></p>
+<p>在这个例子中，我们实际上看到的是堆中的两个不同对象。如果我们认为这种计算类型的 String 对象会被经常使用，我们就可以通过在计算结束后，调用 <code>.intern()</code> 方法，强制让 JVM 将该字符串添加进字符串常量池中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String localPrefix = <span class="keyword">new</span> Integer(<span class="number">297</span>).toString().intern(); <span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+<p>这样，运行结果就是：</p>
+<p><code>Stirngs are equal</code></p>
+<h2 id="垃圾回收器的处理流程"><a href="#垃圾回收器的处理流程" class="headerlink" title="垃圾回收器的处理流程"></a>垃圾回收器的处理流程</h2><p>正如我们之前所讨论的那样，根据栈内存中的变量与堆内存中对象的不同类型的引用，在某个确切时间点时，对象会获得被垃圾回收器处理的资格。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fswf24bjk9j31b60rswgz.jpg" alt="image-20180703005156338"></p>
+<p>比如，上图中所有红色的对象，都有被垃圾回收器处理的资格。你可能注意到了，堆中有几个对象，它们之间是强引用关系。然而，它们与栈失去了引用，就不再可达了，因此这几个对象也就变成了垃圾。</p>
+<p>再更深入了解之前，有几件事情是需要你了解的：</p>
+<ul>
+<li>处理程序是被 Java 自动触发的，也是由 Java 决定什么时候启动该程序。</li>
+<li>实际上垃圾回收期运行的时候，是很费资源的。当垃圾回收器运行时，你的应用中所有的线程都会被暂停（暂停时长由垃圾回收器类型所决定，这个稍后再聊）。</li>
+<li>这个处理流程其实相当复杂。</li>
+</ul>
+<p>即时决定什么时候运行垃圾回收器的是 Java，你也可以显式地调用 <code>System.gc( )</code> 方法来告诉垃圾回收器运行，是吗？</p>
+<p>这是一个错误的假设。</p>
+<p>显式调用 <code>System.gc( )</code> 命令，只是你要求 Java 运行垃圾回收器，然而，再次强调，是否运行垃圾回收器是 Java 决定的。因此，不建议调用 <code>System.gc( )</code> 方法。</p>
+<p>由于这是一个相当复杂的流程，并且会影响性能，因此它用一种更加智能的额方式来实现，这就是所谓的 <code>标记 - 清除</code>算法。Java 会分析栈中的变量，然后标记所有需要保留的对象。然后，所有未被标记的对象将会被清除。</p>
+<p>所以，Java 并没有收集任何垃圾。实际上，垃圾越多，被标记的对象越少，处理流程越快。为了优化这个方案，堆内存被划分为多个区间，我们可以使用 <strong>JVisualVM</strong> 工具来将内存使用情况可视化，这个工具是 JDK 自带的，你所需要做的就是安装一个  <strong>Visual GC</strong> 插件，这个插件可以允许你查看内存的实际结构。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fswf257rxrj31ag0uo7dj.jpg" alt="image-20180703090122510"></p>
+<p>当一个对象被创建的时候，它会被收集到 <strong>Eden</strong> 空间（1），由于 Eden 空间并不是很大，因此操作该空间会非常迅速。垃圾回收器在 Eden 空间里面标记需要存活的对象。</p>
+<p>当该对象被垃圾回收器处理了一次后，它会被转移到所谓的 <strong>S0</strong> 空间（2）。垃圾回收器在 Eden 空间第二次运行的时候，他会把所有存活的对象转移到 <strong>S1</strong> 空间（3）。同样的，在 <strong>S0</strong> 空间（2）的对象也会被转移到 <strong>S1</strong> 空间（3）。</p>
+<p>如果一个对象经历了 X 次垃圾回收器的处理后仍然存活了下来（ X 的值取决于 JVM 的实现，在我这里，X 的值是 8 ），那么它就很可能永远都会活下来了，并且它会被转移到 <strong>老年代（Old Generation）</strong> 空间（4）。</p>
+<p>到目前为止，如果你观察垃圾回收器的图表（6），每次垃圾回收器运行的时候，你都可以看到对象被转移到了其他生存空间，并且 Eden 区域被释放了空间，如此循环。老年代也可以被垃圾回收器回收，但是由于它比 Eden 空间的内存大，因此这种情况并不会经常出现。元数据空间（5）通常用来存储加载到 JVM 中的类的元数据。</p>
+<p>上面那张图战士的是一个 Java 8 的应用程序。在 Java 8 之前，内存的结构会有点不一样。元数据空间被称为 <strong>永久代（Permanent Generation)</strong>空间。举个例子，在 Java 6 中，这部分空间也用来存放字符串常量池。因此如果你在 Java 6 的应用程序中有非常多的字符串，那么它就很容易崩溃。</p>
+<blockquote>
+<p>通常，在 Java 8 以前，堆内存的空间会划分为 <strong>新生代</strong>、<strong>老年代</strong> 和 <strong>永久代</strong>。其中，把 Eden 空间、S0 空间和 S1 空间统称为新生代（Young Generation）。</p>
+</blockquote>
+<h2 id="垃圾回收器类型"><a href="#垃圾回收器类型" class="headerlink" title="垃圾回收器类型"></a>垃圾回收器类型</h2><p>实际上，JVM 有三种类型的垃圾回收器，程序员可以选择使用其中一种。一般情况下，JVM 会根据底层硬件来选择垃圾回收器类型。</p>
+<p><strong>1. 串行 GC</strong> —— 一种单线程回收器。通常用在小型应用里面，处理少量的数据。可以使用 <code>-XX: +UseSerialGC</code> 来指定并启用该类型的 GC。</p>
+<p><strong>2. 并行 GC</strong> —— 从名字中就可以看出来，和序列化 GC 的不同点在于，并行 GC 使用多线程来执行垃圾回收处理程序。这种 GC 能处理大量的数据。可以使用 <code>-XX:+UserParallelGC</code> 来指定并启用该类型 GC。</p>
+<p><strong>3.伪并发 GC</strong> —— 在前面的文章中，我们提到垃圾回收处理程序是非常消耗资源的，当它运行的时候，所有的线程都会暂停。而这种伪并发 GC，它可以做到和应用程序几乎同时工作，当然并不会 100% 和应用程序并发，所有的应用线程仍然会暂停一段时间，而这暂停时间会保持尽可能短，以获得最好的 GC 性能。实际上，对于这种伪并发 GC，有两种具体实现：</p>
+<ul>
+<li><strong>3.1 G1垃圾回收器</strong>——一种暂停时间在可接受范围内的高吞吐量 GC，使用 <code>-XX:+UseG1GC</code> 开启。</li>
+<li><strong>3.2 并发标记扫描垃圾回收器</strong> —— 最小化应用线程暂停时间的 GC，可以通过 <code>-XX:+UseConcMarkSweepGC</code> 指定。在 JDK 9 中，这种 GC 已被弃用。</li>
+</ul>
+<h2 id="建议和技巧"><a href="#建议和技巧" class="headerlink" title="建议和技巧"></a>建议和技巧</h2><ul>
+<li>尽可能使用本地变量（在方法内部定义的变量）。这样能尽可能减少环境的影响。记住每当栈顶部的可见区域被弹出的时候，该区域的引用就会丢失，相应的对象就有机会被垃圾回收器处理。</li>
+<li>把不再使用的对象的引用置为 <code>null</code>。这样会让这些对象能够被垃圾回收器处理。</li>
+<li>避免使用 <code>finalize()</code> 方法。它会降低处理性能，并且不能保证任何事情。使用幽冥引用来清理相应的对象。</li>
+<li>可以使用弱引用或软引用，就不要使用强引用。最常见的使用内存陷阱就是缓存相关的方案。即使这些数据不再被需要，也仍然会存储在内存中。</li>
+<li>根据你的应用来配置你的 JVM 参数。显式指定 JVM 的堆大小。由于内存收集程序也比较消耗资源，所以需要给堆内存分配一个合理的初始值，以及指定一个最大值。如果应用所需内存超过了初始大小，JVM 会自动扩大使用内存。使用下面的命令来设置内存大小：<ul>
+<li>初始化堆内存大小：<code>-Xms512m</code>——设置堆初始化大小为 512M。</li>
+<li>堆内存的最大值：<code>-Xmx1024m</code>——设置堆内存的最大值为 1024M。</li>
+<li>每个线程的栈内存大小：<code>-Xss128m</code>——设置每个线程的栈内存大小为 128M。</li>
+<li>年轻代内存大小：<code>-Xmn256m</code>——设置年轻代大小为 256M。</li>
+</ul>
+</li>
+<li>如果 Java 程序因为 <code>OutOfMemoryError</code> 异常崩溃了，而你需要额外信息来检测内存泄漏情况，就可以使用<code>-XX:HeapDunpOnOutOfMemory</code> 参数。设置了该参数后，在下次遇到同样的错误时，会生成一个 heap dump 文件来供你分析。</li>
+<li>使用 <code>-verbose:gc</code> 选项来获得垃圾回收器的日志输出。每次垃圾回收器清理了空间之后，会生成一份相应的输出文件。</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>了解内存是如何组织的，会帮助你写出优秀的内存使用相关的代码。你可以根据你的应用具体情况提供不同的配置项，以调整 JVM，从而使得 JVM 运行最佳配置。如果使用正确的工具，查找和修复内存泄漏也是一件简单的事情。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/22/ADB-常用命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1575,158 +1801,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/16/Android-中的转场动画及兼容处理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="码字的地方">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/16/Android-中的转场动画及兼容处理/" itemprop="url">Android 中的转场动画及兼容处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-16T16:44:50+08:00">
-                2016-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/10/16/Android-中的转场动画及兼容处理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/10/16/Android-中的转场动画及兼容处理/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2016/10/16/Android-中的转场动画及兼容处理/" class="leancloud_visitors" data-flag-title="Android 中的转场动画及兼容处理">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Android 中的动画有很多，除了在一个界面上使用帧动画、属性动画将一个或多个 View 进行动画处理以外，还可以用于两个界面之间过渡、跳转。在 Android 5.0 之前，我们已经有了 overridePendingTransition() 方法来实现一些转场效果。然而，在 Android 5.0 以后，转场效果更加炫酷。 比如下面的动画：</p>
-<p><img src="http://7xook5.com1.z0.glb.clouddn.com/Anime.gif" alt="Anime_Demo"></p>
-<p>本篇文章，主要就是解说如何实现上述的效果。主要内容包括：</p>
-<ul>
-<li>Android 5.0+ 的转场动画</li>
-<li>Android 4.X 模拟实现 Android 5.0+ 转场效果。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/10/16/Android-中的转场动画及兼容处理/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1781,7 +1855,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
