@@ -86,21 +86,21 @@
 
 
 
-<meta name="description" content="Java 内存管理简介 本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。 原文链接：https://dzone.com/articles/java-memory-management  你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃">
+<meta name="description" content="本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。 原文链接：https://dzone.com/articles/java-memory-management  你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃圾回收器，能在后台清理">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java内存管理简介">
 <meta property="og:url" content="http://yoursite.com/2018/07/04/Java内存管理简介/index.html">
 <meta property="og:site_name" content="码字的地方">
-<meta property="og:description" content="Java 内存管理简介 本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。 原文链接：https://dzone.com/articles/java-memory-management  你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃">
+<meta property="og:description" content="本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。 原文链接：https://dzone.com/articles/java-memory-management  你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃圾回收器，能在后台清理">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fswf23dn19j31ck0tmgof.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fswf24bjk9j31b60rswgz.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fswf257rxrj31ag0uo7dj.jpg">
-<meta property="og:updated_time" content="2018-07-04T01:34:21.824Z">
+<meta property="og:updated_time" content="2018-07-04T01:37:25.746Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java内存管理简介">
-<meta name="twitter:description" content="Java 内存管理简介 本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。 原文链接：https://dzone.com/articles/java-memory-management  你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃">
+<meta name="twitter:description" content="本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。 原文链接：https://dzone.com/articles/java-memory-management  你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃圾回收器，能在后台清理">
 <meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fswf23dn19j31ck0tmgof.jpg">
 
 
@@ -353,13 +353,14 @@
       
 
       
-        <h1 id="Java-内存管理简介"><a href="#Java-内存管理简介" class="headerlink" title="Java 内存管理简介"></a>Java 内存管理简介</h1><blockquote>
+        <blockquote>
 <p>本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。</p>
 <p>原文链接：<a href="https://dzone.com/articles/java-memory-management" target="_blank" rel="noopener">https://dzone.com/articles/java-memory-management</a></p>
 </blockquote>
 <p>你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃圾回收器，能在后台清理无用的对象，并释放内存。</p>
 <p>当然，作为一个 Java 程序员，你不需要关注类似于销毁对象之类的事情。然而，即便在 Java 中这些是自动运行的，也不能保证它是完美运行的。如果你不知道垃圾回收器的构造以及 Java 内存的设计，你可能就会有不受垃圾回收器监控的对象，即使他们都不再被使用。</p>
 <p>因此，了解 Java 中的内存是如何运作的十分重要，它能让你编写出高性能并且不会报 OutOfMemoryError 异常的应用。另一方面，如果确实出现了 OutOfMemoryError 异常，你也能迅速找到内存泄漏的地方。</p>
+<a id="more"></a>
 <p>首先，让我们看一下 Java 中的内存是如何组织的：</p>
 <p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fswf23dn19j31ck0tmgof.jpg" alt="image-20180702234142685"></p>
 <p>简单来讲，内存被划分为两大部分：<strong>栈（stack）</strong>区域和 <strong>堆（heap）</strong>区域。当然，上图显示的内存大小比例和实际的比例并不相符。实际上，相对于栈，堆是一块相当大的内存区域。</p>
@@ -667,7 +668,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-内存管理简介"><span class="nav-number">1.</span> <span class="nav-text">Java 内存管理简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#栈（stack）"><span class="nav-number">1.1.</span> <span class="nav-text">栈（stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆（Heap）"><span class="nav-number">1.2.</span> <span class="nav-text">堆（Heap）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用类型"><span class="nav-number">1.3.</span> <span class="nav-text">引用类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-强引用（strong-reference）"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.  强引用（strong reference）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-弱引用（weak-reference"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. 弱引用（weak reference)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-软引用（soft-reference"><span class="nav-number">1.3.3.</span> <span class="nav-text">3. 软引用（soft reference)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-幽灵引用（phantom-reference）"><span class="nav-number">1.3.4.</span> <span class="nav-text">4. 幽灵引用（phantom reference）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串类型的对象是如何被引用的"><span class="nav-number">1.4.</span> <span class="nav-text">字符串类型的对象是如何被引用的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收器的处理流程"><span class="nav-number">1.5.</span> <span class="nav-text">垃圾回收器的处理流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收器类型"><span class="nav-number">1.6.</span> <span class="nav-text">垃圾回收器类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建议和技巧"><span class="nav-number">1.7.</span> <span class="nav-text">建议和技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.8.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#栈（stack）"><span class="nav-number">1.</span> <span class="nav-text">栈（stack）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆（Heap）"><span class="nav-number">2.</span> <span class="nav-text">堆（Heap）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用类型"><span class="nav-number">3.</span> <span class="nav-text">引用类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-强引用（strong-reference）"><span class="nav-number">3.1.</span> <span class="nav-text">1.  强引用（strong reference）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-弱引用（weak-reference"><span class="nav-number">3.2.</span> <span class="nav-text">2. 弱引用（weak reference)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-软引用（soft-reference"><span class="nav-number">3.3.</span> <span class="nav-text">3. 软引用（soft reference)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-幽灵引用（phantom-reference）"><span class="nav-number">3.4.</span> <span class="nav-text">4. 幽灵引用（phantom reference）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串类型的对象是如何被引用的"><span class="nav-number">4.</span> <span class="nav-text">字符串类型的对象是如何被引用的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收器的处理流程"><span class="nav-number">5.</span> <span class="nav-text">垃圾回收器的处理流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾回收器类型"><span class="nav-number">6.</span> <span class="nav-text">垃圾回收器类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建议和技巧"><span class="nav-number">7.</span> <span class="nav-text">建议和技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
