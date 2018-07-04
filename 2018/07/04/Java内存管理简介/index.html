@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fswf23dn19j31ck0tmgof.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fswf24bjk9j31b60rswgz.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1fswf257rxrj31ag0uo7dj.jpg">
-<meta property="og:updated_time" content="2018-07-04T01:37:25.746Z">
+<meta property="og:updated_time" content="2018-07-04T05:48:57.409Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java内存管理简介">
 <meta name="twitter:description" content="本文是一篇翻译文章，这篇文章用比较通俗的语言简单介绍了 Java 的内存模型和 Java 垃圾回收器的工作流程，是一篇比较好的入门读物。 原文链接：https://dzone.com/articles/java-memory-management  你可能想，如果你是个 Java  程序员，你需要了解内存是怎么工作的吗？Java 有内存自动管理工具，一个优雅且几乎无感知的垃圾回收器，能在后台清理">
@@ -365,10 +365,10 @@
 <p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fswf23dn19j31ck0tmgof.jpg" alt="image-20180702234142685"></p>
 <p>简单来讲，内存被划分为两大部分：<strong>栈（stack）</strong>区域和 <strong>堆（heap）</strong>区域。当然，上图显示的内存大小比例和实际的比例并不相符。实际上，相对于栈，堆是一块相当大的内存区域。</p>
 <h2 id="栈（stack）"><a href="#栈（stack）" class="headerlink" title="栈（stack）"></a>栈（stack）</h2><p><strong>栈</strong>内存主要负责收集<strong>堆</strong>中对象的引用，以及存储基本数据类型。</p>
-<p>另外，在栈内存中的变量有一个<strong>作用域</strong>的概念。只有当前活跃的作用域的对象能会被使用。举个例子，假设我们没有全局变量（类的属性字段等），只有本地变量，只有当编译器执行到该方法体的时候，它才能在这个方法中获得对象，并且它不能获得其他方法中的本地变量，因为其他方法中的本地变量不在作用域内。当方法执行完毕，并且返回之后，顶部的栈会被弹出，当前活跃的作用域就会变化。</p>
+<p>另外，在栈内存中的变量有一个<strong>作用域</strong>的概念。只有当前活跃的作用域的对象能会被使用。举个例子，假设我们没有全局变量（类的属性字段等），只有局部变量，只有当编译器执行到该方法体的时候，它才能在这个方法中获得对象，并且它不能获得其他方法中的局部变量，因为其他方法中的局部变量不在作用域内。当方法执行完毕，并且返回之后，顶部的栈会被弹出，当前活跃的作用域就会变化。</p>
 <p>可能你会发现，在上图中有多个栈内存（图中蓝色长方形）。这是因为在 Java 中，每个线程都会有自己的栈内存空间。因此，每当创建一个线程并启动的时候，它就会有自己的栈内存，并且它是不能获取其他线程的栈内存的。</p>
 <h2 id="堆（Heap）"><a href="#堆（Heap）" class="headerlink" title="堆（Heap）"></a>堆（Heap）</h2><p>这部分内存存储了对象本身。这里面的对象是被栈中的变量所引用的。举个例子，我们来分析下面这行代码会发生什么：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder builder = <span class="keyword">new</span> StringBUilder();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder builder = <span class="keyword">new</span> StringBuilder();</span><br></pre></td></tr></table></figure>
 <p><code>new</code> 关键字会确保堆内存中有足够的空间来存储 <code>StringBuilder</code> 类型的对象，并且通过栈内存中的 <code>builder</code> 这个变量来引用该对象。</p>
 <p>在每个 JVM 进程里，只有一个堆内存空间。因此，无论有多少个线程在运行，它们都是共享同一个堆内存。实际上，堆内存的结构和上图中有点不一样：为了方便垃圾回收，堆内存会划分成几部分。</p>
 <p>一般来说，栈内存的大小和堆内存的大小并没有预先配置——它取决于运行的机器。然而，在后面的文章中，我们会介绍 JVM 的配置文件，该文件允许我们为运行的机器指定内存分配的大小。</p>
@@ -415,7 +415,7 @@
 <blockquote>
 <p>通常，在 Java 8 以前，堆内存的空间会划分为 <strong>新生代</strong>、<strong>老年代</strong> 和 <strong>永久代</strong>。其中，把 Eden 空间、S0 空间和 S1 空间统称为新生代（Young Generation）。</p>
 </blockquote>
-<h2 id="垃圾回收器类型"><a href="#垃圾回收器类型" class="headerlink" title="垃圾回收器类型"></a>垃圾回收器类型</h2><p>实际上，JVM 有三种类型的垃圾回收器，程序员可以选择使用其中一种。一般情况下，JVM 会根据底层硬件来选择垃圾回收器类型。</p>
+<h2 id="垃圾回收器类型"><a href="#垃圾回收器类型" class="headerlink" title="垃圾回收器类型"></a>垃圾回收器类型</h2><p>实际上，JVM 有三种类型的垃圾回收器 (GC)，程序员可以选择使用其中一种。一般情况下，JVM 会根据底层硬件来选择垃圾回收器类型。</p>
 <p><strong>1. 串行 GC</strong> —— 一种单线程回收器。通常用在小型应用里面，处理少量的数据。可以使用 <code>-XX: +UseSerialGC</code> 来指定并启用该类型的 GC。</p>
 <p><strong>2. 并行 GC</strong> —— 从名字中就可以看出来，和序列化 GC 的不同点在于，并行 GC 使用多线程来执行垃圾回收处理程序。这种 GC 能处理大量的数据。可以使用 <code>-XX:+UserParallelGC</code> 来指定并启用该类型 GC。</p>
 <p><strong>3.伪并发 GC</strong> —— 在前面的文章中，我们提到垃圾回收处理程序是非常消耗资源的，当它运行的时候，所有的线程都会暂停。而这种伪并发 GC，它可以做到和应用程序几乎同时工作，当然并不会 100% 和应用程序并发，所有的应用线程仍然会暂停一段时间，而这暂停时间会保持尽可能短，以获得最好的 GC 性能。实际上，对于这种伪并发 GC，有两种具体实现：</p>
@@ -424,7 +424,7 @@
 <li><strong>3.2 并发标记扫描垃圾回收器</strong> —— 最小化应用线程暂停时间的 GC，可以通过 <code>-XX:+UseConcMarkSweepGC</code> 指定。在 JDK 9 中，这种 GC 已被弃用。</li>
 </ul>
 <h2 id="建议和技巧"><a href="#建议和技巧" class="headerlink" title="建议和技巧"></a>建议和技巧</h2><ul>
-<li>尽可能使用本地变量（在方法内部定义的变量）。这样能尽可能减少环境的影响。记住每当栈顶部的可见区域被弹出的时候，该区域的引用就会丢失，相应的对象就有机会被垃圾回收器处理。</li>
+<li>尽可能使用局部变量（在方法内部定义的变量）。这样能尽可能减少环境的影响。记住每当栈顶部的可见区域被弹出的时候，该区域的引用就会丢失，相应的对象就有机会被垃圾回收器处理。</li>
 <li>把不再使用的对象的引用置为 <code>null</code>。这样会让这些对象能够被垃圾回收器处理。</li>
 <li>避免使用 <code>finalize()</code> 方法。它会降低处理性能，并且不能保证任何事情。使用幽冥引用来清理相应的对象。</li>
 <li>可以使用弱引用或软引用，就不要使用强引用。最常见的使用内存陷阱就是缓存相关的方案。即使这些数据不再被需要，也仍然会存储在内存中。</li>
