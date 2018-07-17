@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文链接：https://dzone.com/articles/introduction-to-java-bytecode  即使对于一名经验丰富的 Java 程序员来说，阅读编译后的 Java 字节码也会感到枯燥。我们为什么需要了解如此底层的信息呢？在上周，我遇到了一个场景：在很早以前，我在自己的电脑上修改了一些代码，编译成了一个 JAR 文件，然后发布到服务端，检查我更改后的代码是否修复了一">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何阅读 Java 字节码">
+<meta property="og:url" content="http://yoursite.com/2018/07/17/如何阅读-Java-字节码/index.html">
+<meta property="og:site_name" content="Eateeer 的笔记屋">
+<meta property="og:description" content="原文链接：https://dzone.com/articles/introduction-to-java-bytecode  即使对于一名经验丰富的 Java 程序员来说，阅读编译后的 Java 字节码也会感到枯燥。我们为什么需要了解如此底层的信息呢？在上周，我遇到了一个场景：在很早以前，我在自己的电脑上修改了一些代码，编译成了一个 JAR 文件，然后发布到服务端，检查我更改后的代码是否修复了一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/02/jvm_stacks.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/heap.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/method_area.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/stack_frame_zoom.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/iconst_12.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/istore_11.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/iconst_2.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/istore_2.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/iload_1.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/iload_2.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/iadd.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/istore_3.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/math_pow2.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/math_pow21.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/init.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/init_store.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/init2.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/init_store2.png?w=625">
+<meta property="og:image" content="https://mahmoudanouti.files.wordpress.com/2018/03/area2.png?w=625">
+<meta property="og:updated_time" content="2018-07-17T13:44:37.571Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何阅读 Java 字节码">
+<meta name="twitter:description" content="原文链接：https://dzone.com/articles/introduction-to-java-bytecode  即使对于一名经验丰富的 Java 程序员来说，阅读编译后的 Java 字节码也会感到枯燥。我们为什么需要了解如此底层的信息呢？在上周，我遇到了一个场景：在很早以前，我在自己的电脑上修改了一些代码，编译成了一个 JAR 文件，然后发布到服务端，检查我更改后的代码是否修复了一">
+<meta name="twitter:image" content="https://mahmoudanouti.files.wordpress.com/2018/02/jvm_stacks.png?w=625">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/17/如何阅读-Java-字节码/"/>
+
+
+
+
+
+  <title>如何阅读 Java 字节码 | Eateeer 的笔记屋</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9b48d5ff124691e33205f2689afe486c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Eateeer 的笔记屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/17/如何阅读-Java-字节码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eateeer">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eateeer 的笔记屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何阅读 Java 字节码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T21:43:43+08:00">
+                2018-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/17/如何阅读-Java-字节码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/17/如何阅读-Java-字节码/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/07/17/如何阅读-Java-字节码/" class="leancloud_visitors" data-flag-title="如何阅读 Java 字节码">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>原文链接：<a href="https://dzone.com/articles/introduction-to-java-bytecode" target="_blank" rel="noopener">https://dzone.com/articles/introduction-to-java-bytecode</a></p>
+</blockquote>
+<p>即使对于一名经验丰富的 Java 程序员来说，阅读编译后的 Java 字节码也会感到枯燥。我们为什么需要了解如此底层的信息呢？在上周，我遇到了一个场景：在很早以前，我在自己的电脑上修改了一些代码，编译成了一个 JAR 文件，然后发布到服务端，检查我更改后的代码是否修复了一个性能问题。不幸的是，这些代码没有被检入版本控制系统，而且不知道什么原因，本地的修改在没有任何的记录下也没了。几个月后的上周，我再次需要这些修改后的代码，然而我找不到他们了！</p>
+<p>幸运的是，编译后的代码仍然保留在远程服务端，抱着一丝希望，我下载了 JAR 包然后用反编译软件打开它…然而有一个问题：这个反编译软件的 GUI 界面并不是无瑕疵的，在查看反编译后的某些类时，会导致这个软件崩溃！</p>
+<p>特殊情况特殊处理。好在我对字节码还有点印象，相比于使用那个注定会崩溃的反编译软件，我更偏向于自己手动反编译一些代码。</p>
+<p>了解字节码的好处在于，一旦你掌握了它，那么在所有 Java 虚拟机支持的平台都能适用——因为字节码只是代码的 IR（中间表示），并不是底层 CPU 直接执行的代码。而且，相比于机器码，由于 JVM 的架构相对比较简单，JVM 的指令集也相对比较少，因此字节码比较容易掌握。并且，Oracle 对这些指令提供了完整的说明文档！</p>
+<a id="more"></a>
+<p>在学习字节码指令集之前，我们先熟悉一下关于 JVM 的一些常识。</p>
+<h2 id="JVM-数据类型"><a href="#JVM-数据类型" class="headerlink" title="JVM 数据类型"></a>JVM 数据类型</h2><p>Java 是一门静态类型的语言，这也影响了字节码指令集的设计，比如，一个指令希望它自己能在一个指定类型的值上进行操作。举个例子，将两个数相加的加法指令，有 <code>iadd</code>，<code>ladd</code>，<code>fadd</code>，<code>dadd</code>。他们指定的操作数类型，分别是 <code>int</code>、<code>long</code>、<code>float</code> 和 <code>double</code>。一些字节码，他们的功能相同，但由于操作数类型不同，也就有了不同的特征。</p>
+<p>JVM 定义的数据类型有：</p>
+<ol>
+<li>基本数据类型：<ul>
+<li>数字类型：<code>byte</code> (8位)，<code>short</code> (16 位)，<code>int</code> (32 位)，<code>long</code> (64 位)，<code>char</code> (16 位无符号 Unicode)，<code>float</code> (32 位 IEEE 754 单精度)，<code>double</code> (64 位 IEEE 754 双精度).</li>
+<li><code>boolean</code> 类型。</li>
+<li><code>returenAdress</code>：指令指针。</li>
+</ul>
+</li>
+<li>引用类型：<ul>
+<li>类类型。</li>
+<li>集合类型。</li>
+<li>接口类型。</li>
+</ul>
+</li>
+</ol>
+<p><code>boolean</code> 类型在字节码里面支持有限。比如，并没有一个指令可以直接操作 <code>boolean</code> 类型的值。布尔值一般会被编译器转为 <code>int</code> 类型的值，并且用 <code>int</code> 相关的指令来操作。</p>
+<p>除了 <code>returnAddress</code>  类型没有对应的程序语言类型以外，Java 开发者对上面所提到的类型应该很熟悉。</p>
+<h2 id="栈基架构"><a href="#栈基架构" class="headerlink" title="栈基架构"></a>栈基架构</h2><p>字节码指令集的简单很大程度上归功于 Sun 公司设计的基于栈的虚拟机架构，一个 JVM 进程里面使用了很多内存组件，但只要详细检查 JVM 的堆栈信息，就能够了解下面的指令集：</p>
+<p><strong>PC 寄存器</strong>：Java 程序里面的每一个运行的线程，都有一个 PC 寄存器存储着当前指令的地址。</p>
+<p><strong>JVM 栈</strong>：对于每一个线程，<code>栈</code> 是用来存放局部变量、方法参数以及返回值的。下面这张图表示三个线程的栈信息：</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/02/jvm_stacks.png?w=625" alt="jvm_stacks"></p>
+<p><strong>堆</strong>：所有线程共享的内存区域，存放着对象（类的实例化和数组）。对象由垃圾回收器进行再分配。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/heap.png?w=625" alt="heap.png"></p>
+<p><strong>方法区</strong>：对于每一个加载的类，方法区里面都存放着方法的代码，以及符号表（对象或字段的引用）以及常量池中的常量。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/method_area.png?w=625" alt="method_area.png"></p>
+<p>一个 JVM 的栈是由一系列的 <code>帧</code>（frame）组成，当调用一个方法的时候，就会将一帧的内存入栈，当方法运行结束的时候（无论是正常返回还是抛出异常），就会将栈顶的帧给弹出。每一帧由下面几部分组成：</p>
+<ol>
+<li>一个局部变量数组，索引序列从 0  到数组长度减一。数组长度是由编译器计算的。除了 <code>long</code> 和 <code>double</code> 类型的值需要两个局部变量的空间来存储外，其他任何类型的值都可以存储在一个局部变量里面。</li>
+<li>一个用来存储中间变量的操作栈。该中间变量的作用是充当指令的操作数，或者存放方法调用的参数。</li>
+</ol>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/stack_frame_zoom.png?w=625" alt="stack_frame_zoom.png"></p>
+<h2 id="浏览字节码"><a href="#浏览字节码" class="headerlink" title="浏览字节码"></a>浏览字节码</h2><p>对 JVM 内部有一些基本的了解后，我们可以看一下由简单的代码生成的字节码的例子。在 Java 类文件里面的每个方法中，都有像下面那样格式的代码段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">操作码		  操作数1		操作数2</span><br></pre></td></tr></table></figure>
+<p>也就是说，字节码是由一个操作码、0 个或多个操作数组成。</p>
+<p>在当前正在运行的方法的栈帧中，指令可以将一个操作数压入操作栈中，也可以将一个操作数从操作栈中弹出，也可以悄悄地加载或存储局部变量数组里的值。我们来看一个简单的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> c = a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设这些代码是在 <code>Test.class</code> 文件里的，为了从编译后的 class 文件中得到字节码，我们可以运行 <code>javap</code> 命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap -v Test.class</span><br></pre></td></tr></table></figure>
+<p>然后我们就能得到下面的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">Classfile /Users/wanglin/Documents/temp/bytecode/Test.class</span><br><span class="line">  Last modified Jul 14, 2018; size 273 bytes</span><br><span class="line">  MD5 checksum 219323956d5900c9cfdfc06a2a92fe41</span><br><span class="line">  Compiled from &quot;Test.java&quot;</span><br><span class="line">public class Test</span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: 52</span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #3.#12         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">   #2 = Class              #13            // Test</span><br><span class="line">   #3 = Class              #14            // java/lang/Object</span><br><span class="line">   #4 = Utf8               &lt;init&gt;</span><br><span class="line">   #5 = Utf8               ()V</span><br><span class="line">   #6 = Utf8               Code</span><br><span class="line">   #7 = Utf8               LineNumberTable</span><br><span class="line">   #8 = Utf8               main</span><br><span class="line">   #9 = Utf8               ([Ljava/lang/String;)V</span><br><span class="line">  #10 = Utf8               SourceFile</span><br><span class="line">  #11 = Utf8               Test.java</span><br><span class="line">  #12 = NameAndType        #4:#5          // &quot;&lt;init&gt;&quot;:()V</span><br><span class="line">  #13 = Utf8               Test</span><br><span class="line">  #14 = Utf8               java/lang/Object</span><br><span class="line">&#123;</span><br><span class="line">  public Test();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=1, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">         4: return</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 1: 0</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=4, args_size=1</span><br><span class="line">         0: iconst_1</span><br><span class="line">         1: istore_1</span><br><span class="line">         2: iconst_2</span><br><span class="line">         3: istore_2</span><br><span class="line">         4: iload_1</span><br><span class="line">         5: iload_2</span><br><span class="line">         6: iadd</span><br><span class="line">         7: istore_3</span><br><span class="line">         8: return</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 3: 0</span><br><span class="line">        line 4: 2</span><br><span class="line">        line 5: 4</span><br><span class="line">        line 6: 8</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以看到 <code>main</code> 方法的方法签名，<code>descriptor</code> 表示该方法传入了一个字符串数组（[Ljava/lang/String]），有一个空的返回类型（V）。还有一些 <code>flags</code> 表示方法修饰符：<code>public( ACC_PUBLIC)</code> 和 <code>static (ACC_STATIC)</code>。</p>
+<p>最重要的是 <code>Code</code> 属性下面的代码，包含了该方法中使用到的指令集信息，比如操作栈的最大深度为2 （stack=2），该方法在栈帧中分配了 4 个局部变量（locals=4），所有的局部变量都在上面的指令中被引用了，除了序列号为 0 的那个变量，序列号为 0 的变量存储了指向 <code>args</code> 参数的引用。其他 3 个局部变量对应源码中的变量 a, b 和 c。</p>
+<p>从地址 0 到 8，指令做了下面的事情：</p>
+<p><code>iconst_1</code>：将整数常量 1 压入操作栈中。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/iconst_12.png?w=625" alt="iconst_1.png"></p>
+<p><code>istore_1</code>：将操作栈顶的内容弹出（一个 int 值），然后将其存放到下标为 1 的局部变量中，对应变量 a。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/istore_11.png?w=625" alt="istore_1.png"></p>
+<p><code>iconst_2</code>：将整数常量 2 压入操作栈中。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/iconst_2.png?w=625" alt="iconst_2.png"></p>
+<p><code>istore_2</code>：将操作栈顶的值弹出，并将其存储到下标为 2 的局部变量中，对应变量 b。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/istore_2.png?w=625" alt="istore_2.png"></p>
+<p><code>iload_1</code>：从下标为 1 的局部变量数组中加载出 int  值，并将其压入操作栈中。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/iload_1.png?w=625" alt="iload_1.png"></p>
+<p><code>iload_2</code>：从下标为 1 的局部变量数组中加载出 int  值，并将其压入操作栈中。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/iload_2.png?w=625" alt="iload_2.png"></p>
+<p><code>iadd</code>：将操作栈中顶部的两个 int 值弹出，将他们俩相加，然后将结果压回操作栈中。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/iadd.png?w=625" alt="iadd"></p>
+<p><code>istore_3</code>：将操作数顶部的 int 值弹出，并且将其存储到下标为 3 的局部变量数组中，对应源码中的变量 c。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/istore_3.png?w=625" alt="istore_3.png"></p>
+<p><code>return</code>：从 void 方法中返回。</p>
+<p>上面的所有指令都只有一个操作数，表示 JVM 想要执行的具体操作是什么。</p>
+<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><p>在上面的例子中只有一个方法，那就是 main 方法。假如变量 c 的值需要稍微复杂的方式才能计算出来，我们一般都会将 c 的计算过程放在一个新的方法中执行——<code>calc</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> c = calc(a, b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calc</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">int</span>)Math.sqrt(Math.pow(a, <span class="number">2</span>) + Math.pow(b, <span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看一下对应的字节码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: <span class="number">52</span></span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #8.#19         // java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">   #2 = Methodref          #7.#20         // Test.calc:(II)I</span><br><span class="line">   #3 = Double             2.0d</span><br><span class="line">   #5 = Methodref          #21.#22        // java/lang/Math.pow:(DD)D</span><br><span class="line">   #6 = Methodref          #21.#23        // java/lang/Math.sqrt:(D)D</span><br><span class="line">   #7 = Class              #24            // Test</span><br><span class="line">   #8 = Class              #25            // java/lang/Object</span><br><span class="line">   #9 = Utf8               &lt;init&gt;</span><br><span class="line">  #10 = Utf8               ()V</span><br><span class="line">  #11 = Utf8               Code</span><br><span class="line">  #12 = Utf8               LineNumberTable</span><br><span class="line">  #13 = Utf8               main</span><br><span class="line">  #14 = Utf8               ([Ljava/lang/String;)V</span><br><span class="line">  #15 = Utf8               calc</span><br><span class="line">  #16 = Utf8               (II)I</span><br><span class="line">  #17 = Utf8               SourceFile</span><br><span class="line">  #18 = Utf8               Test.java</span><br><span class="line">  #19 = NameAndType        #9:#10         // "&lt;init&gt;":()V</span><br><span class="line">  #20 = NameAndType        #15:#16        // calc:(II)I</span><br><span class="line">  #21 = Class              #26            // java/lang/Math</span><br><span class="line">  #22 = NameAndType        #27:#28        // pow:(DD)D</span><br><span class="line">  #23 = NameAndType        #29:#30        // sqrt:(D)D</span><br><span class="line">  #24 = Utf8               Test</span><br><span class="line">  #25 = Utf8               java/lang/Object</span><br><span class="line">  #26 = Utf8               java/lang/Math</span><br><span class="line">  #27 = Utf8               pow</span><br><span class="line">  #28 = Utf8               (DD)D</span><br><span class="line">  #29 = Utf8               sqrt</span><br><span class="line">  #30 = Utf8               (D)D</span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Test</span><span class="params">()</span></span>;</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">1</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: aload_0</span><br><span class="line">         1: invokespecial #1                  // Method java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">         <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">1</span>: <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(java.lang.String[])</span></span>;</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">2</span>, locals=<span class="number">4</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: iconst_1</span><br><span class="line">         <span class="number">1</span>: istore_1</span><br><span class="line">         <span class="number">2</span>: iconst_2</span><br><span class="line">         <span class="number">3</span>: istore_2</span><br><span class="line">         <span class="number">4</span>: iload_1</span><br><span class="line">         <span class="number">5</span>: iload_2</span><br><span class="line">         6: invokestatic  #2                  // Method calc:(II)I</span><br><span class="line">         <span class="number">9</span>: istore_3</span><br><span class="line">        <span class="number">10</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">3</span>: <span class="number">0</span></span><br><span class="line">        line <span class="number">4</span>: <span class="number">2</span></span><br><span class="line">        line <span class="number">5</span>: <span class="number">4</span></span><br><span class="line">        line <span class="number">6</span>: <span class="number">10</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calc</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span>;</span><br><span class="line">    descriptor: (II)I</span><br><span class="line">    flags: ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">6</span>, locals=<span class="number">2</span>, args_size=<span class="number">2</span></span><br><span class="line">         <span class="number">0</span>: iload_0</span><br><span class="line">         <span class="number">1</span>: i2d</span><br><span class="line">         2: ldc2_w        #3                  // double 2.0d</span><br><span class="line">         5: invokestatic  #5                  // Method java/lang/Math.pow:(DD)D</span><br><span class="line">         <span class="number">8</span>: iload_1</span><br><span class="line">         <span class="number">9</span>: i2d</span><br><span class="line">        10: ldc2_w        #3                  // double 2.0d</span><br><span class="line">        13: invokestatic  #5                  // Method java/lang/Math.pow:(DD)D</span><br><span class="line">        <span class="number">16</span>: dadd</span><br><span class="line">        17: invokestatic  #6                  // Method java/lang/Math.sqrt:(D)D</span><br><span class="line">        <span class="number">20</span>: d2i</span><br><span class="line">        <span class="number">21</span>: ireturn</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">9</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Main 方法中唯一不同的代码就是讲之前的 <code>iadd</code> 指令，变成了现在的 <code>invokestatic</code> 指令，改指令只是调用了静态方法 <code>calc</code>。要注意的是，操作栈中包含了需要传递给 <code>calc</code> 方法的两个参数，也就是说，<strong>方法调用方会准备好被调用的方法所需的参数，并且将这些参数按照正确的顺序压入操作栈中。<code>invokestatic</code> (或者其他类似的方法调用) 会依次弹出这些参数，同时会为被调用的方法创建一个新的帧，被调用的方法所需的参数存放在新栈帧的局部变量数组中。</strong></p>
+<p>同时，通过观察地址我们可以看到 <code>invokestatic</code> 指令占据了 5、6、7 三个地址索引，也就是说，<code>invokestatic</code> 指令占据了三个字节。和我们目前了解到的指令集不同，<code>invokestatic</code> 指令包含了用来调用方法引用所需的两个额外的字节。方法<code>cal</code> 在 <code>javap</code> 中是由 <code>#2</code> 标识，而 <code>#2</code> 指向的是常量池中的的引用。</p>
+<p>除此之外，在上面的字节码文件中我们可以发现 <code>cal</code> 方法本身的字节码。它首先将第一个整型参数加载到操作栈中（<code>iload_0</code>）。而接下来的指令 <code>i2d</code> 则是将第一个整型操作数转为一个 <code>double</code> 类型。然后将转化后的 <code>double</code> 值替换原来的整型参数，占据操作栈的顶端。</p>
+<p>接下来的指令，会从常量池中取出一个双精度浮点型常量 <code>2.0d</code> ，并将其压入操作栈中，这样就为 <code>Math.pow</code> 静态方法准备好了两个操作数（方法 <code>calc</code> 的第一个参数和常量 <code>2.0d</code>）。当 <code>Math.pow</code> 方法执行完后，会将结果返回给调用它的操作栈，并压入栈顶，如下图所示：</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/math_pow2.png?w=625" alt="math_pow.png"></p>
+<p>计算 <code>Math.pow(b, 2)</code> 也是类似的流程：</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/math_pow21.png?w=625" alt="math_pow2.png"></p>
+<p>再接下来的指令，<code>dadd</code>，会将栈中的两个值弹出，将他们相加，然后将结果压入栈顶。最终，<code>invokestatic</code> 方法会调用 <code>Math.sqrt</code> 方法，该方法执行完后将结果强制转为 int 类型 （<code>d2i</code>），然后将 int 类型的结果返回给 main 方法，并存储在变量 c 中（<code>istore_3</code>）。</p>
+<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>我们修改上面的例子，引入 <code>Point</code> 类，用来计算 XY 的面积。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Point a = <span class="keyword">new</span> Point(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">        Point b = <span class="keyword">new</span> Point(<span class="number">5</span>, <span class="number">3</span>);</span><br><span class="line">        <span class="keyword">int</span> c = a.area(b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line">    Point(<span class="keyword">int</span> x, <span class="keyword">int</span> y) &#123;</span><br><span class="line">        <span class="keyword">this</span>.x = x;</span><br><span class="line">        <span class="keyword">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">area</span><span class="params">(Point b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> length = Math.abs(b.y - <span class="keyword">this</span>.y);</span><br><span class="line">        <span class="keyword">int</span> width = Math.abs(b.x - <span class="keyword">this</span>.x);</span><br><span class="line">        <span class="keyword">return</span> length * width;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译后的 main 方法对应的字节码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(java.lang.String[])</span></span>;</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">4</span>, locals=<span class="number">4</span>, args_size=<span class="number">1</span></span><br><span class="line">         0: new           #2                  // class Point</span><br><span class="line">         <span class="number">3</span>: dup</span><br><span class="line">         <span class="number">4</span>: iconst_1</span><br><span class="line">         <span class="number">5</span>: iconst_1</span><br><span class="line">         6: invokespecial #3                  // Method Point."&lt;init&gt;":(II)V</span><br><span class="line">         <span class="number">9</span>: astore_1</span><br><span class="line">        10: new           #2                  // class Point</span><br><span class="line">        <span class="number">13</span>: dup</span><br><span class="line">        <span class="number">14</span>: iconst_5</span><br><span class="line">        <span class="number">15</span>: iconst_3</span><br><span class="line">        16: invokespecial #3                  // Method Point."&lt;init&gt;":(II)V</span><br><span class="line">        <span class="number">19</span>: astore_2</span><br><span class="line">        <span class="number">20</span>: aload_1</span><br><span class="line">        <span class="number">21</span>: aload_2</span><br><span class="line">        22: invokevirtual #4                  // Method Point.area:(LPoint;)I</span><br><span class="line">        <span class="number">25</span>: istore_3</span><br><span class="line">        <span class="number">26</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">3</span>: <span class="number">0</span></span><br><span class="line">        line <span class="number">4</span>: <span class="number">10</span></span><br><span class="line">        line <span class="number">5</span>: <span class="number">20</span></span><br><span class="line">        line <span class="number">6</span>: <span class="number">26</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的字节码文件中，我们会遇到新的指令集：<code>new</code>、<code>dup</code> 和 <code>invokespecial</code>。和编程语言中的 <code>new</code> 关键字一样，<code>new</code> 指令会创建一个在操作栈中指定类型的对象（即符号引用常量池的 <code>Point</code> 类）。对象会被分配到堆内存中，而指向该对象的引用会被压入操作栈。</p>
+<p><code>dup</code> 指令会复制一个栈顶的值，也就是说现在我们有两个指向 <code>Point</code> 对象的引用。接下来的三个指令的作用，会先将初始化对象所需的参数压入操作栈中，然后调用特定的初始化方法，也就是对应的 <code>Point</code> 类的构造方法。在这个调用方法中，<code>x</code>  和 <code>y</code> 对象会被初始化。当初始化方法结束后，栈顶的三个操作数都被消费了，只剩下最初指向创建对象（现在已经成功初始化了）的那个引用。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/init.png?w=625" alt="init.png"></p>
+<p>接下来，<code>astore_1</code> 会将 <code>Point</code> 引用弹出，并将其分配给局部变量数组中下标为 1 的变量（也就是 <code>a</code>）。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/init_store.png?w=625" alt="init_store.png"></p>
+<p>创建并初始化第二个 <code>Point</code> 对象的流程也类似，最终会被分配给变量 <code>b</code>。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/init2.png?w=625" alt="init2.png"></p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/init_store2.png?w=625" alt="init_store2.png"></p>
+<p>接下来，将局部变量数组中，下标为 1 和 2 的 <code>Point</code> 对象引用加载到操作栈中（分别用指令 <code>aload_1</code> 和 <code>aload_2</code> 表示），然后使用 <code>invokevirtual</code> 指令调用 <code>area</code> 方法，该指令会负责根据对象的实际类型来调用合适的方法。比如，如果变量 <code>a</code> 包含了一个继承自 <code>Point</code> 类型的对象 <code>SpecialPoint</code>，并且子类重写了 <code>area</code> 方法，那么重写的方法就会被调用。在我们上面这个例子中，由于没有子类，因此只有一个 <code>area</code> 方法可用。</p>
+<p><img src="https://mahmoudanouti.files.wordpress.com/2018/03/area2.png?w=625" alt="area.png"></p>
+<p>然而，即使 <code>area</code> 方法只接受一个参数，仍然需要两个 <code>Point</code> 引用。第一个 <code>Point</code> （<code>pointA</code>，来自变量 <code>a</code>） 是方法调用者（也就是程序语言中的 <code>this</code> 关键字），它会被传入 <code>area</code> 方法帧的第一个局部变量。第二个操作数 <code>pointB</code> 是 <code>area</code> 方法的参数。</p>
+<h2 id="另一种方式"><a href="#另一种方式" class="headerlink" title="另一种方式"></a>另一种方式</h2><p>如果只是想了解程序运行方式，你不需要对编译后的字节码文件里面的每一个指令都了解彻底。比如，我只想检查代码是否使用了 Java 的 <code>steam</code> 来读一个文件，并且还想知道 <code>stream</code> 是否被正确关闭。我反编译代码得到了下面的字节码文件，并且可以比较容易地发现，我确实使用了 <code>steam</code>，而且很有可能是在 <code>try - resource</code> 语句中关闭了流。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(java.lang.String[])</span> <span class="keyword">throws</span> java.lang.Exception</span>;</span><br><span class="line"> descriptor: ([Ljava/lang/String;)V</span><br><span class="line"> flags: (<span class="number">0x0009</span>) ACC_PUBLIC, ACC_STATIC</span><br><span class="line"> Code:</span><br><span class="line">   stack=<span class="number">2</span>, locals=<span class="number">8</span>, args_size=<span class="number">1</span></span><br><span class="line">      0: ldc           #2                  // class test/Test</span><br><span class="line">      2: ldc           #3                  // String input.txt</span><br><span class="line">      4: invokevirtual #4                  // Method java/lang/Class.getResource:(Ljava/lang/String;)Ljava/net/URL;</span><br><span class="line">      7: invokevirtual #5                  // Method java/net/URL.toURI:()Ljava/net/URI;</span><br><span class="line">     10: invokestatic  #6                  // Method java/nio/file/Paths.get:(Ljava/net/URI;)Ljava/nio/file/Path;</span><br><span class="line">     <span class="number">13</span>: astore_1</span><br><span class="line">     14: new           #7                  // class java/lang/StringBuilder</span><br><span class="line">     <span class="number">17</span>: dup</span><br><span class="line">     18: invokespecial #8                  // Method java/lang/StringBuilder."&lt;init&gt;":()V</span><br><span class="line">     <span class="number">21</span>: astore_2</span><br><span class="line">     <span class="number">22</span>: aload_1</span><br><span class="line">     23: invokestatic  #9                  // Method java/nio/file/Files.lines:(Ljava/nio/file/Path;)Ljava/util/stream/Stream;</span><br><span class="line">     <span class="number">26</span>: astore_3</span><br><span class="line">     <span class="number">27</span>: aconst_null</span><br><span class="line">     <span class="number">28</span>: astore        <span class="number">4</span></span><br><span class="line">     <span class="number">30</span>: aload_3</span><br><span class="line">     <span class="number">31</span>: aload_2</span><br><span class="line">     32: invokedynamic #10,  0             // InvokeDynamic #0:accept:(Ljava/lang/StringBuilder;)Ljava/util/function/Consumer;</span><br><span class="line">     37: invokeinterface #11,  2           // InterfaceMethod java/util/stream/Stream.forEach:(Ljava/util/function/Consumer;)V</span><br><span class="line">     <span class="number">42</span>: aload_3</span><br><span class="line">     <span class="number">43</span>: ifnull        <span class="number">131</span></span><br><span class="line">     <span class="number">46</span>: aload         <span class="number">4</span></span><br><span class="line">     <span class="number">48</span>: ifnull        <span class="number">72</span></span><br><span class="line">     <span class="number">51</span>: aload_3</span><br><span class="line">     52: invokeinterface #12,  1           // InterfaceMethod java/util/stream/Stream.close:()V</span><br><span class="line">     <span class="number">57</span>: goto          <span class="number">131</span></span><br><span class="line">     <span class="number">60</span>: astore        <span class="number">5</span></span><br><span class="line">     <span class="number">62</span>: aload         <span class="number">4</span></span><br><span class="line">     <span class="number">64</span>: aload         <span class="number">5</span></span><br><span class="line">     66: invokevirtual #14                 // Method java/lang/Throwable.addSuppressed:(Ljava/lang/Throwable;)V</span><br><span class="line">     <span class="number">69</span>: goto          <span class="number">131</span></span><br><span class="line">     <span class="number">72</span>: aload_3</span><br><span class="line">     73: invokeinterface #12,  1           // InterfaceMethod java/util/stream/Stream.close:()V</span><br><span class="line">     <span class="number">78</span>: goto          <span class="number">131</span></span><br><span class="line">     <span class="number">81</span>: astore        <span class="number">5</span></span><br><span class="line">     <span class="number">83</span>: aload         <span class="number">5</span></span><br><span class="line">     <span class="number">85</span>: astore        <span class="number">4</span></span><br><span class="line">     <span class="number">87</span>: aload         <span class="number">5</span></span><br><span class="line">     <span class="number">89</span>: athrow</span><br><span class="line">     <span class="number">90</span>: astore        <span class="number">6</span></span><br><span class="line">     <span class="number">92</span>: aload_3</span><br><span class="line">     <span class="number">93</span>: ifnull        <span class="number">128</span></span><br><span class="line">     <span class="number">96</span>: aload         <span class="number">4</span></span><br><span class="line">     <span class="number">98</span>: ifnull        <span class="number">122</span></span><br><span class="line">    <span class="number">101</span>: aload_3</span><br><span class="line">    102: invokeinterface #12,  1           // InterfaceMethod java/util/stream/Stream.close:()V</span><br><span class="line">    <span class="number">107</span>: goto          <span class="number">128</span></span><br><span class="line">    <span class="number">110</span>: astore        <span class="number">7</span></span><br><span class="line">    <span class="number">112</span>: aload         <span class="number">4</span></span><br><span class="line">    <span class="number">114</span>: aload         <span class="number">7</span></span><br><span class="line">    116: invokevirtual #14                 // Method java/lang/Throwable.addSuppressed:(Ljava/lang/Throwable;)V</span><br><span class="line">    <span class="number">119</span>: goto          <span class="number">128</span></span><br><span class="line">    <span class="number">122</span>: aload_3</span><br><span class="line">    123: invokeinterface #12,  1           // InterfaceMethod java/util/stream/Stream.close:()V</span><br><span class="line">    <span class="number">128</span>: aload         <span class="number">6</span></span><br><span class="line">    <span class="number">130</span>: athrow</span><br><span class="line">    131: getstatic     #15                 // Field java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">    <span class="number">134</span>: aload_2</span><br><span class="line">    135: invokevirtual #16                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;</span><br><span class="line">    138: invokevirtual #17                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V</span><br><span class="line">    <span class="number">141</span>: <span class="keyword">return</span></span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>java/util/stram/Stream</code> 类里面的 <code>forEach</code> 方法确实被调用了，而在这之前，会调用一个指向 <code>Consumer</code> 对象引用的方法 <code>InvokeDynamic</code>。然后我们看到一大堆调用了 <code>Steam.close</code> 方法的字节码和调用  <code>Throwable.addSuppressed</code> 的跳转分支。这些是编译器编译 <code>try - with - resource</code> 语句的基本代码。</p>
+<p>下面是完整的源代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Path path = Paths.get(Test.class.getResource(<span class="string">"input.txt"</span>).toURI());</span><br><span class="line">    StringBuilder data = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    <span class="keyword">try</span>(Stream lines = Files.lines(path)) &#123;</span><br><span class="line">        lines.forEach(line -&gt; data.append(line).append(<span class="string">"\n"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(data.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>感谢这些简单的字节码指令集和缺失的编译器优化，使得在没有源代码的情况下，拆分类文件并且分析你的代码成了一种比较容易的方法。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果觉得文章对你有帮助，请我喝杯可乐吧</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Eateeer 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Eateeer 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/04/Java内存管理简介/" rel="next" title="Java内存管理简介">
+                <i class="fa fa-chevron-left"></i> Java内存管理简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Eateeer" />
+            
+              <p class="site-author-name" itemprop="name">Eateeer</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM-数据类型"><span class="nav-number">1.</span> <span class="nav-text">JVM 数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈基架构"><span class="nav-number">2.</span> <span class="nav-text">栈基架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览字节码"><span class="nav-number">3.</span> <span class="nav-text">浏览字节码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用"><span class="nav-number">4.</span> <span class="nav-text">方法调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建对象"><span class="nav-number">5.</span> <span class="nav-text">创建对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#另一种方式"><span class="nav-number">6.</span> <span class="nav-text">另一种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eateeer</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-wl9739-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/07/17/如何阅读-Java-字节码/';
+          this.page.identifier = '2018/07/17/如何阅读-Java-字节码/';
+          this.page.title = '如何阅读 Java 字节码';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-wl9739-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jXj9tIBTeVUB6EFW707zSm7T-gzGzoHsz", "NuTnqUVw3dyVuiOwyNcrpqiG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
