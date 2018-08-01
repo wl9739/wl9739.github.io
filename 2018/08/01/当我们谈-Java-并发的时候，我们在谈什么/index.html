@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -86,20 +86,25 @@
 
 
 
-<meta name="description" content="之前看到廖神的文章： Android 中的 Enum 到底占多少内存？该如何用?，写的非常好，建议大家都看看。 对于enum占用内存想必大家都知道，那么在Android里面什么时候用enum，什么时候用常量，可以参考这一篇文章：Should I strictly avoid using enums on Android?。 那么，对于一些常量，我们想保留类似于enum的约束性，有办法么？">
-<meta name="keywords" content="Android">
+<meta name="description" content="很多人在刚开始学 Java 的时候，会觉得多线程是一块难啃的骨头，特别是对于非科班的同学。究其原因，我想主要是因为没有将多线程建立起一种模型，不清楚多线程的问题到底是怎么产生的。在这里，我就和大家聊一下我对Java 多线程的一些想法。 Java 是基于 Java 虚拟机（JVM）实现的一套编程语言，我们写的 Java 代码是要在 JVM 中才能运行。所谓虚拟机，其实就是模拟了一个操作系统。一个常规">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用注解代替Enum的使用">
-<meta property="og:url" content="http://yoursite.com/2016/05/01/使用注解代替Enum的使用/index.html">
+<meta property="og:title" content="当我们谈 Java 并发的时候，我们在谈什么">
+<meta property="og:url" content="http://yoursite.com/2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/index.html">
 <meta property="og:site_name" content="Eateeer 的笔记屋">
-<meta property="og:description" content="之前看到廖神的文章： Android 中的 Enum 到底占多少内存？该如何用?，写的非常好，建议大家都看看。 对于enum占用内存想必大家都知道，那么在Android里面什么时候用enum，什么时候用常量，可以参考这一篇文章：Should I strictly avoid using enums on Android?。 那么，对于一些常量，我们想保留类似于enum的约束性，有办法么？">
+<meta property="og:description" content="很多人在刚开始学 Java 的时候，会觉得多线程是一块难啃的骨头，特别是对于非科班的同学。究其原因，我想主要是因为没有将多线程建立起一种模型，不清楚多线程的问题到底是怎么产生的。在这里，我就和大家聊一下我对Java 多线程的一些想法。 Java 是基于 Java 虚拟机（JVM）实现的一套编程语言，我们写的 Java 代码是要在 JVM 中才能运行。所谓虚拟机，其实就是模拟了一个操作系统。一个常规">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://7xook5.com1.z0.glb.clouddn.com/2016-05-09-code2.png">
-<meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1ftswhd2mddj30an0600t2.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1ftswhg2a7fj30cj09xgmq.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1ftswhjon4ej30pm09xgny.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1ftswhmjdt3j30gs09x75v.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1ftswhps6lhj30gs09xdhe.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79ly1ftswhsizxoj30q306aglr.jpg">
+<meta property="og:updated_time" content="2018-08-01T15:00:07.462Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用注解代替Enum的使用">
-<meta name="twitter:description" content="之前看到廖神的文章： Android 中的 Enum 到底占多少内存？该如何用?，写的非常好，建议大家都看看。 对于enum占用内存想必大家都知道，那么在Android里面什么时候用enum，什么时候用常量，可以参考这一篇文章：Should I strictly avoid using enums on Android?。 那么，对于一些常量，我们想保留类似于enum的约束性，有办法么？">
-<meta name="twitter:image" content="http://7xook5.com1.z0.glb.clouddn.com/2016-05-09-code2.png">
+<meta name="twitter:title" content="当我们谈 Java 并发的时候，我们在谈什么">
+<meta name="twitter:description" content="很多人在刚开始学 Java 的时候，会觉得多线程是一块难啃的骨头，特别是对于非科班的同学。究其原因，我想主要是因为没有将多线程建立起一种模型，不清楚多线程的问题到底是怎么产生的。在这里，我就和大家聊一下我对Java 多线程的一些想法。 Java 是基于 Java 虚拟机（JVM）实现的一套编程语言，我们写的 Java 代码是要在 JVM 中才能运行。所谓虚拟机，其实就是模拟了一个操作系统。一个常规">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1ftswhd2mddj30an0600t2.jpg">
 
 
 
@@ -129,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/05/01/使用注解代替Enum的使用/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/"/>
 
 
 
 
 
-  <title>使用注解代替Enum的使用 | Eateeer 的笔记屋</title>
+  <title>当我们谈 Java 并发的时候，我们在谈什么 | Eateeer 的笔记屋</title>
   
 
 
@@ -262,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/01/使用注解代替Enum的使用/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Eateeer">
@@ -279,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">使用注解代替Enum的使用</h1>
+          <h1 class="post-title" itemprop="name headline">当我们谈 Java 并发的时候，我们在谈什么</h1>
         
 
         <div class="post-meta">
@@ -291,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T23:24:12+08:00">
-                2016-05-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T22:56:00+08:00">
+                2018-08-01
               </time>
             
 
@@ -310,9 +315,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2016/05/01/使用注解代替Enum的使用/#comments" itemprop="discussionUrl">
+                <a href="/2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/05/01/使用注解代替Enum的使用/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -320,7 +325,7 @@
 
           
           
-             <span id="/2016/05/01/使用注解代替Enum的使用/" class="leancloud_visitors" data-flag-title="使用注解代替Enum的使用">
+             <span id="/2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/" class="leancloud_visitors" data-flag-title="当我们谈 Java 并发的时候，我们在谈什么">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -351,22 +356,49 @@
       
 
       
-        <p>之前看到廖神的文章： <a href="http://www.liaohuqiu.net/cn/posts/android-enum-memory-usage/" target="_blank" rel="noopener">Android 中的 Enum 到底占多少内存？该如何用?</a>，写的非常好，建议大家都看看。</p>
-<p>对于enum占用内存想必大家都知道，那么在Android里面什么时候用enum，什么时候用常量，可以参考这一篇文章：<a href="http://stackoverflow.com/questions/29183904/should-i-strictly-avoid-using-enums-on-android" target="_blank" rel="noopener">Should I strictly avoid using enums on Android?</a>。</p>
-<p>那么，对于一些常量，我们想保留类似于enum的约束性，有办法么？</p>
+        <p>很多人在刚开始学 Java 的时候，会觉得多线程是一块难啃的骨头，特别是对于非科班的同学。究其原因，我想主要是因为没有将多线程建立起一种模型，不清楚多线程的问题到底是怎么产生的。在这里，我就和大家聊一下我对Java 多线程的一些想法。</p>
+<p>Java 是基于 Java 虚拟机（JVM）实现的一套编程语言，我们写的 Java 代码是要在 JVM 中才能运行。所谓虚拟机，其实就是模拟了一个操作系统。一个常规操作系统所必备的功能，虚拟机一般也会有。我们计算机的操作系统能管理内存资源，那么虚拟机当然也要能管理内存资源了。在 JVM 里，从逻辑的角度来说，会把内存划分为两部分：<strong>线程栈</strong> 和 <strong>堆</strong>。</p>
 <a id="more"></a>
-<p>答案是，有的。使用注解。</p>
-<p>其实在Android源码中已经有这些使用的场景，比如<code>View</code>的<code>setVisibility()</code>方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RemotableViewMethod</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setVisibility</span><span class="params">(@Visibility <span class="keyword">int</span> visibility)</span> </span>&#123;</span><br><span class="line">		setFlags(visibility, VISIBILITY_MASK);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>将<code>@Visibility</code>点进去看：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IntDef</span>(&#123;VISIBLE, INVISIBLE, GONE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.SOURCE)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Visibility &#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看见，这里自定义了一个注解，并使用了<code>@IntDef()</code>注解。<code>@IntDef</code>是在<code>android.support.annotation</code>这个jar包中的。下面用一个例子来具体说明使用方法：</p>
-<p>在网络请求中，Http请求方法有好几种，”GET”, “POST”, “PUT”, “DELETE”等等，如果使用注解来代替常量的话，可以这么写：</p>
-<p><img src="http://7xook5.com1.z0.glb.clouddn.com/2016-05-09-code2.png" alt="code2"></p>
-<p>在需要传入请求方法地方，就可以添加注解来限制：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> RequestBuilder <span class="title">setMethod</span><span class="params">(@RequestMethod String requestMethod)</span></span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.method = requestMethod;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这时候，给<code>setMethod()</code>穿参数时，就只能以<code>RequestMethod.GET</code>这种方式，或者直接传入字符串<code>GET</code>（这样编译会有警告，但可以通过）。</p>
-<p>除了<code>@StringDef</code>和<code>@IntDef</code>以外，在<code>android.support.annotation</code>包下还有很多其他的注解，比如<code>@ColorRes</code>等等，更多其他用途等你来发现，哈哈。</p>
+<blockquote>
+<p>嗯，我知道你们对这样简单粗暴的划分方式有意见，JVM 里面的内存划分远比上面说的复杂。</p>
+<p>而我们今天的谈论只涉及到<strong>线程栈</strong>（即虚拟机栈）和<strong>堆</strong>，因此就简单地认为 JVM 只划分了这两部分。</p>
+</blockquote>
+<p>也就是说，JVM 里面的内存模型，我们可以简要地画成下面的那样：</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1ftswhd2mddj30an0600t2.jpg" alt="JVM"></p>
+<p>每一个线程对应一个线程栈，线程栈里面的资源是私有的，也就是说我们在线程栈里的变量（即所谓的局部变量）是不会被多个线程共享。</p>
+<p>堆内存是被所有线程所共享的，程序中创建的对象都会保留在堆内存中。</p>
+<p>好了，说完了 Java 的内存模型，我们来看一看计算机的内存模型。</p>
+<p>我们写代码的时候，代码和数据一般都是保存在硬盘中。当我们在 shell 中输入完一个 <code>javac</code> 命令，或者点击 IDE 的编译按钮的时候，我们的代码和数据会第一时间复制到内存中。复制完成之后会通知我们的 CPU 处理器，然后 CPU 开始执行命令，将内存中的信息复制到 CPU 寄存器中，用来执行相应指令。在现代 CPU 中，CPU 寄存器运行速度非常快，而内存运行速度相对来说就非常慢了，为了弥补两者运行速度之间的巨大差异，在内存和 CPU 寄存器之间会有高速缓存（一般有三级缓存），用来暂时存放从内存中获取的数据。整个结构大体如下图：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1ftswhg2a7fj30cj09xgmq.jpg" alt="CPU-内存架构图"></p>
+<p>上面这幅图就是计算机的简单存储模型，这里只画了三层，第一层是 CPU 寄存器，第二层是 CPU 高速缓存，第三层是内存。这里的箭头可以理解为数据总线，表示数据流动的方向。</p>
+<blockquote>
+<p>在真实计算机中，CPU 高速缓存一般有多级，其中一部分封装在 CPU 核中，另一部分封装在 CPU 处理器中（一个处理器可以有多个核），这里为了方便，默认都封装在 CPU 处理器中的。</p>
+</blockquote>
+<p>如果 CPU 想要读取我们代码中的数据，CPU 会先在高速缓存中查找需要的数据，如果找到了，那么就直接使用这数据；如果在缓存中没有找到需要的数据，那么就会继续往下找，在内存中获取数据，并且在缓存中存放一份，再拿回 CPU 使用。</p>
+<p>而 CPU 想要把处理后的数据写回来的时候，就稍微麻烦一些了。如果 CPU 返回一个数据，就把该数据一级一级地往下送的话，那么数据总线流量就会非常大。因此，什么时间、以什么样的方式将返回的数据写入下一级存储器，以达到性能最优，是一个比较困难的问题。我们只知道，<strong>CPU 返回一个数据后，我们不会立即在内存中看到这个数据</strong>。</p>
+<p>了解了计算机的内存模型，这和 JVM 的内存模型有什么关系呢？</p>
+<p>我们已经知道，计算机的内存模型和 JVM 的内存模型是不一样的，计算机的内存模型里面并不区分线程栈和堆。而 JVM 里的堆和线程栈信息，一开始也只在计算机的内存中，只有当 CPU 运行指令需要堆或线程栈中的信息时，JVM 里面的一部分堆和线程栈的数据才会被加载到高速缓存和 CPU 寄存器中。因此，JVM 的线程栈和堆的信息可以用下面的图来表示：</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79ly1ftswhjon4ej30pm09xgny.jpg" alt="jvm - cpu"></p>
+<p>也就是说，JVM 里面的变量和对象，可能在计算机存储结构中的任何地方存在。这就会导致两个问题：</p>
+<ol>
+<li>当线程更新一个共享变量的值时，会发生内存可见性问题（Memory Visibility）。</li>
+<li>当多个线程对同一个变量进行更新操作时，会产生竞态条件（Race Condition）。</li>
+</ol>
+<blockquote>
+<p>这里其实还可以思考一个问题，即在 JVM 里面进行的线程操作，是如何分布到操作系统的线程的。换句话说，JVM 里面的线程是用户态还是内核态？</p>
+<p>其实 JVM 虚拟机规范并未对此作出限制，不同的 JVM 可以有不同的实现。HotSpot 虚拟机默认使用的是内核线程，也就是说 HotSpot 虚拟机不干涉线程的调度，全权交由操作系统来处理。当然，如果想将线程绑定到特定的 CPU 核执行，也是可以的。HotSpot 虚拟机中实现了 <code>static bool bind_to_processor(uint processor_id);</code> 方法，用来将线程绑定到指定的 CPU 核运行。</p>
+</blockquote>
+<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>假设有一个共享对象，它最开始只是在内存中，当一个线程争取到了左 CPU 的时间片，在这段时间里将共享对象复制到左 CPU 的高速缓存中，然后左 CPU 对这个共享对象做了一些修改并返回这个共享对象。之前我们说过，<strong>CPU 返回一个数据后，我们不会立即在内存中看到这个数据</strong>，因此，在共享对象的值返回到内存之前，如果右 CPU 也想使用这个共享对象，那么右 CPU 拿到的共享对象不是左 CPU 修改后的共享对象，也就是说右 CPU 得到的共享对象的值不是最新的！</p>
+<p>下面通过一副图来说明这个问题：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1ftswhmjdt3j30gs09x75v.jpg" alt="可见性问题"></p>
+<p>在上图中，左边的 CPU 会将内存中的 obj 对象复制一份在 CPU 高速缓存中，然后 CPU 对其进行操作，修改了 obj 对象中 count 属性的值，让 obj.count 从 1 变成了 2。然而在 CPU 高速缓存把 obj 最新的值返回到内存中之前，右边的 CPU 执行了相同的代码，也从内存中获取了 obj 对象，但它不知道左边的 CPU 对 obj 对象进行修改了，它<strong>看不见</strong> obj  对象最新的值，因此，右边的 CPU 获取的 obj.count 的值还是 1 。</p>
+<h3 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h3><p>可见性问题说的是一个线程对共享变量修改了之后，其他线程不能立即看到该共享变量最新的值得问题。如果有多个线程对同一个变量进行读取和修改，那么就可能发生竞态条件。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1ftswhps6lhj30gs09xdhe.jpg" alt="竞态条件"></p>
+<p>如上图，假设左边的 CPU 从内存中获取了 obj 对象，并将其复制到 CPU 高速缓存中，这个时候，右边的 CPU 也从内存中获取到了 obj 对象，也将其复制到了 CPU 高速缓存中。然后两个 CPU 都对 obj.count 的值增加 1。从整体上来看，obj.count 的值增加了两次，而当左右两边的 CPU 高速缓存将 obj 的值写回到内存中时，会发现实际上 obj.count 的值只增加了 1 次。</p>
+<p>下面的流程图可以详细说明这种情况：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1ftswhsizxoj30q306aglr.jpg" alt="竞态条件2"></p>
+<p>这种情况，就产生了竞态条件。</p>
+<p>（嗯，先写给腾腾看，未完待续~）</p>
 
       
     </div>
@@ -413,7 +445,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag"># Android</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -426,8 +458,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/15/Android事件分发机制源码解析/" rel="next" title="Android事件分发机制源码解析">
-                <i class="fa fa-chevron-left"></i> Android事件分发机制源码解析
+              <a href="/2018/07/17/如何阅读-Java-字节码/" rel="next" title="如何阅读 Java 字节码">
+                <i class="fa fa-chevron-left"></i> 如何阅读 Java 字节码
               </a>
             
           </div>
@@ -435,10 +467,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/05/09/Android源码的下载、编译与导入到Android-Studio/" rel="prev" title="Android源码的下载、编译与导入到Android Studio">
-                Android源码的下载、编译与导入到Android Studio <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -523,8 +551,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -581,6 +618,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存可见性"><span class="nav-number">1.</span> <span class="nav-text">内存可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#竞态条件"><span class="nav-number">2.</span> <span class="nav-text">竞态条件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -739,9 +792,9 @@ var jiathis_config={
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2016/05/01/使用注解代替Enum的使用/';
-          this.page.identifier = '2016/05/01/使用注解代替Enum的使用/';
-          this.page.title = '使用注解代替Enum的使用';
+          this.page.url = 'http://yoursite.com/2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/';
+          this.page.identifier = '2018/08/01/当我们谈-Java-并发的时候，我们在谈什么/';
+          this.page.title = '当我们谈 Java 并发的时候，我们在谈什么';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-wl9739-github-io.disqus.com/embed.js';
