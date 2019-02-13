@@ -96,7 +96,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://static.zybuluo.com/wl9739/pzape4m6ai20rnmbc9pfwflz/Group%203.png">
 <meta property="og:image" content="http://static.zybuluo.com/wl9739/6tx8b8i6t7c67xbkp5tsybpt/Group%202.png">
-<meta property="og:updated_time" content="2016-11-05T09:00:15.000Z">
+<meta property="og:updated_time" content="2018-09-07T05:53:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap源码解析">
 <meta name="twitter:description" content="HashMap是基于哈希表的Map接口的非同步实现。此提供实现所有可选的映射操作，并允许使用null值和null键。此类不保证映射的顺序，特别是它不保证顺序的一直不变。 在讲解HashMap之前，需要了解一下数据的存储。">
@@ -410,7 +410,7 @@
 <p>HashMap的实现中，通过threshold字段来判断HashMap的最大容量：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">threshold = (<span class="keyword">int</span>)(capacity * loadFactor)</span><br></pre></td></tr></table></figure>
 <p>结合负载因子的定义公式可知，threshold就是此loadFator和capacity对应下允许的最大元素数目，超过这个数目就重新resize，以降低实际负载因子。默认的负载因子0.75是对空间和时间效率的一个平衡。当容量超出此最大容量时， resize后的HashMap容量是之前的两倍。</p>
-<h2 id="Fail-Fast机制"><a href="#Fail-Fast机制" class="headerlink" title="Fail-Fast机制"></a>Fail-Fast机制</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>我们知道java.util.HashMap不是线程安全的，因此如果在使用迭代器的过程中有其他线程修改了map，那么将抛出Concurrent<strong>ModificationException</strong>，这就是所谓的<strong>fail-fast</strong>策略。</p>
+<h2 id="Fail-Fast机制"><a href="#Fail-Fast机制" class="headerlink" title="Fail-Fast机制"></a>Fail-Fast机制</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>我们知道java.util.HashMap不是线程安全的，因此如果在使用迭代器的过程中有其他线程修改了map，那么将抛出<strong>ConcurrentModificationException</strong>，这就是所谓的<strong>fail-fast</strong>策略。</p>
 <p>fail-fast机制是Java集合(Collection)中的一种错误机制。当多个线程对同一个集合的内容进行操作时，就可能会产生fail-fast事件。</p>
 <p>例如：当某一个线程A通过iterator去遍历某集合的过程中，若该集合的内容被其他线程所改变，那么线程A访问集合时，就会抛出<strong>ConcurrentModificationException</strong>异常，产生fail-fast事件。</p>
 <p>这一策略在源码中是通过modCount域，modCount顾名思义就是修改次数，对HashMap内容（当然不仅仅是HashMap才有，其他例如ArrayList也有）的修改豆浆增加这个值（源码中很多操作方法里面都有modCount++这句)，那么在迭代器初始化过程中会将这个值赋给迭代器的expectedModCount。</p>
@@ -616,7 +616,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -684,7 +684,7 @@ var jiathis_config={
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
