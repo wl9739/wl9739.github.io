@@ -89,14 +89,14 @@
 <meta name="description" content="WorkManager 是 Android Jetpack 中的新组件，用于负责管理后台任务。关于这个组件的介绍就不多说了，网上到处都是，这里分享一下在 WorkManager 中处理异步任务的方法。 我们知道，在 WorkManager 中，处理任务的方式是创建一个继承自 Worker 的任务类，实现 doWork() 方法，并在这个方法中实现我们自己的任务，然后返回 Result.succes">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在WorkManager中处理异步任务">
+<meta property="og:title" content="在 WorkManager 中处理异步任务">
 <meta property="og:url" content="http://yoursite.com/2019/02/07/在WorkManager中处理异步任务/index.html">
 <meta property="og:site_name" content="Eateeer 的笔记屋">
 <meta property="og:description" content="WorkManager 是 Android Jetpack 中的新组件，用于负责管理后台任务。关于这个组件的介绍就不多说了，网上到处都是，这里分享一下在 WorkManager 中处理异步任务的方法。 我们知道，在 WorkManager 中，处理任务的方式是创建一个继承自 Worker 的任务类，实现 doWork() 方法，并在这个方法中实现我们自己的任务，然后返回 Result.succes">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-13T04:39:09.917Z">
+<meta property="og:updated_time" content="2019-02-13T04:41:59.992Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在WorkManager中处理异步任务">
+<meta name="twitter:title" content="在 WorkManager 中处理异步任务">
 <meta name="twitter:description" content="WorkManager 是 Android Jetpack 中的新组件，用于负责管理后台任务。关于这个组件的介绍就不多说了，网上到处都是，这里分享一下在 WorkManager 中处理异步任务的方法。 我们知道，在 WorkManager 中，处理任务的方式是创建一个继承自 Worker 的任务类，实现 doWork() 方法，并在这个方法中实现我们自己的任务，然后返回 Result.succes">
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title>在WorkManager中处理异步任务 | Eateeer 的笔记屋</title>
+  <title>在 WorkManager 中处理异步任务 | Eateeer 的笔记屋</title>
   
 
 
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">在WorkManager中处理异步任务</h1>
+          <h1 class="post-title" itemprop="name headline">在 WorkManager 中处理异步任务</h1>
         
 
         <div class="post-meta">
@@ -318,7 +318,7 @@
 
           
           
-             <span id="/2019/02/07/在WorkManager中处理异步任务/" class="leancloud_visitors" data-flag-title="在WorkManager中处理异步任务">
+             <span id="/2019/02/07/在WorkManager中处理异步任务/" class="leancloud_visitors" data-flag-title="在 WorkManager 中处理异步任务">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -352,6 +352,7 @@
         <p>WorkManager 是 Android Jetpack 中的新组件，用于负责管理后台任务。关于这个组件的介绍就不多说了，网上到处都是，这里分享一下在 WorkManager 中处理异步任务的方法。</p>
 <p>我们知道，在 WorkManager 中，处理任务的方式是创建一个继承自 <code>Worker</code> 的任务类，实现 <code>doWork()</code> 方法，并在这个方法中实现我们自己的任务，然后返回 <code>Result.success()</code> 或 <code>Result.failure()</code> 来表示任务执行成功或者失败。在这里，<code>doWork()</code> 方法中的任务应该是同步的，这是很自然的，因为 <code>doWork()</code> 方法本身就是在子线程中执行，因此可以在 <code>doWork()</code> 方法中同步执行耗时操作。</p>
 <p>但是些情况，我们想要执行的是异步任务，在 WorkManager 中，有两种比较好的处理异步任务的方案。</p>
+<a id="more"></a>
 <h2 id="RxWorker"><a href="#RxWorker" class="headerlink" title="RxWorker"></a>RxWorker</h2><p>很多时候我们会使用 RxJava 来处理数据。幸运的是，我们可以使用 RxWorker 来处理异步任务。</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">   ...</span><br><span class="line">   implementation <span class="string">"android.arch.work:work-runtime:1.0.0-beta05"</span></span><br><span class="line">   implementation <span class="string">"android.arch.work:work-rxjava2:1.0.0-beta05"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后，将之前集成 Work 的类改为继承 <code>RxWorker</code>，然后实现 <code>createWork()</code> 方法，基本结构如下：</p>
@@ -543,7 +544,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -757,7 +758,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/02/07/在WorkManager中处理异步任务/';
           this.page.identifier = '2019/02/07/在WorkManager中处理异步任务/';
-          this.page.title = '在WorkManager中处理异步任务';
+          this.page.title = '在 WorkManager 中处理异步任务';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-wl9739-github-io.disqus.com/embed.js';

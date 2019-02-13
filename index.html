@@ -275,7 +275,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/07/在WorkManager中处理异步任务/" itemprop="url">在WorkManager中处理异步任务</a></h1>
+                <a class="post-title-link" href="/2019/02/07/在WorkManager中处理异步任务/" itemprop="url">在 WorkManager 中处理异步任务</a></h1>
         
 
         <div class="post-meta">
@@ -316,7 +316,7 @@
 
           
           
-             <span id="/2019/02/07/在WorkManager中处理异步任务/" class="leancloud_visitors" data-flag-title="在WorkManager中处理异步任务">
+             <span id="/2019/02/07/在WorkManager中处理异步任务/" class="leancloud_visitors" data-flag-title="在 WorkManager 中处理异步任务">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -348,22 +348,16 @@
 
       
         
-          
-            <p>WorkManager 是 Android Jetpack 中的新组件，用于负责管理后台任务。关于这个组件的介绍就不多说了，网上到处都是，这里分享一下在 WorkManager 中处理异步任务的方法。</p>
+          <p>WorkManager 是 Android Jetpack 中的新组件，用于负责管理后台任务。关于这个组件的介绍就不多说了，网上到处都是，这里分享一下在 WorkManager 中处理异步任务的方法。</p>
 <p>我们知道，在 WorkManager 中，处理任务的方式是创建一个继承自 <code>Worker</code> 的任务类，实现 <code>doWork()</code> 方法，并在这个方法中实现我们自己的任务，然后返回 <code>Result.success()</code> 或 <code>Result.failure()</code> 来表示任务执行成功或者失败。在这里，<code>doWork()</code> 方法中的任务应该是同步的，这是很自然的，因为 <code>doWork()</code> 方法本身就是在子线程中执行，因此可以在 <code>doWork()</code> 方法中同步执行耗时操作。</p>
 <p>但是些情况，我们想要执行的是异步任务，在 WorkManager 中，有两种比较好的处理异步任务的方案。</p>
-<h2 id="RxWorker"><a href="#RxWorker" class="headerlink" title="RxWorker"></a>RxWorker</h2><p>很多时候我们会使用 RxJava 来处理数据。幸运的是，我们可以使用 RxWorker 来处理异步任务。</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">   ...</span><br><span class="line">   implementation <span class="string">"android.arch.work:work-runtime:1.0.0-beta05"</span></span><br><span class="line">   implementation <span class="string">"android.arch.work:work-rxjava2:1.0.0-beta05"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后，将之前集成 Work 的类改为继承 <code>RxWorker</code>，然后实现 <code>createWork()</code> 方法，基本结构如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncWorker</span> <span class="keyword">extends</span> <span class="title">RxWorker</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsyncWorker</span><span class="params">(Context appContext, WorkerParameters workerParams)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(appContext, workerParams);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Single&lt;Result&gt; <span class="title">createWork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> remoteService.getMySingleResponse()</span><br><span class="line">                .doOnSuccess(<span class="keyword">new</span> Consumer() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Object object)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                        <span class="comment">// 处理任务</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .map(<span class="keyword">new</span> Function() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> Object <span class="title">apply</span><span class="params">(Object object)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> Result.success();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .onErrorReturn(<span class="keyword">new</span> Function() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> Object <span class="title">apply</span><span class="params">(Object object)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> Result.failure();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>很简单是吧？有一点要注意的是，<code>createWork()</code> 方法默认是在主线程中执行的，如果 10 分钟没有结束任务，就会自动取消。</p>
-<h2 id="ListenableWorker"><a href="#ListenableWorker" class="headerlink" title="ListenableWorker"></a>ListenableWorker</h2><p>当我们去查看 RxWorker 的源码时，就可以发现它是继承了 ListenableWorker 类，其实 Worker 也是通过继承 ListenableWorker 实现的。 因此，我们可以通过自定义 ListenableWorker 来实现相同的功能。</p>
-<p>看一下 Worker 的源码，很简单：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">extends</span> <span class="title">ListenableWorker</span> </span>&#123;</span><br><span class="line">    SettableFuture&lt;Result&gt; mFuture;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Worker</span><span class="params">(@NonNull Context context, @NonNull WorkerParameters workerParams)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, workerParams);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="meta">@NonNull</span> <span class="function">Result <span class="title">doWork</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="meta">@NonNull</span> <span class="function">ListenableFuture&lt;Result&gt; <span class="title">startWork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mFuture = SettableFuture.create();</span><br><span class="line">        getBackgroundExecutor().execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                Result result = doWork();</span><br><span class="line">                mFuture.set(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> mFuture;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以里面主要使用了 <code>SettableFuture</code> 这个类，在 <code>startWork()</code> 里面先创建了 <code>SettableFuture</code> 对象，然后开了一个子线程，在子线程里面执行 <code>doWork()</code> 方法，完了就使用 <code>mFuture.set()</code> 方法将 Result 返回。</p>
-<p>因此我们也可以模仿 Worker 类的写法，来实现自己的异步处理，简单地模板代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncWorker</span> <span class="keyword">extends</span> <span class="title">ListenableWorker</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> SettableFuture&lt;Result&gt; mFuture;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsyncWorker</span><span class="params">(Context appContext,WorkerParameters workerParams)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(appContext, workerParams);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListenableFuture&lt;Result&gt; <span class="title">startWork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mFuture = SettableFuture.create();</span><br><span class="line">        doSomeAsyncWork(<span class="keyword">new</span> AsyncListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">success</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                mFuture.set(Result.success());</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fail</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                mFuture.set(Result.failure());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> mFuture;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/07/在WorkManager中处理异步任务/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -502,177 +496,19 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>忙完了双十一，开始看 Android Dev Summit 2018 的一些视频，后面会对这场交流会的几个感兴趣的 Topic 进行学习和分享。博客内容主要是对视频内容的总结和必要的扩展，其实看完视频就应该理解的差不多了。</p>
 </blockquote>
 <iframe width="100%" height="415" src="https://www.youtube.com/embed/vXqwRhjd7b4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <p>这个 Topic 主要分析了 TextView 在渲染时（主要是 <code>onMeasure()</code> 阶段）的性能表现，并分析其耗时的原因，以及优化性能的一些方法。</p>
-<h2 id="Text-渲染性能表现"><a href="#Text-渲染性能表现" class="headerlink" title="Text 渲染性能表现"></a>Text 渲染性能表现</h2><p>在视频里面</p>
-<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><p>经过上面的测试，发现 Text 在渲染的时候非常消耗性能，那么就会有人问两个问题：</p>
-<ul>
-<li>为什么文字渲染流程这么费时呢？</li>
-<li>能不能将文字渲染过程放到后台线程中呢？</li>
-</ul>
-<p>首先回答第一个问题，为什么文字渲染流程这么费时。要回答这个问题，就需要了解文字渲染的流程是什么样的。</p>
-<h3 id="Text-渲染流程"><a href="#Text-渲染流程" class="headerlink" title="Text 渲染流程"></a>Text 渲染流程</h3><p>在 <code>TextView</code> 的 <code>onMeasure()</code> 过程中，90% 以上的代码都是 native 代码， </p>
-<h3 id="在后台线程计算-Text-渲染"><a href="#在后台线程计算-Text-渲染" class="headerlink" title="在后台线程计算 Text 渲染"></a>在后台线程计算 Text 渲染</h3><p>既然 Text 渲染这么耗时，那么能不能将这个耗时流程放到后台线程中呢？如果放到后台线程中，会面临下面几个问题：</p>
-<ol>
-<li>在 Android P 之前，Text 渲染的 native 代码需要一个非常大的同步代码块，而在 Android P 里面将这个同步代码块的粒度变小，使得多线程渲染效率得到了提高。</li>
-<li>布局的时候需要 <code>width</code> 参数，但是在 <code>onMeasure()</code> 结束之前，是拿不到 <code>width</code> 参数的，这就变成了<code>先有鸡还是先有蛋</code>的问题了。</li>
-</ol>
-<p>为了解决上面的问题，于是有了 PrecomputedText 类。</p>
-<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><ol>
-<li>关闭自动换行功能，性能提升大约 1 倍。</li>
-<li>在 Android P 和 Android X 上面使用 <code>PrecomputedText</code>  API，性能大约提升 17 倍。</li>
-<li>如果使用了 Android Support Library 25+ 版本以上的 RecyclerView 控件，那么可以使用 Prefetch 类，并配合 PrecomputedText，以提升性能。</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/11/AndroidDevSummit之Systrace/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eateeer">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eateeer 的笔记屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/11/AndroidDevSummit之Systrace/" itemprop="url">AndroidDevSummit之Systrace</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-11T15:18:21+08:00">
-                2018-11-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/11/11/AndroidDevSummit之Systrace/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/11/11/AndroidDevSummit之Systrace/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/11/11/AndroidDevSummit之Systrace/" class="leancloud_visitors" data-flag-title="AndroidDevSummit之Systrace">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <iframe width="100%" height="415" src="https://www.youtube.com/embed/9AeXMVUUk3I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/11/【AndroidDevSummit】Text-优化/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1749,6 +1585,153 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eateeer">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eateeer 的笔记屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/" itemprop="url">RadioButton在Android4.4调用setButtonDrawable(null)无效的问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-19T17:09:26+08:00">
+                2016-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/" class="leancloud_visitors" data-flag-title="RadioButton在Android4.4调用setButtonDrawable(null)无效的问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>今天遇到一个问题，在 Android 4.4 系统下，Java 代码布局中调用 <code>RadioButton.setButtonDrawable(null)</code> 无效，而在 xml 布局中设置元素属性 <code>android:button=&quot;@null&quot;</code> 有效，并且在 Android 5.0+ 系统上调用 Java 代码布局也有效。</p>
+<p>初步分析，应该是系统差异导致的，因此直接比较 Android 4.4 和 Android 5.0 系统代码中 <code>RadioButton.setButtonDrawable()</code> 方法的差异。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1803,7 +1786,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
