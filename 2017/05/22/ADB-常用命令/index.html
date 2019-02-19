@@ -96,7 +96,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1ffu90zho1aj30cv06k3z9.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/JakeWharton/pidcat/master/screen.png">
-<meta property="og:updated_time" content="2017-05-22T14:30:56.000Z">
+<meta property="og:updated_time" content="2019-02-19T03:18:34.765Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ADB 常用命令">
 <meta name="twitter:description" content="安卓调试桥 (Android Debug Bridge, adb)，是一种可以用来操作手机设备或模拟器的命令行工具。它存在于 sdk/platform-tools 目录下。虽然现在 Android Studio 已经将大部分 ADB 命令以图形化的形式实现了，但是了解一下还是有必要的。 如果记不住命令怎么办？推荐一个可以快速查看 ADB 命令的插件 adb-idea">
@@ -367,13 +367,16 @@
 <li>device — 设备已连接到 adb</li>
 <li>no device — 未连接模拟器/设备</li>
 </ul>
-<h2 id="安装和卸载"><a href="#安装和卸载" class="headerlink" title="安装和卸载"></a>安装和卸载</h2><p>我们可以使用 <code>adb install [option] &lt;path&gt;</code> 命令来将电脑上的一个 APP 安装到手机上，比如：</p>
+<h2 id="安装和卸载"><a href="#安装和卸载" class="headerlink" title="安装和卸载"></a>安装和卸载</h2><p><strong>安装</strong></p>
+<p>我们可以使用 <code>adb install [option] &lt;path&gt;</code> 命令来将电脑上的一个 APP 安装到手机上，比如：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb install game.apk</span><br></pre></td></tr></table></figure>
 <p>有时候你电脑上连接的设备不止一个，那么在做一些操作之前，需要指定我们要操作的设备的序列号，也就是需要执行 <code>adb -s [serial_number] command</code>  命令。</p>
 <p>比如现在有两部 Android 手机连接了电脑并都打开了开发者模式，那么在安装 game.apk 的时候，命令就需要变一下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb -s 80QBCNP234K3 install game.apk</span><br></pre></td></tr></table></figure>
-<p>如果重复安装一个 APP，那么就会得到一个错误信息：Failure [INSTALL_FAILED_ALREADY_EXISTS]，这个时候可以加上 <code>-r</code> (replace) 来替换当前应用：</p>
+<p><strong>覆盖安装</strong></p>
+<p>如果重复安装一个 APP，那么就会得到一个错误信息：<code>Failure [INSTALL_FAILED_ALREADY_EXISTS]</code>，这个时候就需要覆盖安装了：加上 <code>-r</code> (replace) 来替换当前应用：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb install -r game.apk</span><br></pre></td></tr></table></figure>
+<p><strong>卸载</strong></p>
 <p>卸载一个 APP 的命令是 <code>adb uninstall [option] &lt;packagename&gt;</code>，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb uninstall com.test.app</span><br></pre></td></tr></table></figure>
 <blockquote>
