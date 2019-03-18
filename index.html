@@ -256,6 +256,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/权限和shareUID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Eateeer">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eateeer 的笔记屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/18/权限和shareUID/" itemprop="url">权限和shareUID</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T16:25:23+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/18/权限和shareUID/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/18/权限和shareUID/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果想要在不同的 App 之间共享 Activity、Service 或广播等，通常有如下三种方法：</p>
+<ol>
+<li>完全暴露：使用 <code>android:exported=&quot;true&quot;</code> 来将组件设置为其他 App 都可调用。一般来说还需要指定 <intent-filter> 里面的 <action> 参数</action></intent-filter></li>
+<li>权限暴露：在 App A 中使用 <permission> 定义权限，然后在 App B 中使用 <uses-permission> 申请权限调用 App A 中的组件。</uses-permission></permission></li>
+<li>私有暴露：如果一个公司有两个 App，只想在这两个 App 中相互调用，那么就必须设置 <code>sharedUserId</code>，将两个 App 的 UID 设置为一样的。</li>
+</ol>
+<p>下面针对这三种方案进行详细说明。</p>
+<h2 id="完全暴露"><a href="#完全暴露" class="headerlink" title="完全暴露"></a>完全暴露</h2><p>如果 Client App 的一个 Activity 想要启动 Server App 的 ServerActivity ，那么就需要把 ServerActivity 暴露出去，一般通过添加 <intent-filter> 来实现。</intent-filter></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=<span class="string">".ServerActivity"</span>&gt;</span><br><span class="line">    &lt;intent-filter&gt;</span><br><span class="line">        &lt;action android:name=<span class="string">"eateeer.me"</span> /&gt;</span><br><span class="line">        &lt;category android:name=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span><br><span class="line">    &lt;/intent-filter&gt;</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当为一个组件添加 <intent-filter> 时，那么该组件的 <code>exported</code> 属性默认为 true。</intent-filter></p>
+</blockquote>
+<p>这时，Client App 就可以像下面这样来启动 SeverActivity：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">intent.setAction(<span class="string">"eateeer.me"</span>);</span><br><span class="line">intent.addCategory(<span class="string">"android.intent.category.DEFAULT"</span>);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p>但是使用这种方式，出了 Client App 可以启动 ServerActivity 以外，其他 App 都能通过上面的代码启动 ServerActivity。</p>
+<h2 id="权限暴露"><a href="#权限暴露" class="headerlink" title="权限暴露"></a>权限暴露</h2><p>如果我们不想其他的 App 肆无忌惮的调用我们的组件，那么你可以增加一些限制，比如要求对方声明相应的权限才能使用。这样我们就需要自定义权限。</p>
+<h3 id="自定义-Activity-和-Service-权限"><a href="#自定义-Activity-和-Service-权限" class="headerlink" title="自定义 Activity 和 Service 权限"></a>自定义 Activity 和 Service 权限</h3><p>如果我们想给 Activity 或 Service 设置权限，那么可以在 AndroidManifest.xml 文件中使用 <permission> 声明新的权限内容：</permission></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">"eateeer.me"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:sharedUserId</span>=<span class="string">"eateeer.me"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">permission</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">"eateeer.me.permission.ServerActivity"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:label</span>=<span class="string">"@string/server_permission_label"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:description</span>=<span class="string">"@string/server_permission_description"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:protectionLevel</span>=<span class="string">"normal"</span> /&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">     <span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">".ServerActivity"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:permission</span>=<span class="string">"eateeer.me.permission.ServerActivity"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"eateeer.me"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><permission> 标签下有四个属性：</permission></p>
+<ul>
+<li><code>name</code>：权限名，这个字符串对应于 Client App 的 <uses-permission> 中的 name。</uses-permission></li>
+<li><code>label</code>：标签</li>
+<li><code>description</code>：描述该权限的内容</li>
+<li><code>protectionLevel</code>：保护级别。常用的有四种：<ul>
+<li><code>normal</code>：默认的保护级别。表示使用该权限不会有什么风险，安装的时候会自动授予该权限，无需用户确认。</li>
+<li><code>dangerous</code>：危险权限。表示该权限可以访问到用户的数据或者在某种形式上控制设备。这种权限需要用户确认后才能授予。</li>
+<li><code>signature</code>：签名权限。表示只有拥有相同证书的应用程序才能使用该权限，这种权限级别已经非常高了。</li>
+<li><code>signatureOrSystem</code>：这个保护级别表示系统镜像中的应用和具有相同签名的应用都可以使用该权限。</li>
+</ul>
+</li>
+</ul>
+<p>举个例子，比如百度地图 apk 的 AndroidManifest.xml 里面定义了一个权限，</p>
+<ul>
+<li>如果权限的保护级别为 <code>normal</code> 或 <code>dangerous</code>，表示其他 app 都可以使用该权限。</li>
+<li>如果权限的保护级别为 <code>signature</code>，那么只有使用同样私钥签名的 apk 才能使用该权限，比如百度网盘。</li>
+<li>如果权限的保护级别为 <code>signatureOrSystem</code>，那么除了拥有同样私钥签名的 apk，比如百度网盘，可以使用该权限外，在 /system/app/ 下的应用也可以使用该权限。</li>
+</ul>
+<p>也就是说，通过 <code>protectionLevel</code> 属性的值，我们可以限制该权限是否可以给 “外人” 使用。如果我们希望该权限只有公司的产品才能用的话，那么可以设置为 <code>signature</code>。</p>
+<p>Server App 里面定义了权限，如果要使用的话，在 Client App 的 AndroidManifest.xml 文件中申明即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    package=&quot;eateeer.me.client&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;uses-permission android:name=&quot;eateeer.me.permission.ServerActivity&quot;/&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;application</span><br><span class="line">        android:icon=&quot;@mipmap/ic_launcher&quot;&gt;</span><br><span class="line">        &lt;activity android:name=&quot;.MainActivity&quot;&gt;</span><br><span class="line">            &lt;intent-filter&gt;</span><br><span class="line">                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;</span><br><span class="line"></span><br><span class="line">                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;</span><br><span class="line">            &lt;/intent-filter&gt;</span><br><span class="line">        &lt;/activity&gt;</span><br><span class="line">    &lt;/application&gt;</span><br><span class="line"></span><br><span class="line">&lt;/manifest&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="私有暴露"><a href="#私有暴露" class="headerlink" title="私有暴露"></a>私有暴露</h2><p>在 Android 里面，每个 App 都有一个唯一的 linux user ID，即该应用程序的文件只有该 linux user 可以访问。如果我们想要让其他的程序也能访问到我们 App 里面的数据，就需要使用 ShareUserId，也就是让两个 apk 使用相同的 userID。</p>
+<p>即在 Server App 和 Client App 的 AndroidManifest.xml 都增加相同的 <code>sharedUserId</code> 字符串。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">"eateeer.me"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:sharedUserId</span>=<span class="string">"eateeer.me"</span>&gt;</span></span><br><span class="line">    ......</span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，sharedUserId 字符串中要包含至少一个 <code>.</code> 分隔符</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/07/在WorkManager中处理异步任务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1486,142 +1662,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Eateeer">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eateeer 的笔记屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/" itemprop="url">RadioButton在Android4.4调用setButtonDrawable(null)无效的问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-19T17:09:26+08:00">
-                2016-12-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>今天遇到一个问题，在 Android 4.4 系统下，Java 代码布局中调用 <code>RadioButton.setButtonDrawable(null)</code> 无效，而在 xml 布局中设置元素属性 <code>android:button=&quot;@null&quot;</code> 有效，并且在 Android 5.0+ 系统上调用 Java 代码布局也有效。</p>
-<p>初步分析，应该是系统差异导致的，因此直接比较 Android 4.4 和 Android 5.0 系统代码中 <code>RadioButton.setButtonDrawable()</code> 方法的差异。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/19/RadioButton在Android4-4调用setButtonDrawable-null-无效的问题/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1676,7 +1716,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
