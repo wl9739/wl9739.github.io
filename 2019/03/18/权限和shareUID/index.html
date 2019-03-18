@@ -89,14 +89,14 @@
 <meta name="description" content="如果想要在不同的 App 之间共享 Activity、Service 或广播等，通常有如下三种方法：  完全暴露：使用 android:exported=&amp;quot;true&amp;quot; 来将组件设置为其他 App 都可调用。一般来说还需要指定  里面的  参数 权限暴露：在 App A 中使用  定义权限，然后在 App B 中使用  申请权限调用 App A 中的组件。 私有暴露：如果一个公司">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="权限和shareUID">
+<meta property="og:title" content="App 共享组件">
 <meta property="og:url" content="http://yoursite.com/2019/03/18/权限和shareUID/index.html">
 <meta property="og:site_name" content="Eateeer 的笔记屋">
 <meta property="og:description" content="如果想要在不同的 App 之间共享 Activity、Service 或广播等，通常有如下三种方法：  完全暴露：使用 android:exported=&amp;quot;true&amp;quot; 来将组件设置为其他 App 都可调用。一般来说还需要指定  里面的  参数 权限暴露：在 App A 中使用  定义权限，然后在 App B 中使用  申请权限调用 App A 中的组件。 私有暴露：如果一个公司">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-18T15:21:52.245Z">
+<meta property="og:updated_time" content="2019-03-18T15:23:11.669Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="权限和shareUID">
+<meta name="twitter:title" content="App 共享组件">
 <meta name="twitter:description" content="如果想要在不同的 App 之间共享 Activity、Service 或广播等，通常有如下三种方法：  完全暴露：使用 android:exported=&amp;quot;true&amp;quot; 来将组件设置为其他 App 都可调用。一般来说还需要指定  里面的  参数 权限暴露：在 App A 中使用  定义权限，然后在 App B 中使用  申请权限调用 App A 中的组件。 私有暴露：如果一个公司">
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title>权限和shareUID | Eateeer 的笔记屋</title>
+  <title>App 共享组件 | Eateeer 的笔记屋</title>
   
 
 
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">权限和shareUID</h1>
+          <h1 class="post-title" itemprop="name headline">App 共享组件</h1>
         
 
         <div class="post-meta">
@@ -345,6 +345,7 @@
 <li>私有暴露：如果一个公司有两个 App，只想在这两个 App 中相互调用，那么就必须设置 <code>sharedUserId</code>，将两个 App 的 UID 设置为一样的。</li>
 </ol>
 <p>下面针对这三种方案进行详细说明。</p>
+<a id="more"></a>
 <h2 id="完全暴露"><a href="#完全暴露" class="headerlink" title="完全暴露"></a>完全暴露</h2><p>如果 Client App 的一个 Activity 想要启动 Server App 的 ServerActivity ，那么就需要把 ServerActivity 暴露出去，一般通过添加 <intent-filter> 来实现。</intent-filter></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=<span class="string">".ServerActivity"</span>&gt;</span><br><span class="line">    &lt;intent-filter&gt;</span><br><span class="line">        &lt;action android:name=<span class="string">"eateeer.me"</span> /&gt;</span><br><span class="line">        &lt;category android:name=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span><br><span class="line">    &lt;/intent-filter&gt;</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -779,7 +780,7 @@ var jiathis_config={
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/03/18/权限和shareUID/';
           this.page.identifier = '2019/03/18/权限和shareUID/';
-          this.page.title = '权限和shareUID';
+          this.page.title = 'App 共享组件';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://https-wl9739-github-io.disqus.com/embed.js';
